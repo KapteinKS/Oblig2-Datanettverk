@@ -16,4 +16,7 @@ def listAll():
     out = ""
     for name in array:
         out += name + " & "
-    return out 
+    return out
+
+if __name__ == "__main__":
+    app.run(debug=True)
