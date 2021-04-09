@@ -12,6 +12,24 @@ users = {}
 rooms = {}
 messages = {}
 
+def getMessagesInRoom(room_id):
+    this_rooms_msgs = {}
+    i=0
+    while i < len(messages):
+        out = json.loads(json.dumps(messages[i]))
+        if out["room"] == room_id:
+            this_rooms_msgs[len(this_rooms_msgs)] = out
+        i+=1
+    return this_rooms_msgs
+
+
+def addMessage(self, room_id, user_id):
+    messages[len(messages)] = {
+        "id": len(messages),
+        "room": room_id,
+        "sender": user_id,
+        "content": str(self),
+    }
 
 def populate():
 
