@@ -97,6 +97,8 @@ def populate():
         "listOfMessages": ["Elvira: I am lonely"],
     }
 
+    addMessage("HELLO THIS IS A MESSAGE ADDED LATER",1,2)
+
 
 populate()
 
