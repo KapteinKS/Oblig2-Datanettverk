@@ -14,6 +14,7 @@ rooms = {}
 userlist = []
 roomlist = []
 
+
 def populate():
     Joe = '{"id":1, "name":"Joe"}'
     Bob = '{"id":2, "name":"Bob"}'
@@ -34,7 +35,6 @@ def populate():
 
     rooms['R1'] = "GENERAL"
     rooms['R2'] = "MEMES"
-
 
 
 populate()
