@@ -128,7 +128,6 @@ class Users(Resource):
 
 class User(Resource):
     def get(self, user_id):  # return user by user ID
-        # TODO get user from list and return in JSON format
         if user_id in users:
             return users[user_id]
         else:
@@ -143,9 +142,6 @@ class User(Resource):
 
         del users[user_id]
         return "", 204
-
-    # def delete(self, user_id):  # delete user by user ID
-        # TODO check user can only delete themselves
 
 
 class Rooms(Resource):
@@ -206,7 +202,6 @@ class Messages(Resource):
     def get(self, room_id):  # get all messages in room by room ID
         # TODO get messages from list, return JSON
         if room_id in rooms:
-            #####NEW
 
 
             this_rooms_msgs = {}
@@ -218,11 +213,6 @@ class Messages(Resource):
                 i+=1
             return list(this_rooms_msgs.values())
 
-
-            #####OLD
-            #out = json.loads(json.dumps(rooms[room_id]))
-            #return out["listOfMessages"]
-            #############
         else:
             abort(404, message="No room found with that ID")
 

@@ -1,8 +1,11 @@
 import requests
 BASE = "http://127.0.0.1:5000/api/"
-# response = requests.get(BASE + "users")
-# print(response.json())
-# input()
+response = requests.get(BASE + "users")
+print(response.json())
+input()
+
+response = requests.get(BASE + "user/1")
+print(response.json())
 # 
-response = requests.post(BASE + "user/1", {"id": 2})
-print(response)
+# response = requests.post(BASE + "user/1", {"id": 2})
+# print(response)
