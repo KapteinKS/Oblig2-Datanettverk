@@ -36,6 +36,13 @@ def populate():
 populate()
 
 
+def get_room_users(room_orig):
+    room_users = []
+    for user_id in room_orig["listOfUsers"]:
+        room_users.append(users[user_id])
+    return room_users
+
+
 class Users(Resource):
     def get(self):  # return users
         # TODO return list of users in JSON format
@@ -75,7 +82,13 @@ class Rooms(Resource):
         if len(rooms) == 0:
             abort(404, message="No rooms created yet")
         else:
-            return list(rooms.values())
+            room_list = []
+            for room_orig in rooms.values():
+                room = room_orig.copy()
+                room["listOfUsers"] = get_room_users(room)
+                room_list.append(room)
+                return room
+            return room_list
 
     def put(self):  # add new room
         # TODO add new room to list with auto incrementing room ID
@@ -86,7 +99,9 @@ class Room(Resource):
     def get(self, room_id):  # get room by room ID
         # TODO get from list and return in JSON format
         if room_id in rooms:
-            return rooms[room_id] + "hallo"
+            room = rooms[room_id].copy()
+            room["listOfUsers"] = get_room_users(room)
+            return room
         else:
             abort(404, message="No room found with that ID")
 
