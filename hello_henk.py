@@ -50,7 +50,7 @@ def users():
     elif request.method == 'GET':
         return get_all_users()
 
-@app.route('/api/user/<user-id>')
+@app.route('/api/user/<user_id>')
 def user(user_id):
     if request.method == 'DELETE':
         return delete_user(user_id)
@@ -67,7 +67,7 @@ def rooms():
         return get_all_rooms()
         # get all
 
-@app.route('/api/room/<room-id>')
+@app.route('/api/room/<room_id>')
 def room(room_id):
     return get_single_room()
 
