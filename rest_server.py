@@ -127,8 +127,7 @@ class Users(Resource):
 
 
 class User(Resource):
-    def get(self, user_id):  # return user by user ID
-        # TODO get user from list and return in JSON format
+    def get(self, user_id):
         if user_id in users:
             return users[user_id]
         else:
@@ -163,7 +162,7 @@ class Rooms(Resource):
             return room_list
 
     def put(self):  # add new room
-        # TODO add new room to list with auto incrementing room ID
+        # TODO check if this actually work
         id = len(rooms)
         name = request.form["name"]
         rooms[id] = {
@@ -204,11 +203,7 @@ class RoomUsers(Resource):
 
 class Messages(Resource):
     def get(self, room_id):  # get all messages in room by room ID
-        # TODO get messages from list, return JSON
         if room_id in rooms:
-            #####NEW
-
-
             this_rooms_msgs = {}
             i=0
             while i < len(messages):
@@ -217,12 +212,6 @@ class Messages(Resource):
                     this_rooms_msgs[len(this_rooms_msgs)] = out
                 i+=1
             return list(this_rooms_msgs.values())
-
-
-            #####OLD
-            #out = json.loads(json.dumps(rooms[room_id]))
-            #return out["listOfMessages"]
-            #############
         else:
             abort(404, message="No room found with that ID")
 
