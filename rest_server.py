@@ -159,7 +159,7 @@ class Rooms(Resource):
             return room_list
 
     def put(self):  # add new room
-        # TODO add new room to list with auto incrementing room ID
+        # TODO check if this actually work
         id = len(rooms)
         name = request.form["name"]
         rooms[id] = {
@@ -200,9 +200,7 @@ class RoomUsers(Resource):
 
 class Messages(Resource):
     def get(self, room_id):  # get all messages in room by room ID
-        # TODO get messages from list, return JSON
         if room_id in rooms:
-
 
             this_rooms_msgs = {}
             i=0
