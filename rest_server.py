@@ -11,30 +11,29 @@ api = Api(app)
 users = {}
 rooms = {}
 
-userlist = []
 roomlist = []
 
 
 def populate():
-    Joe = '{"id":1, "name":"Joe"}'
-    Bob = '{"id":2, "name":"Bob"}'
-    Elvira = '{"id":3, "name":Elvira"}'
-    r1 = '{"id":1, "name":"General", "size":32, "listOfUsers":"[1,2,3]", "listOfMessages":"[]"}'
-    r2 = '{"id":2, "name":"Memes", "size":32, "listOfUsers":"[]", "listOfMessages":"[]"}'
+    #Joe = '{"id":1, "name":"Joe"}'
+    #Bob = '{"id":2, "name":"Bob"}'
+    #Elvira = '{"id":3, "name":Elvira"}'
+    r1 = {"id":1, "name":"General", "size":32, "listOfUsers":"[1,2,3]", "listOfMessages":"[]"}
+    r2 = {"id":2, "name":"Memes", "size":32, "listOfUsers":"[1,3]", "listOfMessages":"['Message1','Message2']"}
 
-    userlist.append(Joe)
-    userlist.append(Bob)
-    userlist.append(Elvira)
+    #userlist.append(Joe)
+    #userlist.append(Bob)
+    #userlist.append(Elvira)
 
     roomlist.append(r1)
     roomlist.append(r2)
 
-    users['U1'] = "Joe" # This should be r1.name
-    users['U2'] = "Bobby"
-    users['U3'] = "Elvira"
+    users[1] = "Joe" # This should be r1.name
+    users[2] = "Bobby"
+    users[3] = "Elvira"
 
-    rooms['R1'] = "GENERAL"
-    rooms['R2'] = "MEMES"
+    rooms[1] = "GENERAL"
+    rooms[2] = "MEMES"
 
 
 populate()
@@ -86,7 +85,7 @@ class Room(Resource):
     def get(self, room_id):  # get room by room ID
         # TODO get from list and return in JSON format
         if room_id in rooms:
-            return rooms[room_id]
+            return rooms[room_id] + "hallo"
         else:
             abort(404, message="No room found with that ID")
 
@@ -95,7 +94,11 @@ class RoomUsers(Resource):
     def get(self, room_id):  # get all user in a room by room ID
         # TODO get users from list, return JSON
         if room_id in rooms:
-            return rooms[room_id].users  # I guess
+            varObj = roomlist[room_id-1]
+            
+            out = "" + str(varObj)
+            return out
+            #return rooms[room_id].users  # I guess
         else:
             abort(404, message="No room found with that ID")
 
