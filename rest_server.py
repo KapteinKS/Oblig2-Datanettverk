@@ -13,19 +13,19 @@ rooms = {}
 
 
 def populate():
-    users[0] = {"id": 1, "name": "Joe"}  # This should be r1.name
-    users[1] = {"id": 2, "name": "Bobby"}
-    users[2] = {"id": 3, "name": "Elvira"}
+    users[0] = {"id": 0, "name": "Joe"}  # This should be r1.name
+    users[1] = {"id": 1, "name": "Bobby"}
+    users[2] = {"id": 2, "name": "Elvira"}
 
     rooms[0] = {
-        "id": 1,
+        "id": 0,
         "name": "General",
         "size": 32,
-        "listOfUsers": [1, 2, 3],
+        "listOfUsers": [0, 1, 2],
         "listOfMessages": [],
     }
     rooms[1] = {
-        "id": 2,
+        "id": 1,
         "name": "Memes",
         "size": 32,
         "listOfUsers": [],
@@ -41,14 +41,14 @@ class Users(Resource):
         # TODO return list of users in JSON format
         if len(users) == 0:
             abort(404, message="No users registered")
-        return users
+        return list(users.values())
 
     def put(self):  # add user to db
         # TODO add user to list with auto increment user ID
         print(request.form['name'])
-        # id = len(users)
+        id = len(users)
         name = request.form['name']
-        users.pop(name)
+        users[id] = {"id": id, "name": name}
         return "OK", 201
 
 
@@ -75,7 +75,7 @@ class Rooms(Resource):
         if len(rooms) == 0:
             abort(404, message="No rooms created yet")
         else:
-            return rooms
+            return list(rooms.values())
 
     def put(self):  # add new room
         # TODO add new room to list with auto incrementing room ID
