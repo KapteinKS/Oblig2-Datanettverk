@@ -12,6 +12,7 @@ users = {}
 rooms = {}
 messages = {}
 
+
 def populate():
 
     users[0] = {
@@ -31,31 +32,31 @@ def populate():
 
     messages[0] = {
         "id": 0,
-        "room" : 0,
+        "room": 0,
         "sender": 1,
         "content": "THIS IS A Bobby MESSAGE",
     }
     messages[1] = {
         "id": 1,
-        "room" : 0,
+        "room": 0,
         "sender": 0,
         "content": "Cowabunga, mydudes!! Joe sent this.",
     }
     messages[2] = {
         "id": 2,
-        "room" : 0,
+        "room": 0,
         "sender": 1,
         "content": "You're such a dweeb, Joey-Ol'-boy. Love, Bob.",
     }
     messages[3] = {
         "id": 3,
-        "room" : 1,
+        "room": 1,
         "sender": 2,
         "content": "Je suis Elvira..",
     }
     messages[4] = {
         "id": 4,
-        "room" : 0,
+        "room": 0,
         "sender": 1,
         "content": "Bobby REPORTING in",
     }
@@ -209,7 +210,8 @@ api.add_resource(Rooms, "/api/rooms")
 api.add_resource(Room, "/api/room/<int:room_id>")
 api.add_resource(RoomUsers, "/api/room/<int:room_id>/users")
 api.add_resource(Messages, "/api/room/<int:room_id>/messages")
-api.add_resource(RoomUserMessages, "/api/room/<int:room_id>/<int:user_id>/messages")
+api.add_resource(RoomUserMessages,
+                 "/api/room/<int:room_id>/<int:user_id>/messages")
 
 if __name__ == "__main__":
     app.run(debug=True)
