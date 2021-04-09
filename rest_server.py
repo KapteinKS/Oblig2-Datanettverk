@@ -110,10 +110,7 @@ class RoomUsers(Resource):
         # TODO get users from list, return JSON
         if room_id in rooms:
             out = json.loads(json.dumps(rooms[room_id]))
-            return out["listOfUsers"]
-        else:
-            abort(404, message="No room found with that ID")
-
+            return get_room_users(out)
     def put(self, room_id):  # add user to room by room ID
         # TODO check user is registered, add to room
         if room_id in rooms:
