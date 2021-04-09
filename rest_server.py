@@ -4,7 +4,7 @@ from flask_restful import Api, Resource
 app = Flask(__name__)
 api = Api(app)
 
-#TODO implement user and room db
+#TODO implement user, message and room db
 users = {}
 rooms = {}
 
