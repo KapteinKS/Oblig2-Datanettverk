@@ -13,13 +13,18 @@ def get_users():  # return users
 
 
 def add_user():  # add user to db
-    response = requests.put(BASE + "users", {"name": "John"})
+    # TODO type validate string
+    text = input("Please create a username: ")
+    response = requests.put(BASE + "users", {"name": '"'+text+'"'})
     print(response.json())
 
 
 def get_user(user_id):
-    response = requests.get(BASE + "user" + user_id)
-    print(response.json())
+    if type(user_id) == "int":
+        response = requests.get(BASE + "user/" + user_id)
+        print(response.json())
+    else:
+        print("Please use a number")
 
 
 def delete_user(user_id):
