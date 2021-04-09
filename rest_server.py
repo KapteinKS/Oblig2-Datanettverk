@@ -111,7 +111,7 @@ class RoomUsers(Resource):
         # TODO get users from list, return JSON
         if room_id in rooms:
             out = json.loads(json.dumps(rooms[room_id]))
-            return out["listOfUsers"]
+            return get_room_users(out)
 
             #return str(rooms[room_id])
             #return rooms[room_id].users  # I guess
