@@ -7,7 +7,11 @@ api = Api(app)
 # user: id, name
 # room: id, size, listOfUsers, listOfMessages
 # msg: senderid, text
-users = {}
+users = {
+    "1" : "Joe",
+    "2" : "Bob",
+    "3" : "Elvira"
+}
 rooms = {}
 
 def populate():
