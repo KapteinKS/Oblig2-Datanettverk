@@ -1,112 +1,86 @@
 from flask import Flask
 from flask_restful import Api, Resource, reqparse, abort
-from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 api = Api(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-room_db = SQLAlchemy(app)
-user_db = SQLAlchemy(app)
-message_db = SQLAlchemy(app)
 
-
-# TODO implement user, message and room db
-class RoomModel(room_db.Model):
-    # TODO create room model
-    id = room_db.Column(room_db.Integer, primary_key=True, autoincrement=True)
-
-
-class UserModel(room_db.Model):
-    # TODO finish user model
-    id = user_db.Column(user_db.Integer, primary_key=True, autoincrement=True)
-
-
-class MessageModel(room_db.Model):
-    # TODO finish message model
-    id = message_db.Column(message_db.Integer, primary_key=True, autoincrement=True)
-  
-  
-# Comment this part out after first run
-room_db.create_all()
-user_db.create_all()
-message_db.create_all()
-
-
-## user: id, name 
-## room: id, size, listOfUsers, listOfMessages
-## msg: senderid, text
+# user: id, name 
+# room: id, size, listOfUsers, listOfMessages
+# msg: senderid, text
+users = {}
+rooms = {}
 
 
 class Users(Resource):
-    def get(self): # return users
+    def get(self):  # return users
         # TODO return list of users in JSON format
         return users
 
-    def put(self): # add user to db
+    def put(self):  # add user to db
         # TODO add user to db with auto increment user ID
         return "", 201
 
 
 class User(Resource):
-    def get(self, user_id): # return user by user ID
+    def get(self, user_id):  # return user by user ID
         # TODO get user from db and return in JSON format
         return users[user_id]
 
-    def delete(self, user_id): # delete user by user ID
+    def delete(self, user_id):  # delete user by user ID
         # TODO check user exists, check user can only delete themselves
         del users[user_id]
         return "OK", 204
 
 
 class Rooms(Resource):
-    def get(self): # get all rooms
+    def get(self):  # get all rooms
         # TODO get rooms from db and return in JSON format
         return rooms
 
-    def put(self): # add new room
+    def put(self):  # add new room
         # TODO add new room to db with auto incrementing room ID
         return "", 201
 
 
 class Room(Resource):
-    def get(self, room_id): # get room by room ID
+    def get(self, room_id):  # get room by room ID
         # TODO check room exists, get from db and return in JSON format
         return rooms[room_id]
 
 
 class RoomUsers(Resource):
-    def get(self, room_id): # get all user in a room by room ID
+    def get(self, room_id):  # get all user in a room by room ID
         # TODO check room exists, get users from db, return JSON
         return rooms[room_id].users  # I guess
 
-    def put(self, room_id): # add user to room by room ID
+    def put(self, room_id):  # add user to room by room ID
         # TODO check room exists, check user is registered, add to room
         return "", 201
 
 
 class Messages(Resource):
-    def get(self, room_id): # get all messages in room by room ID
+    def get(self, room_id):  # get all messages in room by room ID
         # TODO check room exists, get messages from db, return JSON
         return rooms[room_id].messages
 
 
 class RoomUserMessages(Resource):
-    def get(self, room_id, user_id): # get all messages sent in room by user by room ID and user ID
+    def get(self, room_id, user_id):  # get all messages sent in room by user by room ID and user ID
         # TODO check room exists, check user exists, get messages from db, return JSON
         return rooms[room_id].user[user_id].messages
 
-    def post(self): # add message from user in room by room ID and user ID
+    def post(self):  # add message from user in room by room ID and user ID
         # TODO check room exists, check user exists, add new message (str)
         return "", 201
 
 
 api.add_resource(Users, "/api/users")
-api.add_resource(User, "/api/user/<int: user_id>")
+api.add_resource(User, "/api/user/<int:user_id>")
 api.add_resource(Rooms, "/api/rooms")
-api.add_resource(Room, "/api/room/<int: room_id")
-api.add_resource(RoomUsers, "/api/room/<int: room_id>/users")
-api.add_resource(Messages, "/api/room/<int: room_id>/messages")
-api.add_resource(RoomUserMessages, "/api/room/<int: room_id/<int: user_id/messages")
+api.add_resource(Room, "/api/room/<int:room_id")
+api.add_resource(RoomUsers, "/api/room/<int:room_id>/users")
+api.add_resource(Messages, "/api/room/<int:room_id>/messages")
+api.add_resource(RoomUserMessages, "/api/room/<int:room_id/<int:user_id/messages")
 
 if __name__ == "__main__":
     app.run(debug=True)
