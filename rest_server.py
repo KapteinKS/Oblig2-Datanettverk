@@ -49,9 +49,7 @@ class Users(Resource):
             abort(404, message="No users registered")
         return list(users.values())
 
-    def put(self):  # add user to db
-        # TODO add user to list with auto increment user ID
-        print(request.form['name'])
+    def put(self):  # add user
         id = len(users)
         name = request.form['name']
         users[id] = {"id": id, "name": name}
@@ -91,7 +89,16 @@ class Rooms(Resource):
 
     def put(self):  # add new room
         # TODO add new room to list with auto incrementing room ID
-        return "", 201
+        id = len(rooms)
+        name = request.form['name']
+        rooms[id] = {
+        "id": id,
+        "name": name,
+        "size": 32,
+        "listOfUsers": [],
+        "listOfMessages": [],
+    }
+        return "OK", 201
 
 
 class Room(Resource):
