@@ -13,19 +13,19 @@ rooms = {}
 
 
 def populate():
-    users[0] = {"id": 1, "name": "Joe"}  # This should be r1.name
-    users[1] = {"id": 2, "name": "Bobby"}
-    users[2] = {"id": 3, "name": "Elvira"}
+    users[0] = {"id": 0, "name": "Joe"}  # This should be r1.name
+    users[1] = {"id": 1, "name": "Bobby"}
+    users[2] = {"id": 2, "name": "Elvira"}
 
     rooms[0] = {
-        "id": 1,
+        "id": 0,
         "name": "General",
         "size": 32,
-        "listOfUsers": [1, 2, 3],
+        "listOfUsers": [0, 1, 2],
         "listOfMessages": [],
     }
     rooms[1] = {
-        "id": 2,
+        "id": 1,
         "name": "Memes",
         "size": 32,
         "listOfUsers": [],
@@ -46,9 +46,9 @@ class Users(Resource):
     def put(self):  # add user to db
         # TODO add user to list with auto increment user ID
         print(request.form['name'])
-        # id = len(users)
+        id = len(users)
         name = request.form['name']
-        users.pop(name)
+        users[id] = {"id": id, "name": name}
         return "OK", 201
 
 
