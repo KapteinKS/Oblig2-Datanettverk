@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_restful import Api, Resource
+from flask_restful import Api, Resource, reqparse, abort
 
 app = Flask(__name__)
 api = Api(app)
@@ -16,6 +16,7 @@ class Users(Resource):
     
     def put(self): # add user to db
         #TODO add user to db with auto increment user ID
+        return "", 201
 
 class User(Resource):
     def get(self, user_id): # return user by user ID
@@ -25,7 +26,7 @@ class User(Resource):
     def delete(self, user_id): # delete user by user ID
         #TODO check user exists, check user can only delete themselves
         del users[user_id]
-        return "OK"
+        return "OK", 204
     
 class Rooms(Resource):
     def get(self): # get all rooms
@@ -34,6 +35,7 @@ class Rooms(Resource):
         
     def put(self): # add new room
         #TODO add new room to db with auto incrementing room ID
+        return "", 201
         
 class Room(Resource):
     def get(self, room_id): # get room by room ID
@@ -43,20 +45,26 @@ class Room(Resource):
 class RoomUsers(Resource):
     def get(self, room_id): # get all user in a room by room ID
         #TODO check room exists, get users from db, return JSON
+        return rooms[room_id].users  # I guess
     
     def put(self, room_id): # add user to room by room ID
         #TODO check room exists, check user is registered, add to room
+        return "", 201
         
 class Messages(Resource):
     def get(self, room_id): # get all messages in room by room ID
         #TODO check room exists, get messages from db, return JSON
+        return rooms[room_id].messages
         
 class RoomUserMessages(Resource):
     def get(self, room_id, user_id): # get all messages sent in room by user by room ID and user ID
         #TODO check room exists, check user exists, get messages from db, return JSON
+        return rooms[room_id].user[user_id].messages
         
     def post(self): # add message from user in room by room ID and user ID
         #TODO check room exists, check user exists, add new message (str)
+        return "", 201
+    
         
 api.add_resource(Users, "/api/users")
 api.add_resource(User, "/api/user/<int: user_id>")
