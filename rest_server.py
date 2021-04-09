@@ -1,12 +1,35 @@
 from flask import Flask
 from flask_restful import Api, Resource, reqparse, abort
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 api = Api(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+room_db = SQLAlchemy(app)
+user_db = SQLAlchemy(app)
+message_db = SQLAlchemy(app)
+
 
 # TODO implement user, message and room db
-users = {}
-rooms = {}
+class RoomModel(room_db.Model):
+    # TODO create room model
+    id = room_db.Column(room_db.Integer, primary_key=True, autoincrement=True)
+
+
+class UserModel(room_db.Model):
+    # TODO finish user model
+    id = user_db.Column(user_db.Integer, primary_key=True, autoincrement=True)
+
+
+class MessageModel(room_db.Model):
+    # TODO finish message model
+    id = message_db.Column(message_db.Integer, primary_key=True, autoincrement=True)
+  
+  
+# Comment this part out after first run
+room_db.create_all()
+user_db.create_all()
+message_db.create_all()
 
 
 ## user: id, name 
