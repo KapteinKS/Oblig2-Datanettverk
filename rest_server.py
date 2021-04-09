@@ -12,7 +12,11 @@ users = {
     "2" : "Bob",
     "3" : "Elvira"
 }
-rooms = {}
+rooms = {
+    "R1" : "General",
+    "R2" : "Memes",
+    "R3" : "SeriousDiscussions" 
+}
 
 
 def populate():
