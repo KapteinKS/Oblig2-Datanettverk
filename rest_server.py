@@ -41,7 +41,7 @@ class Users(Resource):
         # TODO return list of users in JSON format
         if len(users) == 0:
             abort(404, message="No users registered")
-        return users
+        return list(users.values())
 
     def put(self):  # add user to db
         # TODO add user to list with auto increment user ID
@@ -75,7 +75,7 @@ class Rooms(Resource):
         if len(rooms) == 0:
             abort(404, message="No rooms created yet")
         else:
-            return rooms
+            return list(rooms.values())
 
     def put(self):  # add new room
         # TODO add new room to list with auto incrementing room ID
@@ -95,8 +95,8 @@ class RoomUsers(Resource):
     def get(self, room_id):  # get all user in a room by room ID
         # TODO get users from list, return JSON
         if room_id in rooms:
-            #out = rooms[room_id]
-            return str(rooms[room_id])
+            out = json.loads(str(rooms[room_id]))
+            return out.listOfUsers
             #return rooms[room_id].users  # I guess
         else:
             abort(404, message="No room found with that ID")
