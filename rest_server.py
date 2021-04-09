@@ -84,17 +84,14 @@ def populate():
         "name": "General",
         "size": 32,
         "listOfUsers": [0, 1, 2],
-        "listOfMessages": [
-            "Bob: Aaay, my guy, how hangs it",
-            "Joe: I would really prefer it if you were quiet.",
-        ],
+        "listOfMessages": getMessagesInRoom(0),
     }
     rooms[1] = {
         "id": 1,
         "name": "Memes",
         "size": 32,
         "listOfUsers": [1],
-        "listOfMessages": ["Elvira: I am lonely"],
+        "listOfMessages": getMessagesInRoom(1),
     }
 
     addMessage("HELLO THIS IS A MESSAGE ADDED LATER",1,2)
@@ -126,14 +123,14 @@ class Users(Resource):
         return "OK", 201
 
 
-class User(Resource):    
+class User(Resource):
     def get(self, user_id):  # return user by user ID
         # TODO get user from list and return in JSON format
         if user_id in users:
             return users[user_id]
         else:
             abort(404, message="No user found with that ID")
-            
+
     def post(self, user_id):
         args = user_delete_args.parse_args()
         if user_id not in users:
@@ -146,7 +143,7 @@ class User(Resource):
 
     # def delete(self, user_id):  # delete user by user ID
         # TODO check user can only delete themselves
-        
+
 
 class Rooms(Resource):
     def get(self):  # get all rooms
