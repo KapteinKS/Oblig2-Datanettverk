@@ -22,14 +22,14 @@ def populate():
         "name": "General",
         "size": 32,
         "listOfUsers": [0, 1, 2],
-        "listOfMessages": [],
+        "listOfMessages": ["Bob: Aaay, my guy, how hangs it", "Joe: Neck yourself, incel"],
     }
     rooms[1] = {
         "id": 1,
         "name": "Memes",
         "size": 32,
-        "listOfUsers": [],
-        "listOfMessages": [],
+        "listOfUsers": [1],
+        "listOfMessages": ["Elvira: I am lonely"],
     }
 
 
@@ -97,9 +97,6 @@ class RoomUsers(Resource):
         if room_id in rooms:
             out = json.loads(json.dumps(rooms[room_id]))
             return out["listOfUsers"]
-
-            #return str(rooms[room_id])
-            #return rooms[room_id].users  # I guess
         else:
             abort(404, message="No room found with that ID")
 
@@ -115,7 +112,8 @@ class Messages(Resource):
     def get(self, room_id):  # get all messages in room by room ID
         # TODO get messages from list, return JSON
         if room_id in rooms:
-            return rooms[room_id].messages
+            out = json.loads(json.dumps(rooms[room_id]))
+            return out["listOfMessages"]
         else:
             abort(404, message="No room found with that ID")
 
