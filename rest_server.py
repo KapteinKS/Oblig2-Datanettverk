@@ -102,6 +102,9 @@ def populate():
 
 populate()
 
+user_delete_args = reqparse.RequestParser()
+user_delete_args.add_argument("id_to_delete", type=int, help="ID of user to be deleted", required=True)
+
 
 def get_room_users(room_orig):
     room_users = []
@@ -123,22 +126,27 @@ class Users(Resource):
         return "OK", 201
 
 
-class User(Resource):
+class User(Resource):    
     def get(self, user_id):  # return user by user ID
         # TODO get user from list and return in JSON format
         if user_id in users:
             return users[user_id]
         else:
             abort(404, message="No user found with that ID")
-
-    def delete(self, user_id):  # delete user by user ID
-        # TODO check user can only delete themselves
-        if user_id in users:
-            del users[user_id]
-            return "OK", 204
-        else:
+            
+    def post(self, user_id):
+        args = user_delete_args.parse_args()
+        if user_id not in users:
             abort(404, message="No user found with that ID")
+        if user_id != args["id_to_delete"]:
+            abort(403, message="You do not have permission to delete another user")
 
+        del users[user_id]
+        return "", 204
+
+    # def delete(self, user_id):  # delete user by user ID
+        # TODO check user can only delete themselves
+        
 
 class Rooms(Resource):
     def get(self):  # get all rooms
