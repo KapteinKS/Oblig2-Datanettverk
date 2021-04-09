@@ -77,7 +77,7 @@ class RoomUserMessages(Resource):
 api.add_resource(Users, "/api/users")
 api.add_resource(User, "/api/user/<int:user_id>")
 api.add_resource(Rooms, "/api/rooms")
-api.add_resource(Room, "/api/room/<int:room_id")
+api.add_resource(Room, "/api/room/<int:room_id>")
 api.add_resource(RoomUsers, "/api/room/<int:room_id>/users")
 api.add_resource(Messages, "/api/room/<int:room_id>/messages")
 api.add_resource(RoomUserMessages, "/api/room/<int:room_id>/<int:user_id>/messages")
