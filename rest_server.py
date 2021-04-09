@@ -206,7 +206,6 @@ class Messages(Resource):
     def get(self, room_id):  # get all messages in room by room ID
         # TODO get messages from list, return JSON
         if room_id in rooms:
-<<<<<<< HEAD
             #####NEW
 
 
@@ -224,10 +223,6 @@ class Messages(Resource):
             #out = json.loads(json.dumps(rooms[room_id]))
             #return out["listOfMessages"]
             #############
-=======
-            out = json.loads(json.dumps(rooms[room_id]))
-            return list(out["listOfMessages"].values())
->>>>>>> 432344b1f45dd5acb06523c6e055e181c7f5ccfb
         else:
             abort(404, message="No room found with that ID")
 
