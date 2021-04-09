@@ -13,18 +13,18 @@ rooms = {}
 
 
 def populate():
-    users[1] = {"id": 1, "name": "Joe"}  # This should be r1.name
-    users[2] = {"id": 2, "name": "Bobby"}
-    users[3] = {"id": 3, "name": "Elvira"}
+    users[0] = {"id": 1, "name": "Joe"}  # This should be r1.name
+    users[1] = {"id": 2, "name": "Bobby"}
+    users[2] = {"id": 3, "name": "Elvira"}
 
-    rooms[1] = {
+    rooms[0] = {
         "id": 1,
         "name": "General",
         "size": 32,
         "listOfUsers": [1, 2, 3],
         "listOfMessages": [],
     }
-    rooms[2] = {
+    rooms[1] = {
         "id": 2,
         "name": "Memes",
         "size": 32,
