@@ -13,26 +13,6 @@ rooms = {}
 messages = {}
 
 
-def getMessagesInRoom(room_id):
-    this_rooms_msgs = {}
-    i=0
-    while i < len(messages):
-        out = json.loads(json.dumps(messages[i]))
-        if out["room"] == room_id:
-            this_rooms_msgs[len(this_rooms_msgs)] = out
-        i+=1
-    return this_rooms_msgs
-
-
-def addMessage(self, room_id, user_id):
-    messages[len(messages)] = {
-        "id": len(messages),
-        "room": room_id,
-        "sender": user_id,
-        "content": str(self),
-    }
-
-## Populate must be replaced with something adding bots.
 def populate():
 
     users[0] = {
@@ -86,21 +66,22 @@ def populate():
         "name": "General",
         "size": 32,
         "listOfUsers": [0, 1, 2],
-        "listOfMessages": [],
+        "listOfMessages": [
+            "Bob: Aaay, my guy, how hangs it",
+            "Joe: I would really prefer it if you were quiet.",
+        ],
     }
     rooms[1] = {
         "id": 1,
         "name": "Memes",
         "size": 32,
         "listOfUsers": [1],
-        "listOfMessages": [],
+        "listOfMessages": ["Elvira: I am lonely"],
     }
-
-    addMessage("TTHIS WAS ADDED AFTER", 1, 2)
-
 
 
 populate()
+
 
 def get_room_users(room_orig):
     room_users = []
@@ -197,9 +178,8 @@ class Messages(Resource):
     def get(self, room_id):  # get all messages in room by room ID
         # TODO get messages from list, return JSON
         if room_id in rooms:
-            def getMessagesInRoom(room_id):
-            #out = json.loads(json.dumps(rooms[room_id]))
-            #return out["listOfMessages"]
+            out = json.loads(json.dumps(rooms[room_id]))
+            return out["listOfMessages"]
         else:
             abort(404, message="No room found with that ID")
 
@@ -219,7 +199,6 @@ class RoomUserMessages(Resource):
     ):  # add message from user in room by room ID and user ID
         # TODO check user exists, add new message (str)
         if room_id in rooms:
-            #addMessage(self, room_id, user_id)
             return "", 201
         else:
             abort(404, message="No room found with that ID")
@@ -231,7 +210,8 @@ api.add_resource(Rooms, "/api/rooms")
 api.add_resource(Room, "/api/room/<int:room_id>")
 api.add_resource(RoomUsers, "/api/room/<int:room_id>/users")
 api.add_resource(Messages, "/api/room/<int:room_id>/messages")
-api.add_resource(RoomUserMessages, "/api/room/<int:room_id>/<int:user_id>/messages")
+api.add_resource(RoomUserMessages,
+                 "/api/room/<int:room_id>/<int:user_id>/messages")
 
 if __name__ == "__main__":
     app.run(debug=True)

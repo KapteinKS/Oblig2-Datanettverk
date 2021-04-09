@@ -18,7 +18,8 @@ def add_user():  # add user to db
 
 
 def get_user(user_id):
-    pass
+    response = requests.get(BASE + "user" + user_id)
+    print(response.json())
 
 
 def delete_user(user_id):
@@ -67,12 +68,16 @@ def post_message(room_id, user_id):
 
 def start():
     while(True):
-        text = input()
+        raw = input()
+        text = raw.split(" ")
 
-        if text == "/users":
+        # Raw is command only, text[] is for command + args
+        if raw == "/users":
             get_users()
-        elif text == "/register":
+        elif raw == "/register":
             add_user()
+        elif text[0] == "/user":
+            get_user(text[1])
 
 
 startthread = threading.Thread(target=start)
