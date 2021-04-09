@@ -110,8 +110,10 @@ class RoomUsers(Resource):
     def get(self, room_id):  # get all user in a room by room ID
         # TODO get users from list, return JSON
         if room_id in rooms:
-            #out = rooms[room_id]
-            return str(rooms[room_id])
+            out = json.loads(json.dumps(rooms[room_id]))
+            return out["listOfUsers"]
+
+            #return str(rooms[room_id])
             #return rooms[room_id].users  # I guess
         else:
             abort(404, message="No room found with that ID")
