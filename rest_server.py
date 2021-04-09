@@ -29,12 +29,12 @@ def populate():
     roomlist.append(r1)
     roomlist.append(r2)
 
-    users['U1'] = "Joe" # This should be r1.name
-    users['U2'] = "Bobby"
-    users['U3'] = "Elvira"
+    users[1] = "Joe" # This should be r1.name
+    users[2] = "Bobby"
+    users[3] = "Elvira"
 
-    rooms['R1'] = "GENERAL"
-    rooms['R2'] = "MEMES"
+    rooms[1] = "GENERAL"
+    rooms[2] = "MEMES"
 
 
 populate()
@@ -86,7 +86,7 @@ class Room(Resource):
     def get(self, room_id):  # get room by room ID
         # TODO get from list and return in JSON format
         if room_id in rooms:
-            return rooms[room_id]
+            return rooms[room_id] + "hallo"
         else:
             abort(404, message="No room found with that ID")
 
