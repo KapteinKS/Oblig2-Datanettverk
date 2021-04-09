@@ -14,6 +14,7 @@ users = {
 }
 rooms = {}
 
+
 def populate():
     Joe = '{"id":1, "name":"Joe"}'
     Bob = '{"id":2, "name":"Bob"}'
@@ -21,69 +22,100 @@ def populate():
     r1 = '{"id":1, "size":32, "listOfUsers":"{}", "listOfMessages":"{}"}'
     r2 = '{"id":2, "size":32, "listOfUsers":"{}", "listOfMessages":"{}"}'
 
+
 populate()
+
 
 class Users(Resource):
     def get(self):  # return users
         # TODO return list of users in JSON format
+        if len(users) == 0:
+            abort(404, message="No users registered")
         return users
 
     def put(self):  # add user to db
-        # TODO add user to db with auto increment user ID
+        # TODO add user to list with auto increment user ID
         return "", 201
 
 
 class User(Resource):
     def get(self, user_id):  # return user by user ID
-        # TODO get user from db and return in JSON format
-        return users[user_id]
+        # TODO get user from list and return in JSON format
+        if user_id in users:
+            return users[user_id]
+        else:
+            abort(404, message="No user found with that ID")
 
     def delete(self, user_id):  # delete user by user ID
-        # TODO check user exists, check user can only delete themselves
-        del users[user_id]
-        return "OK", 204
+        # TODO check user can only delete themselves
+        if user_id in users:
+            del users[user_id]
+            return "OK", 204
+        else:
+            abort(404, message="No user found with that ID")
 
 
 class Rooms(Resource):
     def get(self):  # get all rooms
-        # TODO get rooms from db and return in JSON format
-        return rooms
+        # TODO get rooms from list and return in JSON format
+        if len(rooms) == 0:
+            abort(404, message="No rooms created yet")
+        else:
+            return rooms
 
     def put(self):  # add new room
-        # TODO add new room to db with auto incrementing room ID
+        # TODO add new room to list with auto incrementing room ID
         return "", 201
 
 
 class Room(Resource):
     def get(self, room_id):  # get room by room ID
-        # TODO check room exists, get from db and return in JSON format
-        return rooms[room_id]
-
+        # TODO get from list and return in JSON format
+        if room_id in rooms:
+            return rooms[room_id]
+        else:
+            abort(404, message="No room found with that ID")
+        
 
 class RoomUsers(Resource):
     def get(self, room_id):  # get all user in a room by room ID
-        # TODO check room exists, get users from db, return JSON
-        return rooms[room_id].users  # I guess
+        # TODO get users from list, return JSON
+        if room_id in rooms:
+            return rooms[room_id].users  # I guess
+        else:
+            abort(404, message="No room found with that ID")
 
     def put(self, room_id):  # add user to room by room ID
-        # TODO check room exists, check user is registered, add to room
-        return "", 201
-
+        # TODO check user is registered, add to room
+        if room_id in rooms:
+            return "", 201
+        else:
+            abort(404, message="No room found with that ID")
+        
 
 class Messages(Resource):
     def get(self, room_id):  # get all messages in room by room ID
-        # TODO check room exists, get messages from db, return JSON
-        return rooms[room_id].messages
+        # TODO get messages from list, return JSON
+        if room_id in rooms:
+            return rooms[room_id].messages
+        else:
+            abort(404, message="No room found with that ID")
 
 
 class RoomUserMessages(Resource):
     def get(self, room_id, user_id):  # get all messages sent in room by user by room ID and user ID
-        # TODO check room exists, check user exists, get messages from db, return JSON
-        return rooms[room_id].user[user_id].messages
+        # TODO check user exists, get messages from list, return JSON
+        if room_id in rooms:
+            return rooms[room_id].user[user_id].messages
+        else:
+            abort(404, message="No room found with that ID")
 
-    def post(self):  # add message from user in room by room ID and user ID
-        # TODO check room exists, check user exists, add new message (str)
-        return "", 201
+    def post(self, room_id, user_id):  # add message from user in room by room ID and user ID
+        # TODO check user exists, add new message (str)
+        if room_id in rooms:
+            return "", 201
+        else:
+            abort(404, message="No room found with that ID")
 
 
 api.add_resource(Users, "/api/users")
