@@ -22,7 +22,10 @@ def populate():
         "name": "General",
         "size": 32,
         "listOfUsers": [0, 1, 2],
-        "listOfMessages": ["Bob: Aaay, my guy, how hangs it", "Joe: Neck yourself, incel"],
+        "listOfMessages": [
+            "Bob: Aaay, my guy, how hangs it",
+            "Joe: Neck yourself, incel",
+        ],
     }
     rooms[1] = {
         "id": 1,
@@ -51,7 +54,7 @@ class Users(Resource):
 
     def put(self):  # add user
         id = len(users)
-        name = request.form['name']
+        name = request.form["name"]
         users[id] = {"id": id, "name": name}
         return "OK", 201
 
@@ -90,14 +93,14 @@ class Rooms(Resource):
     def put(self):  # add new room
         # TODO add new room to list with auto incrementing room ID
         id = len(rooms)
-        name = request.form['name']
+        name = request.form["name"]
         rooms[id] = {
-        "id": id,
-        "name": name,
-        "size": 32,
-        "listOfUsers": [],
-        "listOfMessages": [],
-    }
+            "id": id,
+            "name": name,
+            "size": 32,
+            "listOfUsers": [],
+            "listOfMessages": [],
+        }
         return "OK", 201
 
 
@@ -118,6 +121,7 @@ class RoomUsers(Resource):
         if room_id in rooms:
             out = json.loads(json.dumps(rooms[room_id]))
             return get_room_users(out)
+
     def put(self, room_id):  # add user to room by room ID
         # TODO check user is registered, add to room
         if room_id in rooms:
@@ -162,8 +166,7 @@ api.add_resource(Rooms, "/api/rooms")
 api.add_resource(Room, "/api/room/<int:room_id>")
 api.add_resource(RoomUsers, "/api/room/<int:room_id>/users")
 api.add_resource(Messages, "/api/room/<int:room_id>/messages")
-api.add_resource(RoomUserMessages,
-                 "/api/room/<int:room_id>/<int:user_id>/messages")
+api.add_resource(RoomUserMessages, "/api/room/<int:room_id>/<int:user_id>/messages")
 
 if __name__ == "__main__":
     app.run(debug=True)
