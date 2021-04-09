@@ -8,14 +8,14 @@ api = Api(app)
 # room: id, size, listOfUsers, listOfMessages
 # msg: senderid, text
 users = {
-    "1" : "Joe",
-    "2" : "Bob",
-    "3" : "Elvira"
+    "1": "Joe",
+    "2": "Bob",
+    "3": "Elvira"
 }
 rooms = {
-    "R1" : "General",
-    "R2" : "Memes",
-    "R3" : "SeriousDiscussions" 
+    "R1": "General",
+    "R2": "Memes",
+    "R3": "SeriousDiscussions" 
 }
 
 
