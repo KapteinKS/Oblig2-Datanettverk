@@ -10,7 +10,7 @@ api = Api(app)
 # msg: senderid, text
 users = {}
 rooms = {}
-
+msgs = {}
 
 def populate():
     users[0] = {"id": 0, "name": "Joe"}  # This should be r1.name
