@@ -216,7 +216,7 @@ class Messages(Resource):
                 if out["room"] == room_id:
                     this_rooms_msgs[len(this_rooms_msgs)] = out
                 i+=1
-            return this_rooms_msgs
+            return list(this_rooms_msgs.values())
 
 
             #####OLD
