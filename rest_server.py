@@ -1,30 +1,40 @@
 from flask import Flask
 from flask_restful import Api, Resource, reqparse, abort
+import json
 
 app = Flask(__name__)
 api = Api(app)
 
 # user: id, name
-# room: id, size, listOfUsers, listOfMessages
+# room: id, , name, size, listOfUsers, listOfMessages
 # msg: senderid, text
-users = {
-    "1": "Joe",
-    "2": "Bob",
-    "3": "Elvira"
-}
-rooms = {
-    "R1": "General",
-    "R2": "Memes",
-    "R3": "SeriousDiscussions" 
-}
+users = {}
+rooms = {}
 
+userlist = []
+roomlist = []
 
 def populate():
     Joe = '{"id":1, "name":"Joe"}'
     Bob = '{"id":2, "name":"Bob"}'
     Elvira = '{"id":3, "name":Elvira"}'
-    r1 = '{"id":1, "size":32, "listOfUsers":"{}", "listOfMessages":"{}"}'
-    r2 = '{"id":2, "size":32, "listOfUsers":"{}", "listOfMessages":"{}"}'
+    r1 = '{"id":1, "name":"General", "size":32, "listOfUsers":"[1,2,3]", "listOfMessages":"[]"}'
+    r2 = '{"id":2, "name":"Memes", "size":32, "listOfUsers":"[]", "listOfMessages":"[]"}'
+
+    userlist.append(Joe)
+    userlist.append(Bob)
+    userlist.append(Elvira)
+
+    roomlist.append(r1)
+    roomlist.append(r2)
+
+    users['U1'] = "Joe" # This should be r1.name
+    users['U2'] = "Bobby"
+    users['U3'] = "Elvira"
+
+    rooms['R1'] = "GENERAL"
+    rooms['R2'] = "MEMES"
+
 
 
 populate()
@@ -79,7 +89,7 @@ class Room(Resource):
             return rooms[room_id]
         else:
             abort(404, message="No room found with that ID")
-        
+
 
 class RoomUsers(Resource):
     def get(self, room_id):  # get all user in a room by room ID
@@ -95,7 +105,7 @@ class RoomUsers(Resource):
             return "", 201
         else:
             abort(404, message="No room found with that ID")
-        
+
 
 class Messages(Resource):
     def get(self, room_id):  # get all messages in room by room ID
