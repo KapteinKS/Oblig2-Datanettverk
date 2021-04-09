@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_restful import Api, Resource, reqparse, abort
 import json
 
@@ -45,7 +45,11 @@ class Users(Resource):
 
     def put(self):  # add user to db
         # TODO add user to list with auto increment user ID
-        return "", 201
+        print(request.form['name'])
+        # id = len(users)
+        name = request.form['name']
+        users.pop(name)
+        return "OK", 201
 
 
 class User(Resource):
