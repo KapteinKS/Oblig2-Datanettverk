@@ -7,7 +7,7 @@ response = requests.put(BASE + "users", {"name": "John"})
 print(response.json())
 input()
 response = requests.get(BASE + "user/3")
-print(response)
+print(response.json())
 
 def get_users():
 
