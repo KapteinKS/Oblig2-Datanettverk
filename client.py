@@ -20,7 +20,7 @@ def add_user():  # add user to db
 
 
 def get_user(user_id):
-    if type(user_id) == "int":
+    if type(int(user_id)) == int:
         response = requests.get(BASE + "user/" + user_id)
         print(response.json())
     else:
