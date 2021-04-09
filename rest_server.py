@@ -12,6 +12,27 @@ users = {}
 rooms = {}
 messages = {}
 
+
+def getMessagesInRoom(room_id):
+    this_rooms_msgs = {}
+    i=0
+    while i < len(messages):
+        out = json.loads(json.dumps(messages[i]))
+        if out["room"] == room_id:
+            this_rooms_msgs[len(this_rooms_msgs)] = out
+        i+=1
+    return this_rooms_msgs
+
+
+def addMessage(self, room_id, user_id):
+    messages[len(messages)] = {
+        "id": len(messages),
+        "room": room_id,
+        "sender": user_id,
+        "content": str(self),
+    }
+
+## Populate must be replaced with something adding bots.
 def populate():
 
     users[0] = {
@@ -31,31 +52,31 @@ def populate():
 
     messages[0] = {
         "id": 0,
-        "room" : 0,
+        "room": 0,
         "sender": 1,
         "content": "THIS IS A Bobby MESSAGE",
     }
     messages[1] = {
         "id": 1,
-        "room" : 0,
+        "room": 0,
         "sender": 0,
         "content": "Cowabunga, mydudes!! Joe sent this.",
     }
     messages[2] = {
         "id": 2,
-        "room" : 0,
+        "room": 0,
         "sender": 1,
         "content": "You're such a dweeb, Joey-Ol'-boy. Love, Bob.",
     }
     messages[3] = {
         "id": 3,
-        "room" : 1,
+        "room": 1,
         "sender": 2,
         "content": "Je suis Elvira..",
     }
     messages[4] = {
         "id": 4,
-        "room" : 0,
+        "room": 0,
         "sender": 1,
         "content": "Bobby REPORTING in",
     }
@@ -65,22 +86,21 @@ def populate():
         "name": "General",
         "size": 32,
         "listOfUsers": [0, 1, 2],
-        "listOfMessages": [
-            "Bob: Aaay, my guy, how hangs it",
-            "Joe: I would really prefer it if you were quiet.",
-        ],
+        "listOfMessages": [],
     }
     rooms[1] = {
         "id": 1,
         "name": "Memes",
         "size": 32,
         "listOfUsers": [1],
-        "listOfMessages": ["Elvira: I am lonely"],
+        "listOfMessages": [],
     }
+
+    addMessage("TTHIS WAS ADDED AFTER", 1, 2)
+
 
 
 populate()
-
 
 def get_room_users(room_orig):
     room_users = []
@@ -177,8 +197,9 @@ class Messages(Resource):
     def get(self, room_id):  # get all messages in room by room ID
         # TODO get messages from list, return JSON
         if room_id in rooms:
-            out = json.loads(json.dumps(rooms[room_id]))
-            return out["listOfMessages"]
+            def getMessagesInRoom(room_id):
+            #out = json.loads(json.dumps(rooms[room_id]))
+            #return out["listOfMessages"]
         else:
             abort(404, message="No room found with that ID")
 
@@ -198,6 +219,7 @@ class RoomUserMessages(Resource):
     ):  # add message from user in room by room ID and user ID
         # TODO check user exists, add new message (str)
         if room_id in rooms:
+            #addMessage(self, room_id, user_id)
             return "", 201
         else:
             abort(404, message="No room found with that ID")
