@@ -4,12 +4,20 @@ from flask_restful import Api, Resource, reqparse, abort
 app = Flask(__name__)
 api = Api(app)
 
-# user: id, name 
+# user: id, name
 # room: id, size, listOfUsers, listOfMessages
 # msg: senderid, text
 users = {}
 rooms = {}
 
+def populate():
+    Joe = '{"id":1, "name":"Joe"}'
+    Bob = '{"id":2, "name":"Bob"}'
+    Elvira = '{"id":3, "name":Elvira"}'
+    r1 = '{"id":1, "size":32, "listOfUsers":"{}", "listOfMessages":"{}"}'
+    r2 = '{"id":2, "size":32, "listOfUsers":"{}", "listOfMessages":"{}"}'
+
+populate()
 
 class Users(Resource):
     def get(self):  # return users
