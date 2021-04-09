@@ -10,12 +10,55 @@ api = Api(app)
 # msg: senderid, text
 users = {}
 rooms = {}
-msgs = {}
+messages = {}
 
 def populate():
-    users[0] = {"id": 0, "name": "Joe"}  # This should be r1.name
-    users[1] = {"id": 1, "name": "Bobby"}
-    users[2] = {"id": 2, "name": "Elvira"}
+
+    users[0] = {
+        "id": 0,
+        "name":
+        "Joe",
+    }
+    users[1] = {
+        "id": 1,
+        "name": "Bobby",
+    }
+    users[2] = {
+        "id": 2,
+        "name":
+        "Elvira",
+    }
+
+    messages[0] = {
+        "id": 0,
+        "room" : 0,
+        "sender": 1,
+        "content": "THIS IS A Bobby MESSAGE",
+    }
+    messages[1] = {
+        "id": 1,
+        "room" : 0,
+        "sender": 0,
+        "content": "Cowabunga, mydudes!! Joe sent this.",
+    }
+    messages[2] = {
+        "id": 2,
+        "room" : 0,
+        "sender": 1,
+        "content": "You're such a dweeb, Joey-Ol'-boy. Love, Bob.",
+    }
+    messages[3] = {
+        "id": 3,
+        "room" : 1,
+        "sender": 2,
+        "content": "Je suis Elvira..",
+    }
+    messages[4] = {
+        "id": 4,
+        "room" : 0,
+        "sender": 1,
+        "content": "Bobby REPORTING in",
+    }
 
     rooms[0] = {
         "id": 0,
@@ -24,7 +67,7 @@ def populate():
         "listOfUsers": [0, 1, 2],
         "listOfMessages": [
             "Bob: Aaay, my guy, how hangs it",
-            "Joe: Neck yourself, incel",
+            "Joe: I would really prefer it if you were quiet.",
         ],
     }
     rooms[1] = {
