@@ -103,7 +103,7 @@ def populate():
 populate()
 
 user_delete_args = reqparse.RequestParser()
-user_delete_args.add_argument("id_to_delete", type=int, help="ID of user to be deleted", required=True)
+user_delete_args.add_argument("id", type=int, help="ID of current user", required=True)
 
 
 def get_room_users(room_orig):
@@ -138,7 +138,7 @@ class User(Resource):
         args = user_delete_args.parse_args()
         if user_id not in users:
             abort(404, message="No user found with that ID")
-        if user_id != args["id_to_delete"]:
+        if user_id != args["id"]:
             abort(403, message="You do not have permission to delete another user")
 
         del users[user_id]
@@ -206,6 +206,7 @@ class Messages(Resource):
     def get(self, room_id):  # get all messages in room by room ID
         # TODO get messages from list, return JSON
         if room_id in rooms:
+<<<<<<< HEAD
             #####NEW
 
 
@@ -223,6 +224,10 @@ class Messages(Resource):
             #out = json.loads(json.dumps(rooms[room_id]))
             #return out["listOfMessages"]
             #############
+=======
+            out = json.loads(json.dumps(rooms[room_id]))
+            return list(out["listOfMessages"].values())
+>>>>>>> 432344b1f45dd5acb06523c6e055e181c7f5ccfb
         else:
             abort(404, message="No room found with that ID")
 
