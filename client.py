@@ -9,7 +9,6 @@ ID = -1
 
 def get_users():  # return users
     response = requests.get(BASE + "users", {"id": 1}).json()
-    print(response)
     for user in response:
         print(user["name"])
 
@@ -25,7 +24,7 @@ def add_user(user_name):  # add user to db
 
 def get_user(user_id):
     if type(int(user_id)) == int:
-        response = requests.get(BASE + "user/" + user_id)
+        response = requests.get(BASE + "user/" + user_id, {"id": 1})
         print(response.json())
     else:
         print("Please use a number")
@@ -79,15 +78,17 @@ def post_message(room_id, user_id):
 
 # Start
 
+
 def receiveThread():
     pass
+
 
 def sendThread():
     print("###### Client start #######")
     while(True):
-        ## TODO: Rcv, live updates from server; other users
-        ## Send retort
-        raw = input(":") # Breaking, can't rcv???
+        # TODO: Rcv, live updates from server; other users
+        # Send retort
+        raw = input(":")  # Breaking, can't rcv???
 
         text = raw.split(" ")
         # print(text)
@@ -116,10 +117,11 @@ def sendThread():
                     "Please enter a user to delete when typing the command"
 
 
-
 def start():
-    receiveThread()
-    sendThread()
+    send = threading.Thread(target=sendThread)
+    recieve = threading.Thread(target=receiveThread)
+    send.start()
+    recieve.start()
 
-startthread = threading.Thread(target=start)
-startthread.start()
+
+start()
