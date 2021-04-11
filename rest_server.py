@@ -161,7 +161,6 @@ class Rooms(Resource):
             return room_list
 
     def put(self):  # add new room
-        # TODO check if this actually work
         id = len(rooms)
         name = request.form["name"]
         rooms[id] = {
