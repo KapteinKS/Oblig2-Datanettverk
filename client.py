@@ -2,11 +2,17 @@ import requests
 import threading
 # TODO still quite a bit
 BASE = "http://127.0.0.1:5000/api/"
+global ID
 ID = -1
 
 # Users
 
 
+def connect(user_id):
+    global ID
+    ID = user_id
+    
+    
 def get_users():  # return users
     response = requests.get(BASE + "users", {"id": 1}).json()
     for user in response:
@@ -24,7 +30,7 @@ def add_user(user_name):  # add user to db
 
 def get_user(user_id):
     if type(int(user_id)) == int:
-        response = requests.get(BASE + "user/" + user_id, {"id": 1})
+        response = requests.get(BASE + "user/" + user_id, {"id": ID})
         print(response.json())
     else:
         print("Please use a number")
@@ -83,6 +89,7 @@ def receiveThread():
     pass
 
 
+
 def sendThread():
     print("###### Client start #######")
     while(True):
@@ -95,26 +102,39 @@ def sendThread():
         # Raw is command only, text[] is command + args
         # TODO Handle index out of bounds
         if raw.startswith("/"):
-            if raw == "/help":
-                # Print out a help page for all the commands
-                pass
-            elif raw == "/users":
-                get_users()
+            if ID >= 0:
+                if raw == "/help":
+                    # Print out a help page for all the commands
+                    pass
+                elif raw == "/users":
+                    get_users()
+                
+                elif text[0] == "/user":
+                    try:
+                        get_user(text[1])
+                    except:
+                        print("Please enter a user to get when typing the command")
+                elif text[0] == "/delete":
+                    try:
+                        delete_user(text[1])
+                    except:
+                        "Please enter a user to delete when typing the command"
+            elif text[0] == "/connect":
+                try:
+                    user_id = int(text[1])
+                    connect(user_id)
+                except:
+                    print("Please connect with a user ID")
             elif text[0] == "/register":
                 try:
                     add_user(text[1])
                 except:
                     print("Please enter a name to register when typing the command")
-            elif text[0] == "/user":
-                try:
-                    get_user(text[1])
-                except:
-                    print("Please enter a user to get when typing the command")
-            elif text[0] == "/delete":
-                try:
-                    delete_user(text[1])
-                except:
-                    "Please enter a user to delete when typing the command"
+            elif raw == "/help":
+                # Print out a help page for all the commands
+                pass
+            else:
+                print("When not connected you can only use the /help, /register or /connect commands")
 
 
 def start():
