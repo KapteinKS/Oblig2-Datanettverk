@@ -126,7 +126,7 @@ class Users(Resource):
         id = len(users)
         name = request.form["name"]
         users[id] = {"id": id, "name": name}
-        return "OK", 201
+        return f"Successfully added. ID: {id}", 201
 
 
 class User(Resource):
