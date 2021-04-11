@@ -82,7 +82,7 @@ def get_user_messages(room_id, user_id):
 
 
 # TODO: this
-def post_message(room_id, user_id):
+def post_message(room_id, user_id, message):
     pass
 
 
@@ -118,6 +118,26 @@ def sendThread():
                         delete_user(text[1])
                     except:
                         "Please enter a user to delete when typing the command"
+                elif text[0] == "/get_rooms":
+                    get_rooms()
+                elif raw == "/add_room":
+                    add_room()
+                elif text[0] == "/get_room":
+                    get_room(text[1])
+                elif text[0] == "/get_room_users":
+                    get_room_users()
+                elif text[0] == "/join_room":
+                    add_room_user(text[1])
+                elif text[0] == "/get_messages":
+                    get_messages(text[1])
+                elif text[0] == "/get_user_messages":
+                    get_user_messages(text[1], text[2])
+                elif text[0] == "/post_message":
+                    message = " ".join(text[3: -1])
+                    print(message)
+                    post_message(text[1], text[2], message)
+                else:
+                    print("Input was not recognised as a command, type /help for a list of commands")
             elif text[0] == "/connect":
                 try:
                     user_id = int(text[1])
