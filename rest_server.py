@@ -132,6 +132,7 @@ class User(Resource):
         else:
             abort(404, message="No user found with that ID")
 
+    # had to hack this method and use post instead of delete as delete would not accept a JSON element 
     def post(self, user_id):
         args = user_delete_args.parse_args()
         if user_id not in users:
@@ -220,10 +221,22 @@ class RoomUserMessages(Resource):
         self, room_id, user_id
     ):  # get all messages sent in room by user by room ID and user ID
         # TODO check user exists, get messages from list, return JSON
-        if room_id in rooms:
-            return rooms[room_id].user[user_id].messages
+        if room_id in rooms and user_id in users:
+
+            this_rooms_users_msgs = {}
+            i=0
+            j=0
+            while i < len(messages):
+                out = json.loads(json.dumps(messages[i]))
+                if out["room"] == room_id:
+                    if out["sender"] == user_id:
+                        this_rooms_users_msgs[j] = out
+                        j+=1
+                i+=1
+            return list(this_rooms_users_msgs.values())
+
         else:
-            abort(404, message="No room found with that ID")
+            abort(404, message="COULDN'T FIND ROOM OR USER")
 
     def post(
         self, room_id, user_id
