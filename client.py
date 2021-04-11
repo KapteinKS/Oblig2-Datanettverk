@@ -8,9 +8,9 @@ ID = -1
 
 
 def get_users():  # return users
-    response = requests.get(BASE + "users").json()
-    for i in response:
-        user = i
+    response = requests.get(BASE + "users", {"id": 1}).json()
+    print(response)
+    for user in response:
         print(user["name"])
 
     # TODO format output
