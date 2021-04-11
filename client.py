@@ -19,7 +19,7 @@ def get_users():  # return users
 def add_user(user_name):  # add user to db
     # TODO type validate string
     #text = input("Please create a username: ")
-    response = requests.put(BASE + "users", {"name": '"'+user_name+'"'})
+    response = requests.put(BASE + "users", {"name": user_name})
     print(response.json())
 
 

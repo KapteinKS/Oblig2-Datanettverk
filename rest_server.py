@@ -122,6 +122,7 @@ class Users(Resource):
             return list(users.values())
 
     def put(self):  # add user
+        print("adding user")
         id = len(users)
         name = request.form["name"]
         users[id] = {"id": id, "name": name}
