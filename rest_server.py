@@ -194,7 +194,6 @@ class RoomUsers(Resource):
             return get_room_users(out)
 
     def put(self, room_id):  # add user to room by room ID
-        # TODO check user is registered, add to room
         if room_id in rooms:
             user_id = int(request.form["id"])
             if user_id in users:
