@@ -82,14 +82,12 @@ def populate():
         "name": "General",
         "size": 32,
         "listOfUsers": [0, 1, 2],
-        "listOfMessages": getMessagesInRoom(0),
     }
     rooms[1] = {
         "id": 1,
         "name": "Memes",
         "size": 32,
         "listOfUsers": [1],
-        "listOfMessages": getMessagesInRoom(1),
     }
 
     addMessage("HELLO THIS IS A MESSAGE ADDED LATER", 1, 2)
@@ -152,7 +150,6 @@ class Rooms(Resource):
                 room = room_orig.copy()
                 room["numberOfUsers"] = len(room["listOfUsers"])
                 del room["listOfUsers"]
-                del room["listOfMessages"]
                 room_list.append(room)
             return room_list
 
@@ -164,7 +161,6 @@ class Rooms(Resource):
             "name": name,
             "size": 32,
             "listOfUsers": [],
-            "listOfMessages": [],
         }
         return "OK", 201
 
@@ -177,7 +173,7 @@ class Room(Resource):
             # Get full user dicitonaries, or empty list if empty
             room["listOfUsers"] = get_room_users(room) if len(room["listOfUsers"]) > 0 else []
             # Get messages as list, or empty list if emtpy
-            room["listOfMessages"] = list(room["listOfMessages"].values()) if len(room["listOfMessages"]) > 0 else []
+            room["listOfMessages"] = getMessagesInRoom(room_id)
             return room
         else:
             abort(404, message="No room found with that ID")
