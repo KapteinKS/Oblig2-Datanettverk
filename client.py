@@ -1,6 +1,6 @@
 import requests
 import threading
-# TODO not everything anymore
+# TODO still quite a bit
 BASE = "http://127.0.0.1:5000/api/"
 
 
