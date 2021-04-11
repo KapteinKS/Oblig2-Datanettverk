@@ -176,15 +176,11 @@ class Room(Resource):
     def get(self, room_id):  # get room by room ID
         if room_id in rooms:
             room = rooms[room_id].copy()
-            if len(room["listOfUsers"]) > 0:
-                room["listOfUsers"] = get_room_users(room)
-            else: 
-                room["listOfUsers"] = []
-            
-            if len(room["listOfMessages"]) > 0:
-                room["listOfMessages"] = getMessagesInRoom(room_id)
-            else: 
-                room["listOfMessages"] = []
+
+            # Get full user dicitonaries, or empty list if empty
+            room["listOfUsers"] = get_room_users(room) if len(room["listOfUsers"]) > 0 else []
+            # Get messages as list, or empty list if emtpy
+            room["listOfMessages"] = list(room["listOfMessages"].values()) if len(room["listOfMessages"]) > 0 else []
             return room
         else:
             abort(404, message="No room found with that ID")
