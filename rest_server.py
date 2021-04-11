@@ -147,7 +147,6 @@ class User(Resource):
 
 class Rooms(Resource):
     def get(self):  # get all rooms
-        # TODO get rooms from list and return in JSON format
         if len(rooms) == 0:
             return []
         else:
@@ -193,10 +192,14 @@ class Room(Resource):
 
 class RoomUsers(Resource):
     def get(self, room_id):  # get all user in a room by room ID
-        # TODO get users from list, return JSON
         if room_id in rooms:
             out = json.loads(json.dumps(rooms[room_id]))
-            return get_room_users(out)
+            if len(get_room_users(out)) > 0:
+                return get_room_users(out)
+            else:
+                return "No users added yet"
+        else:
+            abort(404, message="Room not found")
 
     def put(self, room_id):  # add user to room by room ID
         if room_id in rooms:
@@ -251,13 +254,12 @@ class RoomUserMessages(Resource):
     def post(
         self, room_id, user_id
     ):  # add message from user in room by room ID and user ID
-        # TODO check user exists, add new message (str)
         if room_id in rooms:
             room = rooms[room_id]
             if user_id in room["listOfUsers"]:
                 message = request.form["message"]
                 addMessage(message, room_id, user_id)
-                return message, 201
+                return "OK", 201
             else:
                 abort(404, message="That user is not registered to this room")
         else:
