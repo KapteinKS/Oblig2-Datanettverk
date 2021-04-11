@@ -1,36 +1,42 @@
 import requests
 import threading
+import json
 # TODO not everything anymore
 BASE = "http://127.0.0.1:5000/api/"
-
+ID = -1
 
 # Users
 
+
 def get_users():  # return users
-    response = requests.get(BASE + "users")
-    print(response.json())
+    response = requests.get(BASE + "users").json()
+    for i in response:
+        user = i
+        print(user["name"])
+
     # TODO format output
 
 
-def add_user():  # add user to db
+def add_user(user_name):  # add user to db
     # TODO type validate string
-    text = input("Please create a username: ")
-    response = requests.put(BASE + "users", {"name": '"'+text+'"'})
+    #text = input("Please create a username: ")
+    response = requests.put(BASE + "users", {"name": '"'+user_name+'"'})
     print(response.json())
 
 
 def get_user(user_id):
     if type(int(user_id)) == int:
         response = requests.get(BASE + "user/" + user_id)
-        print(response)
+        print(response.json())
     else:
         print("Please use a number")
 
 
 def delete_user(user_id):
     if type(int(user_id)) == int:
+        # TODO Make the server give their client their ID upon registration
         response = requests.post(BASE + "user/" + user_id, {"id": 1})
-        # print(response.json())
+        print(response.json())
     else:
         print("Please enter an ID.")
 
@@ -79,16 +85,30 @@ def start():
     while(True):
         raw = input()
         text = raw.split(" ")
-        print(text)
+        # print(text)
         # Raw is command only, text[] is command + args
-        if raw == "/users":
-            get_users()
-        elif raw == "/register":
-            add_user()
-        elif text[0] == "/user":
-            get_user(text[1])
-        elif text[0] == "/delete":
-            delete_user(text[1])
+        # TODO Handle index out of bounds
+        if raw.startswith("/"):
+            if raw == "/help":
+                # Print out a help page for all the commands
+                pass
+            elif raw == "/users":
+                get_users()
+            elif text[0] == "/register":
+                try:
+                    add_user(text[1])
+                except:
+                    print("Please enter a name to register when typing the command")
+            elif text[0] == "/user":
+                try:
+                    get_user(text[1])
+                except:
+                    print("Please enter a user to get when typing the command")
+            elif text[0] == "/delete":
+                try:
+                    delete_user(text[1])
+                except:
+                    "Please enter a user to delete when typing the command"
 
 
 startthread = threading.Thread(target=start)

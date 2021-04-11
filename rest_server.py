@@ -133,7 +133,7 @@ class User(Resource):
         else:
             abort(404, message="No user found with that ID")
 
-    # had to hack this method and use post instead of delete as delete would not accept a JSON element 
+    # had to hack this method and use post instead of delete as delete would not accept a JSON element
     def post(self, user_id):
         args = user_delete_args.parse_args()
         if user_id not in users:
@@ -142,7 +142,7 @@ class User(Resource):
             abort(403, message="You do not have permission to delete another user")
 
         del users[user_id]
-        return "OK", 204
+        return "User deleted", 201
 
 
 class Rooms(Resource):
@@ -234,15 +234,15 @@ class RoomUserMessages(Resource):
         if room_id in rooms and user_id in users:
 
             this_rooms_users_msgs = {}
-            i=0
-            j=0
+            i = 0
+            j = 0
             while i < len(messages):
                 out = json.loads(json.dumps(messages[i]))
                 if out["room"] == room_id:
                     if out["sender"] == user_id:
                         this_rooms_users_msgs[j] = out
-                        j+=1
-                i+=1
+                        j += 1
+                i += 1
             return list(this_rooms_users_msgs.values())
 
         else:
