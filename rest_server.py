@@ -217,18 +217,11 @@ class RoomUserMessages(Resource):
         self, room_id, user_id
     ):  # get all messages sent in room by user by room ID and user ID
         if room_id in rooms and user_id in users:
-
-            this_rooms_users_msgs = {}
-            i=0
-            j=0
-            while i < len(messages):
-                out = json.loads(json.dumps(messages[i]))
-                if out["room"] == room_id:
-                    if out["sender"] == user_id:
-                        this_rooms_users_msgs[j] = out
-                        j+=1
-                i+=1
-            return list(this_rooms_users_msgs.values())
+            room_messages = getMessagesInRoom(room_id)
+            this_rooms_users_msgs = filter(
+                lambda message: message["sender"] == user_id, room_messages
+            )
+            return list(this_rooms_users_msgs)
 
         else:
             abort(404, message="COULDN'T FIND ROOM OR USER")
