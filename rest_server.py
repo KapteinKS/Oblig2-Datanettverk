@@ -255,7 +255,7 @@ class RoomUserMessages(Resource):
                 return list(this_rooms_users_msgs)
     
             else:
-                abort(404, message="COULDN'T FIND ROOM OR USER")
+                abort(404, message="Couldn't find room or user")
 
     def post(self, room_id, user_id):  # add message from user in room by room ID and user ID
         if request.form["id"] is None:
