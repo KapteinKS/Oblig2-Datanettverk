@@ -12,14 +12,15 @@ users = {}
 rooms = {}
 messages = {}
 
+
 def getMessagesInRoom(room_id):
     this_rooms_msgs = {}
-    i=0
+    i = 0
     while i < len(messages):
         out = json.loads(json.dumps(messages[i]))
         if out["room"] == room_id:
             this_rooms_msgs[len(this_rooms_msgs)] = out
-        i+=1
+        i += 1
     return this_rooms_msgs
 
 
@@ -31,12 +32,12 @@ def addMessage(self, room_id, user_id):
         "content": str(self),
     }
 
+
 def populate():
 
     users[0] = {
         "id": 0,
-        "name":
-        "Joe",
+        "name": "Joe",
     }
     users[1] = {
         "id": 1,
@@ -44,8 +45,7 @@ def populate():
     }
     users[2] = {
         "id": 2,
-        "name":
-        "Elvira",
+        "name": "Elvira",
     }
 
     messages[0] = {
@@ -94,10 +94,9 @@ def populate():
         "listOfMessages": getMessagesInRoom(1),
     }
 
-    addMessage("HELLO THIS IS A MESSAGE ADDED LATER",1,2)
-    addMessage("HELLO THIS IS A NEW MESSAGE ADDED LATER",0,2)
+    addMessage("HELLO THIS IS A MESSAGE ADDED LATER", 1, 2)
+    addMessage("HELLO THIS IS A NEW MESSAGE ADDED LATER", 0, 2)
     ## These two won't be added to getMessagesInRoom(x)!!
-
 
 
 populate()
@@ -205,12 +204,12 @@ class Messages(Resource):
         if room_id in rooms:
 
             this_rooms_msgs = {}
-            i=0
+            i = 0
             while i < len(messages):
                 out = json.loads(json.dumps(messages[i]))
                 if out["room"] == room_id:
                     this_rooms_msgs[len(this_rooms_msgs)] = out
-                i+=1
+                i += 1
             return list(this_rooms_msgs.values())
 
         else:
