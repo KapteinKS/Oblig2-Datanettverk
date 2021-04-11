@@ -272,7 +272,7 @@ class RoomUserMessages(Resource):
                     add_message(message, room_id, user_id)
                     return "OK", 201
                 else:
-                    abort(404, message="That user is not registered to this room")
+                    abort(404, message="User error, replace user and try again")
             else:
                 abort(404, message="No room found with that ID")
 
