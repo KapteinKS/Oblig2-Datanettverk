@@ -82,14 +82,12 @@ def populate():
         "name": "General",
         "size": 32,
         "listOfUsers": [0, 1, 2],
-        "listOfMessages": getMessagesInRoom(0),
     }
     rooms[1] = {
         "id": 1,
         "name": "Memes",
         "size": 32,
         "listOfUsers": [1],
-        "listOfMessages": getMessagesInRoom(1),
     }
 
     addMessage("HELLO THIS IS A MESSAGE ADDED LATER", 1, 2)
@@ -182,6 +180,7 @@ class Rooms(Resource):
                 "listOfMessages": [],
             }
             return "OK", 201
+
 
 
 class Room(Resource):
