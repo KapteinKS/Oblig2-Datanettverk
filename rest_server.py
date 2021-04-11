@@ -207,6 +207,7 @@ class RoomUsers(Resource):
                 room = rooms[room_id]
                 room["listOfUsers"].append(user_id)
                 return "OK", 201
+            abort(404, message="No user found with that ID")
         else:
             abort(404, message="No room found with that ID")
 
