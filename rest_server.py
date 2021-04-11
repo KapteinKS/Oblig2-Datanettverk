@@ -175,7 +175,6 @@ class Rooms(Resource):
 
 class Room(Resource):
     def get(self, room_id):  # get room by room ID
-        # TODO get from list and return in JSON format
         if room_id in rooms:
             room = rooms[room_id].copy()
 
@@ -250,7 +249,13 @@ class RoomUserMessages(Resource):
     ):  # add message from user in room by room ID and user ID
         # TODO check user exists, add new message (str)
         if room_id in rooms:
-            return "", 201
+            room = rooms[room_id]
+            if user_id in room["listOfUsers"]:
+                message = request.form["message"]
+                addMessage(message, room_id, user_id)
+                return message, 201
+            else:
+                abort(404, message="That user is not registered to this room")
         else:
             abort(404, message="No room found with that ID")
 
