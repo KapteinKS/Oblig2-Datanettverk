@@ -117,7 +117,6 @@ class Users(Resource):
         if request.args.get("id") is None or not user_exist(int(request.args.get("id"))):
             abort(403, message="You must be logged in as a registered user to use this function")
         else:
-            print("Logged in")
             if len(users) == 0:
                 return []
             return list(users.values())
