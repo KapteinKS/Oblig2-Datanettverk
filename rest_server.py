@@ -13,7 +13,7 @@ rooms = {}
 messages = {}
 
 
-def getMessagesInRoom(room_id):
+def get_messages_in_room(room_id):
     room_messages = (
         filter(lambda message: message["room"] == room_id, messages.values())
         if len(messages) > 0
@@ -22,7 +22,7 @@ def getMessagesInRoom(room_id):
     return list(room_messages)
 
 
-def addMessage(self, room_id, user_id):
+def add_message(self, room_id, user_id):
     messages[len(messages)] = {
         "id": len(messages),
         "room": room_id,
@@ -90,8 +90,8 @@ def populate():
         "listOfUsers": [1],
     }
 
-    addMessage("HELLO THIS IS A MESSAGE ADDED LATER", 1, 2)
-    addMessage("HELLO THIS IS A NEW MESSAGE ADDED LATER", 0, 2)
+    add_message("HELLO THIS IS A MESSAGE ADDED LATER", 1, 2)
+    add_message("HELLO THIS IS A NEW MESSAGE ADDED LATER", 0, 2)
 
 
 populate()
@@ -173,7 +173,7 @@ class Room(Resource):
             # Get full user dicitonaries, or empty list if empty
             room["listOfUsers"] = get_room_users(room) if len(room["listOfUsers"]) > 0 else []
             # Get messages as list, or empty list if emtpy
-            room["listOfMessages"] = getMessagesInRoom(room_id)
+            room["listOfMessages"] = get_messages_in_room(room_id)
             return room
         else:
             abort(404, message="No room found with that ID")
@@ -205,7 +205,7 @@ class RoomUsers(Resource):
 class Messages(Resource):
     def get(self, room_id):  # get all messages in room by room ID
         if room_id in rooms:
-            return getMessagesInRoom(room_id)
+            return get_messages_in_room(room_id)
 
         else:
             abort(404, message="No room found with that ID")
@@ -216,7 +216,7 @@ class RoomUserMessages(Resource):
         self, room_id, user_id
     ):  # get all messages sent in room by user by room ID and user ID
         if room_id in rooms and user_id in users:
-            room_messages = getMessagesInRoom(room_id)
+            room_messages = get_messages_in_room(room_id)
             this_rooms_users_msgs = filter(
                 lambda message: message["sender"] == user_id, room_messages
             )
@@ -232,7 +232,7 @@ class RoomUserMessages(Resource):
             room = rooms[room_id]
             if user_id in room["listOfUsers"]:
                 message = request.form["message"]
-                addMessage(message, room_id, user_id)
+                add_message(message, room_id, user_id)
                 return "OK", 201
             else:
                 abort(404, message="That user is not registered to this room")
