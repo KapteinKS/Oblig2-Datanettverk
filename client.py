@@ -5,8 +5,7 @@ BASE = "http://127.0.0.1:5000/api/"
 global ID
 ID = -1
 
-# Users
-
+## USERS #######################################################################
 
 def connect(user_id):
     global ID
@@ -44,61 +43,61 @@ def delete_user(user_id):
     else:
         print("Please enter an ID.")
 
-# Rooms
+## ROOMS #######################################################################
 
-
+# TODO: this
 def get_rooms():
     pass
 
-
+# TODO: this
 def add_room():
     pass
 
 
+# TODO: this
 def get_room(room_id):
     pass
 
-# RoomUsers
+## ROOM USERS ##################################################################
 
-
+# TODO: this
 def get_room_users():
     pass
 
 
+# TODO: this
 def add_room_user(room_id):
     pass
 
-# Messages
+## MESSAGES ####################################################################
 
-
+# TODO: this
 def get_messages(room_id):
     pass
 
 
+# TODO: this
 def get_user_messages(room_id, user_id):
     pass
 
 
+# TODO: this
 def post_message(room_id, user_id):
     pass
 
-# Start
 
-
+# TODO: this
 def receiveThread():
+    # TODO: Receiving messages and prompts from server.
     pass
 
+## STARTUP #####################################################################
 
 
 def sendThread():
-    print("###### Client start #######")
     while(True):
-        # TODO: Rcv, live updates from server; other users
-        # Send retort
-        raw = input(":")  # Breaking, can't rcv???
-
+        raw = input(":")
         text = raw.split(" ")
-        # print(text)
         # Raw is command only, text[] is command + args
         # TODO Handle index out of bounds
         if raw.startswith("/"):
@@ -138,10 +137,10 @@ def sendThread():
 
 
 def start():
-    send = threading.Thread(target=sendThread)
+    print("###### Client start #######")
     recieve = threading.Thread(target=receiveThread)
-    send.start()
+    send = threading.Thread(target=sendThread)
     recieve.start()
-
+    send.start()
 
 start()
