@@ -155,7 +155,8 @@ class User(Resource):
 
         del users[user_id]
         return "User deleted", 201
-
+    
+    
 class Rooms(Resource):
     def get(self):  # get all rooms
         if request.args.get("id") is None or not user_exist(int(request.args.get("id"))):
