@@ -81,8 +81,12 @@ def post_message(room_id, user_id):
 
 
 def start():
+    print("###### Client start #######")
     while(True):
-        raw = input()
+        ## TODO: Rcv, live updates from server; other users
+        ## Send retort
+        raw = input(":") # Breaking, can't rcv???
+
         text = raw.split(" ")
         # print(text)
         # Raw is command only, text[] is command + args
@@ -108,7 +112,5 @@ def start():
                     delete_user(text[1])
                 except:
                     "Please enter a user to delete when typing the command"
-
-
 startthread = threading.Thread(target=start)
 startthread.start()
