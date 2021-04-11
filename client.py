@@ -5,15 +5,18 @@ BASE = "http://127.0.0.1:5000/api/"
 global ID
 ID = -1
 
-HELP = """/users gives a list of users
+HELP_CONNECTED = """/users gives a list of users
 /user <id> gives the user"""
+HELP_NOT_CONNECTED = """
+"""
 ## USERS #######################################################################
+
 
 def connect(user_id):
     global ID
     ID = user_id
-    
-    
+
+
 def get_users():  # return users
     response = requests.get(BASE + "users", {"id": 1}).json()
     for user in response:
@@ -48,10 +51,14 @@ def delete_user(user_id):
 ## ROOMS #######################################################################
 
 # TODO: this
+
+
 def get_rooms():
     pass
 
 # TODO: this
+
+
 def add_room():
     pass
 
@@ -63,6 +70,8 @@ def get_room(room_id):
 ## ROOM USERS ##################################################################
 
 # TODO: this
+
+
 def get_room_users():
     pass
 
@@ -74,6 +83,8 @@ def add_room_user(room_id):
 ## MESSAGES ####################################################################
 
 # TODO: this
+
+
 def get_messages(room_id):
     pass
 
@@ -106,10 +117,11 @@ def sendThread():
             if ID >= 0:
                 if raw == "/help":
                     # Print out a help page for all the commands
+                    print(HELP_CONNECTED)
                     pass
                 elif raw == "/users":
                     get_users()
-                
+
                 elif text[0] == "/user":
                     try:
                         get_user(text[1])
@@ -138,7 +150,8 @@ def sendThread():
                     message = " ".join(text[2:])
                     post_message(text[1], ID, message)
                 else:
-                    print("Input was not recognised as a command, type /help for a list of commands")
+                    print(
+                        "Input was not recognised as a command, type /help for a list of commands")
             elif text[0] == "/connect":
                 try:
                     user_id = int(text[1])
@@ -152,10 +165,11 @@ def sendThread():
                     print("Please enter a name to register when typing the command")
             elif raw == "/help":
                 # Print out a help page for all the commands
-                print(HELP)
+                print(HELP_NOT_CONNECTED)
                 pass
             else:
-                print("When not connected you can only use the /help, /register or /connect commands")
+                print(
+                    "When not connected you can only use the /help, /register or /connect commands")
 
 
 def start():
@@ -164,5 +178,6 @@ def start():
     send = threading.Thread(target=sendThread)
     recieve.start()
     send.start()
+
 
 start()
