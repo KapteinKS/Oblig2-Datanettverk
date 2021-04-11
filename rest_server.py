@@ -153,8 +153,9 @@ class Rooms(Resource):
             room_list = []
             for room_orig in rooms.values():
                 room = room_orig.copy()
-                room["listOfUsers"] = get_room_users(room)
-                room["listOfMessages"] = list(room["listOfMessages"].values())
+                room["numberOfUsers"] = len(room["listOfUsers"])
+                del room["listOfUsers"]
+                del room["listOfMessages"]
                 room_list.append(room)
             return room_list
 
