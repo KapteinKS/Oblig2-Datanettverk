@@ -236,11 +236,7 @@ class Messages(Resource):
             abort(403, message="You must be logged in as a registered user to use this function")
         else:
             if room_id in rooms:
-                room_messages = get_messages_in_room(room_id)
-                this_rooms_users_msgs = filter(
-                    lambda message: message["sender"] == user_id, room_messages
-                )
-                return list(this_rooms_users_msgs)
+                return get_messages_in_room(room_id)
     
             else:
                 abort(404, message="No room found with that ID")
