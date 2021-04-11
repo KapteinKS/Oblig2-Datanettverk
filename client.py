@@ -2,7 +2,6 @@ import requests
 import threading
 # TODO still quite a bit
 BASE = "http://127.0.0.1:5000/api/"
-global ID
 ID = -1
 
 HELP_CONNECTED = """/users gives a list of users
@@ -44,9 +43,9 @@ def delete_user(user_id):
     if type(int(user_id)) == int:
         response = requests.post(BASE + "user/" + str(user_id), {"id": ID})
         print(response.json())
-        if response.json() == "User Deleted":
-            global ID 
-            ID = -1
+        if response.json() == "User deleted":
+            list_of_globals = globals()
+            list_of_globals['ID'] = -1
             print("You have now been logged out after deleting your user")
     else:
         print("Please enter an ID.")
