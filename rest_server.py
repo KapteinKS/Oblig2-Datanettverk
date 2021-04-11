@@ -133,6 +133,7 @@ class User(Resource):
         else:
             abort(404, message="No user found with that ID")
 
+    # had to hack this method and use post instead of delete as delete would not accept a JSON element 
     def post(self, user_id):
         args = user_delete_args.parse_args()
         if user_id not in users:
