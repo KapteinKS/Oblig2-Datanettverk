@@ -43,8 +43,12 @@ def get_user(user_id):
 def delete_user(user_id):
     if type(int(user_id)) == int:
         # TODO Make the server give their client their ID upon registration
-        response = requests.post(BASE + "user/" + user_id, {"id": 1})
+        response = requests.post(BASE + "user/" + str(user_id), {"id": ID})
         print(response.json())
+        if response.json() == "User Deleted":
+            global ID 
+            ID = -1
+            print("You have now been logged out after deleting your user")
     else:
         print("Please enter an ID.")
 
