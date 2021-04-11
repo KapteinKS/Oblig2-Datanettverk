@@ -221,7 +221,6 @@ class RoomUserMessages(Resource):
     def get(
         self, room_id, user_id
     ):  # get all messages sent in room by user by room ID and user ID
-        # TODO check user exists, get messages from list, return JSON
         if room_id in rooms and user_id in users:
 
             this_rooms_users_msgs = {}
