@@ -9,3 +9,7 @@ print(response.json())
 # 
 # response = requests.post(BASE + "user/1", {"id": 2})
 # print(response)
+input()
+requests.put(BASE + "rooms", {"name": "sexting"})
+response = requests.put(BASE + "room/2/users", {"id": 1})
+print(response.json())
