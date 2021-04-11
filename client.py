@@ -22,13 +22,17 @@ def add_user():  # add user to db
 def get_user(user_id):
     if type(int(user_id)) == int:
         response = requests.get(BASE + "user/" + user_id)
-        print(response.json())
+        print(response)
     else:
         print("Please use a number")
 
 
 def delete_user(user_id):
-    pass
+    if type(int(user_id)) == int:
+        response = requests.post(BASE + "user/" + user_id, {"id": 1})
+        # print(response.json())
+    else:
+        print("Please enter an ID.")
 
 # Rooms
 
@@ -75,14 +79,16 @@ def start():
     while(True):
         raw = input()
         text = raw.split(" ")
-
-        # Raw is command only, text[] is for command + args
+        print(text)
+        # Raw is command only, text[] is command + args
         if raw == "/users":
             get_users()
         elif raw == "/register":
             add_user()
         elif text[0] == "/user":
             get_user(text[1])
+        elif text[0] == "/delete":
+            delete_user(text[1])
 
 
 startthread = threading.Thread(target=start)

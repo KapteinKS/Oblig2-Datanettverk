@@ -96,13 +96,14 @@ def populate():
 
     addMessage("HELLO THIS IS A MESSAGE ADDED LATER", 1, 2)
     addMessage("HELLO THIS IS A NEW MESSAGE ADDED LATER", 0, 2)
-    ## These two won't be added to getMessagesInRoom(x)!!
+    # These two won't be added to getMessagesInRoom(x)!!
 
 
 populate()
 
 user_delete_args = reqparse.RequestParser()
-user_delete_args.add_argument("id", type=int, help="ID of current user", required=True)
+user_delete_args.add_argument(
+    "id", type=int, help="ID of current user", required=True)
 
 
 def get_room_users(room_orig):
@@ -141,7 +142,7 @@ class User(Resource):
             abort(403, message="You do not have permission to delete another user")
 
         del users[user_id]
-        return "", 204
+        return "OK", 204
 
 
 class Rooms(Resource):
