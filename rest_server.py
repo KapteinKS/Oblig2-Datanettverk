@@ -96,9 +96,8 @@ def populate():
 
 populate()
 
-user_delete_args = reqparse.RequestParser()
-user_delete_args.add_argument(
-    "id", type=int, help="ID of current user", required=True)
+# user_delete_args = reqparse.RequestParser()
+# user_delete_args.add_argument("id", type=int, help="ID of current user", required=True)
 
 
 def get_room_users(room_orig):
@@ -141,17 +140,14 @@ class User(Resource):
 
     # had to hack this method and use post instead of delete as delete would not accept a JSON element
     def post(self, user_id):
-        args = user_delete_args.parse_args()
-        if request.args.get("id") is None or not user_exist(int(request.args.get("id"))):
+        # args = user_delete_args.parse_args()
+        if request.form["id"] is None or not user_exist(int(request.form["id"])):
             abort(403, message="You must be logged in as a registered user to use this function")
         else:
             if user_id not in users:
                 abort(404, message="No user found with that ID")
-            if user_id != args["id"]:
+            elif int(user_id) != int(request.form["id"]):
                 abort(403, message="You do not have permission to delete another user")
-    
-            del users[user_id]
-            return "OK", 204
 
         del users[user_id]
         return "User deleted", 201

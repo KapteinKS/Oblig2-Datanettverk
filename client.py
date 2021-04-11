@@ -38,8 +38,12 @@ def get_user(user_id):
 def delete_user(user_id):
     if type(int(user_id)) == int:
         # TODO Make the server give their client their ID upon registration
-        response = requests.post(BASE + "user/" + user_id, {"id": 1})
+        response = requests.post(BASE + "user/" + str(user_id), {"id": ID})
         print(response.json())
+        if response.json() == "User Deleted":
+            global ID 
+            ID = -1
+            print("You have now been logged out after deleting your user")
     else:
         print("Please enter an ID.")
 
@@ -150,6 +154,8 @@ def sendThread():
                     print("Please enter a name to register when typing the command")
             elif raw == "/help":
                 # Print out a help page for all the commands
+                print("Available commands:"
+                      "/register [USERNAME], register as a new user")
                 pass
             else:
                 print("When not connected you can only use the /help, /register or /connect commands")
