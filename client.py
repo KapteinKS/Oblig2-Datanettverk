@@ -9,7 +9,7 @@ HELP_CONNECTED = """/users gives a list of users
 /user <id> gives the user"""
 HELP_NOT_CONNECTED = """
 """
-## USERS #######################################################################
+# USERS #######################################################################
 
 
 def connect(user_id):
