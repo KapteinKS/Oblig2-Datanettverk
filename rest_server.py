@@ -155,7 +155,6 @@ class Rooms(Resource):
                 room = room_orig.copy()
                 room["listOfUsers"] = get_room_users(room)
                 room_list.append(room)
-                return room
             return room_list
 
     def put(self):  # add new room
