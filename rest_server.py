@@ -133,6 +133,7 @@ class User(Resource):
         else:
             abort(404, message="No user found with that ID")
 
+    # had to hack this method and use post instead of delete as delete would not accept a JSON element 
     def post(self, user_id):
         args = user_delete_args.parse_args()
         if user_id not in users:
@@ -154,8 +155,8 @@ class Rooms(Resource):
             for room_orig in rooms.values():
                 room = room_orig.copy()
                 room["listOfUsers"] = get_room_users(room)
+                room["listOfMessages"] = list(room["listOfMessages"].values())
                 room_list.append(room)
-                return room
             return room_list
 
     def put(self):  # add new room
@@ -178,6 +179,7 @@ class Room(Resource):
         if room_id in rooms:
             room = rooms[room_id].copy()
             room["listOfUsers"] = get_room_users(room)
+            room["listOfMessages"] = list(room["listOfMessages"].values())
             return room
         else:
             abort(404, message="No room found with that ID")
