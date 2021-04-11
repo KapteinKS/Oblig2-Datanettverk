@@ -178,8 +178,15 @@ class Room(Resource):
         # TODO get from list and return in JSON format
         if room_id in rooms:
             room = rooms[room_id].copy()
-            room["listOfUsers"] = get_room_users(room)
-            room["listOfMessages"] = list(room["listOfMessages"].values())
+            if(len(room["listOfUsers"]) > 0):
+                room["listOfUsers"] = get_room_users(room)
+            else: 
+                room["listOfUsers"] = []
+            
+            if(len(room["listOfMessages"]) > 0):
+                room["listOfMessages"] = list(room["listOfMessages"].values())
+            else: 
+                room["listOfMessages"] = []
             return room
         else:
             abort(404, message="No room found with that ID")
