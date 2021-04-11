@@ -65,7 +65,6 @@ def add_room_user(room_id):
 
 ## MESSAGES ####################################################################
 
-
 # TODO: this
 def get_messages(room_id):
     pass
