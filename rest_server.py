@@ -14,14 +14,12 @@ messages = {}
 
 
 def getMessagesInRoom(room_id):
-    this_rooms_msgs = {}
-    i = 0
-    while i < len(messages):
-        out = json.loads(json.dumps(messages[i]))
-        if out["room"] == room_id:
-            this_rooms_msgs[len(this_rooms_msgs)] = out
-        i += 1
-    return this_rooms_msgs
+    room_messages = (
+        filter(lambda message: message["room"] == room_id, messages.values())
+        if len(messages) > 0
+        else []
+    )
+    return list(room_messages)
 
 
 def addMessage(self, room_id, user_id):
@@ -96,7 +94,6 @@ def populate():
 
     addMessage("HELLO THIS IS A MESSAGE ADDED LATER", 1, 2)
     addMessage("HELLO THIS IS A NEW MESSAGE ADDED LATER", 0, 2)
-    # These two won't be added to getMessagesInRoom(x)!!
 
 
 populate()
@@ -209,15 +206,7 @@ class RoomUsers(Resource):
 class Messages(Resource):
     def get(self, room_id):  # get all messages in room by room ID
         if room_id in rooms:
-
-            this_rooms_msgs = {}
-            i = 0
-            while i < len(messages):
-                out = json.loads(json.dumps(messages[i]))
-                if out["room"] == room_id:
-                    this_rooms_msgs[len(this_rooms_msgs)] = out
-                i += 1
-            return list(this_rooms_msgs.values())
+            return getMessagesInRoom(room_id)
 
         else:
             abort(404, message="No room found with that ID")
