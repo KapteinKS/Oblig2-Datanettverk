@@ -110,7 +110,6 @@ def send_thread():
         raw = input(":")
         text = raw.split(" ")
         # Raw is command only, text[] is command + args
-        # TODO Handle index out of bounds
         if raw.startswith("/"):
             if ID >= 0:
                 if raw == "/help":
