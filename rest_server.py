@@ -265,7 +265,7 @@ class RoomUserMessages(Resource):
                 room = rooms[room_id]
                 if user_id in room["listOfUsers"]:
                     message = request.form["message"]
-                    addMessage(message, room_id, user_id)
+                    add_message(message, room_id, user_id)
                     return "OK", 201
                 else:
                     abort(404, message="That user is not registered to this room")
