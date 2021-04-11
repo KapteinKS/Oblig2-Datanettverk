@@ -5,6 +5,8 @@ BASE = "http://127.0.0.1:5000/api/"
 global ID
 ID = -1
 
+HELP = """/users gives a list of users
+/user <id> gives the user"""
 ## USERS #######################################################################
 
 def connect(user_id):
@@ -154,8 +156,8 @@ def sendThread():
                     print("Please enter a name to register when typing the command")
             elif raw == "/help":
                 # Print out a help page for all the commands
-                print("Available commands:"
-                      "/register [USERNAME], register as a new user")
+
+                print(HELP)
                 pass
             else:
                 print("When not connected you can only use the /help, /register or /connect commands")
