@@ -220,10 +220,22 @@ class RoomUserMessages(Resource):
         self, room_id, user_id
     ):  # get all messages sent in room by user by room ID and user ID
         # TODO check user exists, get messages from list, return JSON
-        if room_id in rooms:
-            return rooms[room_id].user[user_id].messages
+        if room_id in rooms and user_id in users:
+
+            this_rooms_users_msgs = {}
+            i=0
+            j=0
+            while i < len(messages):
+                out = json.loads(json.dumps(messages[i]))
+                if out["room"] == room_id:
+                    if out["sender"] == user_id:
+                        this_rooms_users_msgs[j] = out
+                        j+=1
+                i+=1
+            return list(this_rooms_users_msgs.values())
+
         else:
-            abort(404, message="No room found with that ID")
+            abort(404, message="COULDN'T FIND ROOM OR USER")
 
     def post(
         self, room_id, user_id
