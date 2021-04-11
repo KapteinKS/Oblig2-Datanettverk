@@ -133,9 +133,8 @@ def sendThread():
                 elif text[0] == "/get_user_messages":
                     get_user_messages(text[1], text[2])
                 elif text[0] == "/post_message":
-                    message = " ".join(text[3: -1])
-                    print(message)
-                    post_message(text[1], text[2], message)
+                    message = " ".join(text[2:])
+                    post_message(text[1], ID, message)
                 else:
                     print("Input was not recognised as a command, type /help for a list of commands")
             elif text[0] == "/connect":
