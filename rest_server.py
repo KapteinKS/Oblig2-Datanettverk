@@ -151,7 +151,7 @@ class User(Resource):
                 abort(403, message="You do not have permission to delete another user")
     
             del users[user_id]
-            return "OK", 204
+            return "OK", 201
 
         del users[user_id]
         return "User deleted", 201
