@@ -177,12 +177,12 @@ class Room(Resource):
     def get(self, room_id):  # get room by room ID
         if room_id in rooms:
             room = rooms[room_id].copy()
-            if(len(room["listOfUsers"]) > 0):
+            if len(room["listOfUsers"]) > 0:
                 room["listOfUsers"] = get_room_users(room)
             else: 
                 room["listOfUsers"] = []
             
-            if(len(room["listOfMessages"]) > 0):
+            if len(room["listOfMessages"]) > 0:
                 room["listOfMessages"] = getMessagesInRoom(room_id)
             else: 
                 room["listOfMessages"] = []
