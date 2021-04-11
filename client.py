@@ -54,15 +54,11 @@ def delete_user(user_id):
 
 
 # TODO: this
-
-
 def get_rooms():
     pass
 
 
 # TODO: this
-
-
 def add_room():
     pass
 
@@ -75,8 +71,6 @@ def get_room(room_id):
 
 
 # TODO: this
-
-
 def get_room_users():
     pass
 
@@ -89,8 +83,6 @@ def add_room_user(room_id):
 
 
 # TODO: this
-
-
 def get_messages(room_id):
     pass
 
@@ -138,23 +130,38 @@ def send_thread():
                         delete_user(text[1])
                     except:
                         "Please enter a user to delete when typing the command"
-                elif text[0] == "/get_rooms":
+                elif raw == "/get_rooms":
                     get_rooms()
                 elif raw == "/add_room":
                     add_room()
                 elif text[0] == "/get_room":
-                    get_room(text[1])
+                    try:
+                        get_room(text[1])
+                    except:
+                        print("Please provide a room number when typing this command")
                 elif text[0] == "/get_room_users":
                     get_room_users()
                 elif text[0] == "/join_room":
-                    add_room_user(text[1])
+                    try:
+                        add_room_user(text[1])
+                    except:
+                        print("Please provide a room number when typing this command")
                 elif text[0] == "/get_messages":
-                    get_messages(text[1])
+                    try:
+                        get_messages(text[1])
+                    except:
+                        print("Please provide a room number to get messages from when typing this command")
                 elif text[0] == "/get_user_messages":
-                    get_user_messages(text[1], text[2])
+                    try:
+                        get_user_messages(text[1], text[2])
+                    except:
+                        print("Please provide a room number and user ID whn typing this command")
                 elif text[0] == "/post_message":
-                    message = " ".join(text[2:])
-                    post_message(text[1], ID, message)
+                    try:
+                        message = " ".join(text[2:])
+                        post_message(text[1], ID, message)
+                    except:
+                        print("Please provide a room number and a message when typing this command")
                 else:
                     print(
                         "Input was not recognised as a command, type /help for a list of commands")
