@@ -27,7 +27,7 @@ def get_users():  # return users
 
 def add_user(user_name):  # add user to db
     # TODO type validate string
-    #text = input("Please create a username: ")
+    # text = input("Please create a username: ")
     response = requests.put(BASE + "users", {"name": user_name})
     print(response.json())
 
@@ -42,7 +42,6 @@ def get_user(user_id):
 
 def delete_user(user_id):
     if type(int(user_id)) == int:
-        # TODO Make the server give their client their ID upon registration
         response = requests.post(BASE + "user/" + str(user_id), {"id": ID})
         print(response.json())
         if response.json() == "User Deleted":
@@ -52,13 +51,15 @@ def delete_user(user_id):
     else:
         print("Please enter an ID.")
 
-## ROOMS #######################################################################
+# ROOMS #######################################################################
+
 
 # TODO: this
 
 
 def get_rooms():
     pass
+
 
 # TODO: this
 
@@ -71,7 +72,8 @@ def add_room():
 def get_room(room_id):
     pass
 
-## ROOM USERS ##################################################################
+# ROOM USERS ##################################################################
+
 
 # TODO: this
 
@@ -84,7 +86,8 @@ def get_room_users():
 def add_room_user(room_id):
     pass
 
-## MESSAGES ####################################################################
+# MESSAGES ####################################################################
+
 
 # TODO: this
 
@@ -104,15 +107,15 @@ def post_message(room_id, user_id, message):
 
 
 # TODO: this
-def receiveThread():
+def receive_thread():
     # TODO: Receiving messages and prompts from server.
     pass
 
-## STARTUP #####################################################################
+# STARTUP #####################################################################
 
 
-def sendThread():
-    while(True):
+def send_thread():
+    while True:
         raw = input(":")
         text = raw.split(" ")
         # Raw is command only, text[] is command + args
@@ -178,9 +181,9 @@ def sendThread():
 
 def start():
     print("###### Client start #######")
-    recieve = threading.Thread(target=receiveThread)
-    send = threading.Thread(target=sendThread)
-    recieve.start()
+    receive = threading.Thread(target=receive_thread)
+    send = threading.Thread(target=send_thread)
+    receive.start()
     send.start()
 
 
