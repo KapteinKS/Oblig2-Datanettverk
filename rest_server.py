@@ -154,6 +154,7 @@ class Rooms(Resource):
             for room_orig in rooms.values():
                 room = room_orig.copy()
                 room["listOfUsers"] = get_room_users(room)
+                room["listOfMessages"] = list(room["listOfMessages"].values())
                 room_list.append(room)
             return room_list
 
@@ -177,6 +178,7 @@ class Room(Resource):
         if room_id in rooms:
             room = rooms[room_id].copy()
             room["listOfUsers"] = get_room_users(room)
+            room["listOfMessages"] = list(room["listOfMessages"].values())
             return room
         else:
             abort(404, message="No room found with that ID")
