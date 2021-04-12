@@ -160,6 +160,13 @@ def get_user_messages(room_id, user_id):
         format_messages(response.json())
 
 
+def get_message(message_id):
+    if type(int(room_id)) == int:
+        response = requests.get(
+            BASE + "message/" + message_id, {"id": ID})
+        print(response.json)
+
+
 def post_message(room_id, message):
     if type(int(room_id)) == int:
         user_id = ID
