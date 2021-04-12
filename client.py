@@ -1,6 +1,6 @@
 import requests
 import threading
-import re  # reeeeeeeeeeeeee
+import re  # reeeeeeeeeeeeeegex
 # TODO not too much now
 BASE = "http://127.0.0.1:5000/api/"
 ID = -1
