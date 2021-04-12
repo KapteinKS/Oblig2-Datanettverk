@@ -1,6 +1,8 @@
 from flask import Flask, request
 from flask_restful import Api, Resource, reqparse, abort
 import json
+import threading
+import socket
 
 app = Flask(__name__)
 api = Api(app)
@@ -131,6 +133,14 @@ def check_user_valid_form():
         return True
 
 
+class Login(Resource):
+    def get(self):
+        if check_user_valid_get():
+            return True
+        else:
+            return False
+
+
 class Users(Resource):
     def get(self):  # return users
         if check_user_valid_get():
@@ -139,7 +149,6 @@ class Users(Resource):
             return list(users.values())
 
     def put(self):  # add user
-        print("adding user")
         id = len(users)
         name = request.form["name"]
         users[id] = {"id": id, "name": name}
@@ -201,7 +210,8 @@ class Room(Resource):
                 room = rooms[room_id].copy()
 
                 # Get full user dicitonaries, or empty list if empty
-                room["listOfUsers"] = get_room_users(room) if len(room["listOfUsers"]) > 0 else []
+                room["listOfUsers"] = get_room_users(
+                    room) if len(room["listOfUsers"]) > 0 else []
                 # Get messages as list, or empty list if emtpy
                 room["listOfMessages"] = get_messages_in_room(room_id)
                 return room
@@ -273,13 +283,22 @@ class RoomUserMessages(Resource):
                 abort(404, message="No room found with that ID")
 
 
+api.add_resource(Login, "/api/login")
 api.add_resource(Users, "/api/users")
 api.add_resource(User, "/api/user/<int:user_id>")
 api.add_resource(Rooms, "/api/rooms")
 api.add_resource(Room, "/api/room/<int:room_id>")
 api.add_resource(RoomUsers, "/api/room/<int:room_id>/users")
 api.add_resource(Messages, "/api/room/<int:room_id>/messages")
-api.add_resource(RoomUserMessages, "/api/room/<int:room_id>/<int:user_id>/messages")
+api.add_resource(RoomUserMessages,
+                 "/api/room/<int:room_id>/<int:user_id>/messages")
+
+
+def push_notification():
+    pass
+
 
 if __name__ == "__main__":
     app.run(debug=True)
+push_thread = threading.Thread(target=push_notification)
+push_thread.start()

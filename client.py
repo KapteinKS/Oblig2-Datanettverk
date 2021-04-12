@@ -1,14 +1,16 @@
 import requests
 import threading
-import re  # reeeeeeeeeeeeee
-# TODO not too much now
+import time
+import re 
+import socket
+# TODO Not so much now
 BASE = "http://127.0.0.1:5000/api/"
 ID = -1
 
 HELP_CONNECTED = """
 | /users                                 gives a list of users.
 | /user <id>                             gives the user.
-| /delete <id>                           delets the user. You can only delete your own account.
+| /delete <id>                           deletes the user. You can only delete your own account.
 | /get_rooms                             gives a list of chatrooms.
 | /add_room <name>                       creates a new room.
 | /get_room <room_id>                    gives a room(???).
@@ -26,9 +28,12 @@ ALL_COMMANDS = ["/help", "/connect USER_ID", "/register NAME", "/users", "/user 
 
 
 def connect(user_id):
-    global ID
-    ID = user_id
-    print("Connection established.")
+    if requests.get(BASE + "login", {"id": user_id}):
+        global ID
+        ID = user_id
+        print("Connection established, welcome", get_name(user_id) + "!")
+    else:
+        print("No user found with that ID")
 
 
 def get_users():  # return users
@@ -40,6 +45,7 @@ def get_users():  # return users
 
 
 def add_user(user_name):  # add user to db
+    # Thank you StackOverflow <3
     if re.fullmatch('[A-Za-z]{2,25}( [A-Za-z]{2,25})?', user_name):
         response = requests.put(BASE + "users", {"name": user_name}).json()
         print(response)
@@ -149,7 +155,6 @@ def get_user_messages(room_id, user_id):
         response = requests.get(
             BASE + "room/" + room_id + "/" + user_id + "/messages", {"id": ID})
         format_messages(response.json())
-    pass
 
 
 def post_message(room_id, message):
@@ -167,6 +172,11 @@ def post_message(room_id, message):
 # TODO: this
 def receive_thread():
     # TODO: Receiving messages and prompts from server.
+    # push notification with message id
+    # get message from server
+    # show message
+    sock = socket.so
+
     pass
 
 # STARTUP #####################################################################
