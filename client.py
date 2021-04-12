@@ -52,20 +52,25 @@ def delete_user(user_id):
 
 # ROOMS #######################################################################
 
-
-# TODO: this
 def get_rooms():
-    pass
-
-
-# TODO: this
-def add_room():
-    pass
-
+    response = requests.get(BASE + "rooms", {"id": ID})
+    for room in response:
+        print(room)
+        # TODO: Formatting output
 
 # TODO: this
+def add_room(room_name):
+    response = requests.put(BASE + "rooms", {"name": room_name} )
+    print(response.json())
+
+
 def get_room(room_id):
-    pass
+    if type(int(room_id)) == int:
+        response = requests.get(BASE + "room/" + room_id, {"id": ID})
+        print(response.json())
+        # TODO: Formatting output
+    else:
+        print("Please use a number")
 
 # ROOM USERS ##################################################################
 
@@ -131,8 +136,11 @@ def send_thread():
                         "Please enter a user to delete when typing the command"
                 elif raw == "/get_rooms":
                     get_rooms()
-                elif raw == "/add_room":
-                    add_room()
+                elif text[0] == "/add_room":
+                    try:
+                        add_room(text[1])
+                    except:
+                        print("Please add a room-name!")
                 elif text[0] == "/get_room":
                     try:
                         get_room(text[1])
