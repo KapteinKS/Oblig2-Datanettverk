@@ -52,8 +52,6 @@ def delete_user(user_id):
         print("Please enter an ID.")
 
 # ROOMS #######################################################################
-
-
 def get_rooms():
     response = requests.get(BASE + "rooms", {"id": ID})
     for room in response:
@@ -76,10 +74,14 @@ def get_room(room_id):
 
 # ROOM USERS ##################################################################
 
-
-# TODO: this
-def get_room_users():
-    pass
+def get_room_users(room_id):
+    if type(int(room_id)) == int:
+        #"/api/room/<int:room_id>/users"
+        response = requests.get(BASE + "room/" + str(room_id) + "/users", {"id": ID})
+        print(response.json())
+        # TODO: Formatting output
+    else:
+        print("Please use a number")
 
 
 # TODO: this
@@ -153,7 +155,10 @@ def send_thread():
                     except:
                         print("Please provide a room number when typing this command")
                 elif text[0] == "/get_room_users":
-                    get_room_users()
+                    try:
+                        get_room_users(text[1])
+                    except:
+                        print("Please provide a room number when typing this command")
                 elif text[0] == "/join_room":
                     try:
                         add_room_user(text[1])
