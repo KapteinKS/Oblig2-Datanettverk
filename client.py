@@ -15,6 +15,7 @@ Use /register <name> and then /connect <ID>."""
 def connect(user_id):
     global ID
     ID = user_id
+    print("Connection established.")
 
 
 def get_users():  # return users
@@ -28,14 +29,14 @@ def get_users():  # return users
 def add_user(user_name):  # add user to db
     # TODO type validate string
     # text = input("Please create a username: ")
-    response = requests.put(BASE + "users", {"name": user_name})
-    print(response.json())
+    response = requests.put(BASE + "users", {"name": user_name}).json()
+    print(response)
 
 
 def get_user(user_id):
     if type(int(user_id)) == int:
-        response = requests.get(BASE + "user/" + user_id, {"id": ID})
-        print(response.json())
+        response = requests.get(BASE + "user/" + user_id, {"id": ID}).json()
+        print(response["name"])
     else:
         print("Please use a number")
 
