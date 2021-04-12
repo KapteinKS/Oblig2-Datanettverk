@@ -6,14 +6,16 @@ ID = -1
 
 HELP_CONNECTED = """/users gives a list of users
 /user <id> gives the user"""
-HELP_NOT_CONNECTED = """
-"""
+HELP_NOT_CONNECTED = """When not connected you can only use the /help, /register or /connect
+commands. Please register as a new user then connect with your given ID.
+Use /register <name> and then /connect <ID>."""
 # USERS #######################################################################
 
 
 def connect(user_id):
     global ID
     ID = user_id
+    print("Connection established.")
 
 
 def get_users():  # return users
@@ -27,14 +29,14 @@ def get_users():  # return users
 def add_user(user_name):  # add user to db
     # TODO type validate string
     # text = input("Please create a username: ")
-    response = requests.put(BASE + "users", {"name": user_name})
-    print(response.json())
+    response = requests.put(BASE + "users", {"name": user_name}).json()
+    print(response)
 
 
 def get_user(user_id):
     if type(int(user_id)) == int:
-        response = requests.get(BASE + "user/" + user_id, {"id": ID})
-        print(response.json())
+        response = requests.get(BASE + "user/" + user_id, {"id": ID}).json()
+        print(response["name"])
     else:
         print("Please use a number")
 
@@ -51,17 +53,16 @@ def delete_user(user_id):
         print("Please enter an ID.")
 
 # ROOMS #######################################################################
-
 def get_rooms():
     response = requests.get(BASE + "rooms", {"id": ID})
     for room in response:
         print(room)
         # TODO: Formatting output
 
-# TODO: this
 def add_room(room_name):
-    response = requests.put(BASE + "rooms", {"name": room_name} )
+    response = requests.put(BASE + "rooms", {"id" : ID, "name": room_name})
     print(response.json())
+    # TODO: Format output
 
 
 def get_room(room_id):
@@ -74,35 +75,49 @@ def get_room(room_id):
 
 # ROOM USERS ##################################################################
 
-
-# TODO: this
-def get_room_users():
-    pass
+def get_room_users(room_id):
+    if type(int(room_id)) == int:
+        #"/api/room/<int:room_id>/users"
+        response = requests.get(BASE + "room/" + str(room_id) + "/users", {"id": ID})
+        print(response.json())
+        # TODO: Formatting output
+    else:
+        print("Please use a number")
 
 
 # TODO: this
 def add_room_user(room_id):
     pass
 
+
 # MESSAGES ####################################################################
+# TODO make response formatting
+def format_response(response):
+    pass
 
 
-# TODO: Format response
 def get_messages(room_id):
     if type(int(room_id)) == int:
         response = requests.get(BASE + "room/" + room_id + "/messages", {"id": ID})
-        for message in response:
-            print(message)
+        format_response(response)
 
 
-# TODO: this
 def get_user_messages(room_id, user_id):
+    if type(int(room_id)) == int:
+        response = requests.get(BASE + "room/" + room_id + "/" + user_id + "/messages", {"id": ID})
+        format_response(response)
     pass
 
 
-# TODO: this
-def post_message(room_id, user_id, message):
-    pass
+def post_message(room_id, message):
+    if type(int(room_id)) == int:
+        user_id = ID
+        url = BASE + "room/" + str(room_id) + "/" + str(user_id) + "/messages"
+        response = requests.post(url, {"id": ID, "message": message})
+        if response.json() == "OK":
+            get_messages(room_id)
+        else:
+            print("Message was not sent")  # Should be rare, as many other things need to fail to reach this 
 
 
 # TODO: this
@@ -150,7 +165,10 @@ def send_thread():
                     except:
                         print("Please provide a room number when typing this command")
                 elif text[0] == "/get_room_users":
-                    get_room_users()
+                    try:
+                        get_room_users(text[1])
+                    except:
+                        print("Please provide a room number when typing this command")
                 elif text[0] == "/join_room":
                     try:
                         add_room_user(text[1])
@@ -160,18 +178,21 @@ def send_thread():
                     try:
                         get_messages(text[1])
                     except:
-                        print("Please provide a room number to get messages from when typing this command")
+                        print(
+                            "Please provide a room number to get messages from when typing this command")
                 elif text[0] == "/get_user_messages":
                     try:
                         get_user_messages(text[1], text[2])
                     except:
-                        print("Please provide a room number and user ID whn typing this command")
+                        print(
+                            "Please provide a room number and user ID whn typing this command")
                 elif text[0] == "/post_message":
-                    try:
+                    try:    
                         message = " ".join(text[2:])
-                        post_message(text[1], ID, message)
+                        post_message(text[1], message)
                     except:
-                        print("Please provide a room number and a message when typing this command")
+                        print(
+                            "Please provide a room number and a message when typing this command")
                 else:
                     print(
                         "Input was not recognised as a command, type /help for a list of commands")
