@@ -4,11 +4,12 @@ import threading
 BASE = "http://127.0.0.1:5000/api/"
 ID = -1
 
-HELP_CONNECTED = """| /users                                 gives a list of users.
+HELP_CONNECTED = """
+| /users                                 gives a list of users.
 | /user <id>                             gives the user.
 | /delete <id>                           delets the user. You can only delete your own account.
 | /get_rooms                             gives a list of chatrooms.
-| /add_room <room_id>                    creates a new room.
+| /add_room <name>                       creates a new room.
 | /get_room <room_id>                    gives a room(???).
 | /get_room_users <room_id>              gives all the users in a room.
 | /join_room <room_id>                   joins a new room.
