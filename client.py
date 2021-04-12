@@ -88,18 +88,17 @@ def add_room_user(room_id):
 
 
 # MESSAGES ####################################################################
+# TODO make response formatting
 def format_response(response):
     pass
 
 
-# TODO: Format response
 def get_messages(room_id):
     if type(int(room_id)) == int:
         response = requests.get(BASE + "room/" + room_id + "/messages", {"id": ID})
         format_response(response)
 
 
-# TODO: Format response
 def get_user_messages(room_id, user_id):
     if type(int(room_id)) == int:
         response = requests.get(BASE + "room/" + room_id + "/" + user_id + "/messages", {"id": ID})
@@ -107,14 +106,15 @@ def get_user_messages(room_id, user_id):
     pass
 
 
-# TODO: this
 def post_message(room_id, message):
     if type(int(room_id)) == int:
         user_id = ID
         url = BASE + "room/" + str(room_id) + "/" + str(user_id) + "/messages"
         response = requests.post(url, {"id": ID, "message": message})
-        format_response(response)
-    pass
+        if response.json() == "OK":
+            get_messages(room_id)
+        else:
+            print("Message was not sent")  # Should be rare, as many other things need to fail to reach this 
 
 
 # TODO: this
