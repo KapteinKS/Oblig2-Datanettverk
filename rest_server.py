@@ -300,6 +300,8 @@ def push_notification():
     sock.bind(ADDRESS)
     sock.listen(4)
     sock.accept()
+    #msg = sock.recv(1024)
+    # print(msg.decode())
     pass
 
 
