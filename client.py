@@ -4,8 +4,12 @@ import threading
 BASE = "http://127.0.0.1:5000/api/"
 ID = -1
 
-HELP_CONNECTED = """/users gives a list of users
-/user <id> gives the user"""
+HELP_CONNECTED = """| /users gives a list of users.
+| /user <id> gives the user.
+| /delete <id> delets the user. You can only delete your own account.
+| /get_rooms gives a list of chatrooms.
+| /add_room <id> creates a new room.
+| /get_room <id> gives a room(???)"""
 HELP_NOT_CONNECTED = """When not connected you can only use the /help, /register or /connect
 commands. Please register as a new user then connect with your given ID.
 Use /register <name> and then /connect <ID>."""
@@ -60,14 +64,17 @@ def delete_user(user_id):
         print("Please enter an ID.")
 
 # ROOMS #######################################################################
+
+
 def get_rooms():
     response = requests.get(BASE + "rooms", {"id": ID})
     for room in response:
         print(room)
         # TODO: Formatting output
 
+
 def add_room(room_name):
-    response = requests.put(BASE + "rooms", {"id" : ID, "name": room_name})
+    response = requests.put(BASE + "rooms", {"id": ID, "name": room_name})
     print(response.json())
     # TODO: Format output
 
@@ -82,24 +89,21 @@ def get_room(room_id):
 
 # ROOM USERS ##################################################################
 
+
 def get_room_users(room_id):
     if type(int(room_id)) == int:
-        #"/api/room/<int:room_id>/users"
-        response = requests.get(BASE + "room/" + str(room_id) + "/users", {"id": ID})
+        # "/api/room/<int:room_id>/users"
+        response = requests.get(
+            BASE + "room/" + str(room_id) + "/users", {"id": ID})
         print(response.json())
         # TODO: Formatting output
     else:
         print("Please use a number")
 
 
+# TODO: this
 def add_room_user(room_id):
-    if type(int(room_id)) == int:
-        response = requests.put(BASE + "room/" + str(room_id) + "/users", {"id": ID})
-        print(response.json())
-        # TODO: Formatting output
-    else:
-        print("Please use a number")
-
+    pass
 
 # MESSAGES ####################################################################
 def format_messages(response):
@@ -202,7 +206,7 @@ def send_thread():
                         get_user_messages(text[1], text[2])
                     except:
                         print(
-                            "Please provide a room number and user ID whn typing this command")
+                            "Please provide a room number and user ID when typing this command")
                 elif text[0] == "/post_message":
                     try:
                         message = " ".join(text[2:])
@@ -225,7 +229,7 @@ def send_thread():
                 except:
                     print("Please enter a name to register when typing the command")
             elif raw == "/help":
-                # Print out a help page for all the commands
+                # Print out a help page for help on how to get started
                 print(HELP_NOT_CONNECTED)
                 print("Here's a list of all the commands: ")
                 for command in ALL_COMMANDS:
