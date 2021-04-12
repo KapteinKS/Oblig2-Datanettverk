@@ -3,6 +3,7 @@ from flask_restful import Api, Resource, reqparse, abort
 import json
 import threading
 import socket
+ADDRESS = ("127.0.0.1", 5000)
 
 app = Flask(__name__)
 api = Api(app)
@@ -295,6 +296,10 @@ api.add_resource(RoomUserMessages,
 
 
 def push_notification():
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.bind(ADDRESS)
+    sock.listen(4)
+    sock.accept()
     pass
 
 
