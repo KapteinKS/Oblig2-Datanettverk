@@ -170,7 +170,7 @@ class Rooms(Resource):
                 return room_list
 
     def put(self):  # add new room
-        if request.args.get("id") is None or not user_exist(int(request.args.get("id"))):
+        if request.form["id"] is None or not user_exist(int(request.form["id"])):
             abort(403, message="You must be logged in as a registered user to use this function")
         else:
             id = len(rooms)
@@ -216,7 +216,7 @@ class RoomUsers(Resource):
                 abort(404, message="Room not found")
 
     def put(self, room_id):  # add user to room by room ID
-        if request.args.get("id") is None or not user_exist(int(request.args.get("id"))):
+        if request.form["id"] is None or not user_exist(int(request.form["id"])):
             abort(403, message="You must be logged in as a registered user to use this function")
         else:
             if room_id in rooms:
@@ -258,7 +258,7 @@ class RoomUserMessages(Resource):
                 abort(404, message="Couldn't find room or user")
 
     def post(self, room_id, user_id):  # add message from user in room by room ID and user ID
-        if request.args.get("id") is None or not user_exist(int(request.args.get("id"))):
+        if request.form["id"] is None or not user_exist(int(request.form["id"])):
             abort(403, message="You must be logged in as a registered user to use this function")
         else:
             if room_id in rooms:
