@@ -6,8 +6,9 @@ ID = -1
 
 HELP_CONNECTED = """/users gives a list of users
 /user <id> gives the user"""
-HELP_NOT_CONNECTED = """
-"""
+HELP_NOT_CONNECTED = """When not connected you can only use the /help, /register or /connect
+commands. Please register as a new user then connect with your given ID.
+Use /register <name> and then /connect <ID>."""
 # USERS #######################################################################
 
 
@@ -52,14 +53,23 @@ def delete_user(user_id):
 
 # ROOMS #######################################################################
 
+
 def get_rooms():
     response = requests.get(BASE + "rooms", {"id": ID})
     for room in response:
         print(room)
         # TODO: Formatting output
 
+<<<<<<< HEAD
 def add_room(room_name):
     response = requests.put(BASE + "rooms", {"id" : ID, "name": room_name})
+=======
+# TODO: this
+
+
+def add_room(room_name):
+    response = requests.put(BASE + "rooms", {"name": room_name})
+>>>>>>> 9d9aa3feeb51b2326d98ef40accbd84094aff0c5
     print(response.json())
     # TODO: Format output
 
@@ -90,7 +100,8 @@ def add_room_user(room_id):
 # TODO: Format response
 def get_messages(room_id):
     if type(int(room_id)) == int:
-        response = requests.get(BASE + "room/" + room_id + "/messages", {"id": ID})
+        response = requests.get(
+            BASE + "room/" + room_id + "/messages", {"id": ID})
         for message in response:
             print(message)
 
@@ -160,18 +171,21 @@ def send_thread():
                     try:
                         get_messages(text[1])
                     except:
-                        print("Please provide a room number to get messages from when typing this command")
+                        print(
+                            "Please provide a room number to get messages from when typing this command")
                 elif text[0] == "/get_user_messages":
                     try:
                         get_user_messages(text[1], text[2])
                     except:
-                        print("Please provide a room number and user ID whn typing this command")
+                        print(
+                            "Please provide a room number and user ID whn typing this command")
                 elif text[0] == "/post_message":
                     try:
                         message = " ".join(text[2:])
                         post_message(text[1], ID, message)
                     except:
-                        print("Please provide a room number and a message when typing this command")
+                        print(
+                            "Please provide a room number and a message when typing this command")
                 else:
                     print(
                         "Input was not recognised as a command, type /help for a list of commands")

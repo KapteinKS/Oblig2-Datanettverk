@@ -207,9 +207,8 @@ class RoomUsers(Resource):
             abort(403, message="You must be logged in as a registered user to use this function")
         else:
             if room_id in rooms:
-                out = json.loads(json.dumps(rooms[room_id]))
-                if len(get_room_users(out)) > 0:
-                    return get_room_users(out)
+                if len(rooms[room_id]["listOfUsers"]) > 0:
+                    return get_room_users(rooms[room_id])
                 else:
                     return "No users added yet"
             else:
@@ -262,8 +261,7 @@ class RoomUserMessages(Resource):
             abort(403, message="You must be logged in as a registered user to use this function")
         else:
             if room_id in rooms:
-                room = rooms[room_id]
-                if user_id in room["listOfUsers"]:
+                if user_id in rooms[room_id]["listOfUsers"]:
                     message = request.form["message"]
                     add_message(message, room_id, user_id)
                     return "OK", 201
