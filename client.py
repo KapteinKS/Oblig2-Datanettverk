@@ -1,7 +1,7 @@
 import requests
 import threading
 import time
-import re 
+import re
 import socket
 # TODO Not so much now
 BASE = "http://127.0.0.1:5000/api/"
@@ -123,10 +123,11 @@ def get_room_users(room_id):
 
 # TODO: this
 def add_room_user(room_id):
-    #"/api/room/<int:room_id>/users"
+    # "/api/room/<int:room_id>/users"
     if type(int(room_id)) == int:
         print("You made it, congratulations friend.")
-        response = requests.put(BASE + "room/" + str(room_id) + "/users", {"id": ID})
+        response = requests.put(
+            BASE + "room/" + str(room_id) + "/users", {"id": ID})
         print(response.json())
     else:
         print("Please usa a number")
@@ -179,6 +180,8 @@ def receive_thread():
     # show message
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect(ADDRESS)
+    #msg = "AYAYA Clap"
+    # sock.send(msg.encode())
 
     pass
 
