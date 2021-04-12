@@ -2,6 +2,7 @@ import requests
 import threading
 import time
 import re  # reeeeeeeeeeeeee
+import socket
 # TODO just a little bit less now
 BASE = "http://127.0.0.1:5000/api/"
 ID = -1
@@ -41,7 +42,8 @@ def get_users():  # return users
 
 
 def add_user(user_name):  # add user to db
-    if re.fullmatch('[A-Za-z]{2,25}( [A-Za-z]{2,25})?', user_name):  # Thank you StackOverflow <3
+    # Thank you StackOverflow <3
+    if re.fullmatch('[A-Za-z]{2,25}( [A-Za-z]{2,25})?', user_name):
         response = requests.put(BASE + "users", {"name": user_name}).json()
         print(response)
     else:
@@ -165,6 +167,8 @@ def receive_thread():
     # push notification with message id
     # get message from server
     # show message
+    sock = socket.so
+
     pass
 
 # STARTUP #####################################################################
