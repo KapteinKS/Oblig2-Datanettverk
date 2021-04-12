@@ -218,7 +218,9 @@ class RoomUsers(Resource):
                 user_id = int(request.form["id"])
                 if user_id in users:
                     room = rooms[room_id]
-                    room["listOfUsers"].append(user_id)
+                    if not user_id in room["listOfUsers"]:
+                        # No duplicates, can only join a room once
+                        room["listOfUsers"].append(user_id)
                     return "OK", 201
                 abort(404, message="No user found with that ID")
             else:
