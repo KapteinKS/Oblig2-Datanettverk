@@ -149,7 +149,6 @@ def get_user_messages(room_id, user_id):
         response = requests.get(
             BASE + "room/" + room_id + "/" + user_id + "/messages", {"id": ID})
         format_messages(response.json())
-    pass
 
 
 def post_message(room_id, message):
