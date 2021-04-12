@@ -102,8 +102,20 @@ def add_room(room_name):
 def get_room(room_id):
     if type(int(room_id)) == int:
         response = requests.get(BASE + "room/" + room_id, {"id": ID})
-        print(response.json())
-        # TODO: Formatting output
+        full = response.json()
+        users = full["listOfUsers"]
+        messages = full["listOfMessages"]
+        print("\nName:", full["name"])
+        print("\nUsers:")
+        for user in users:
+            print("\t" + user["name"])
+        print("\nMessages:")
+
+        names = {}
+        for message in messages:
+            if message["sender"] not in names:
+                names[int(message["sender"])] = get_name(int(message["sender"]))
+            print("\t" + names[int(message["sender"])], ":", "\t" + message["content"])
     else:
         print("Please use a number")
 
@@ -264,7 +276,7 @@ def send_thread():
                     print("Please connect with a user ID")
             elif text[0] == "/register":
                 try:
-                    add_user(text[1])
+                    add_user(" ".join(text[1:]))
                 except:
                     print("Please enter a name to register when typing the command")
             elif raw == "/help":
