@@ -112,13 +112,13 @@ def user_exist(index):
 
 def check_user_valid_get():
     if request.args.get("id") is None or not user_exist(int(request.args.get("id"))):
-        abort(403, message="You must be logged in as a registered user to use this function")
+        abort(401, message="You must be logged in as a registered user to use this function")
     else:
         return True
 
 def check_user_valid_form():
     if request.form["id"] is None or not user_exist(int(request.form["id"])):
-        abort(403, message="You must be logged in as a registered user to use this function")
+        abort(401, message="You must be logged in as a registered user to use this function")
     else:
         return True
 
@@ -218,7 +218,9 @@ class RoomUsers(Resource):
                 user_id = int(request.form["id"])
                 if user_id in users:
                     room = rooms[room_id]
-                    room["listOfUsers"].append(user_id)
+                    if not user_id in room["listOfUsers"]:
+                        # No duplicates, can only join a room once
+                        room["listOfUsers"].append(user_id)
                     return "OK", 201
                 abort(404, message="No user found with that ID")
             else:
@@ -251,6 +253,8 @@ class RoomUserMessages(Resource):
     def post(self, room_id, user_id):  # add message from user in room by room ID and user ID
         if check_user_valid_form():
             if room_id in rooms:
+                if user_id != int(request.form["id"]):
+                    abort(403, message="Cannot submit message on behalf of other users")
                 if user_id in rooms[room_id]["listOfUsers"]:
                     message = request.form["message"]
                     add_message(message, room_id, user_id)

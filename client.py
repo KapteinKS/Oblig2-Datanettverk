@@ -12,7 +12,8 @@ HELP_CONNECTED = """| /users gives a list of users.
 | /get_room <id> gives a room(???)"""
 HELP_NOT_CONNECTED = """When not connected you can only use the /help, /register or /connect
 commands. Please register as a new user then connect with your given ID.
-Use /register <name> and then /connect <id>."""
+Use /register <name> and then /connect <ID>."""
+ALL_COMMANDS = ["/help","/connect USER_ID","/register NAME","/users","/user USER_ID","/get_rooms","/add_room ROOM_NAME","/get_room ROOM_ID","/get_rooms_users ROOM_ID","/join_room ROOM_ID","/get_messages ROOM_ID","/get_user_messages ROOM_ID USER_ID","/post_message ROOM_ID MESSAGE"]
 # USERS #######################################################################
 
 
@@ -45,6 +46,12 @@ def get_user(user_id):
         print("Please use a number")
 
 
+def return_user(user_id):
+    if type(int(user_id)) == int:
+        response = requests.get(BASE + "user/" + str(user_id), {"id": ID})
+        return response.json()["name"]
+    
+             
 def delete_user(user_id):
     if type(int(user_id)) == int:
         response = requests.post(BASE + "user/" + str(user_id), {"id": ID})
@@ -101,22 +108,25 @@ def add_room_user(room_id):
 
 # MESSAGES ####################################################################
 # TODO make response formatting
-def format_response(response):
-    pass
+def format_messages(response):
+    for x in range(101): 
+        print()  # Clear screen
+    
+    for message in response:
+        user = return_user(int(message["sender"]))       
+        print(user, ":", message["content"])
 
 
 def get_messages(room_id):
     if type(int(room_id)) == int:
-        response = requests.get(
-            BASE + "room/" + room_id + "/messages", {"id": ID})
-        format_response(response)
+        response = requests.get(BASE + "room/" + room_id + "/messages", {"id": ID})
+        format_messages(response.json())
 
 
 def get_user_messages(room_id, user_id):
     if type(int(room_id)) == int:
-        response = requests.get(
-            BASE + "room/" + room_id + "/" + user_id + "/messages", {"id": ID})
-        format_response(response)
+        response = requests.get(BASE + "room/" + room_id + "/" + user_id + "/messages", {"id": ID})
+        format_messages(response.json())
     pass
 
 
@@ -128,8 +138,7 @@ def post_message(room_id, message):
         if response.json() == "OK":
             get_messages(room_id)
         else:
-            # Should be rare, as many other things need to fail to reach this
-            print("Message was not sent")
+            print("Message was not sent")  # Should be rare, as many other things need to fail to reach this
 
 
 # TODO: this
@@ -222,6 +231,9 @@ def send_thread():
             elif raw == "/help":
                 # Print out a help page for help on how to get started
                 print(HELP_NOT_CONNECTED)
+                print("Here's a list of all the commands: ")
+                for command in ALL_COMMANDS:
+                    print(command)
                 pass
             else:
                 print(
