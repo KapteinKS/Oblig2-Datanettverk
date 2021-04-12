@@ -161,6 +161,9 @@ def post_message(room_id, message):
 # TODO: this
 def receive_thread():
     # TODO: Receiving messages and prompts from server.
+    # push notification with message id
+    # get message from server
+    # show message
     pass
 
 # STARTUP #####################################################################
