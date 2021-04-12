@@ -110,15 +110,23 @@ def get_room_users(room_orig):
 def user_exist(index):
     return index < len(users)
 
+
 def check_user_valid_get():
     if request.args.get("id") is None or not user_exist(int(request.args.get("id"))):
-        abort(401, message="You must be logged in as a registered user to use this function")
+        abort(
+            401,
+            message="You must be logged in as a registered user to use this function",
+        )
     else:
         return True
 
+
 def check_user_valid_form():
     if request.form["id"] is None or not user_exist(int(request.form["id"])):
-        abort(401, message="You must be logged in as a registered user to use this function")
+        abort(
+            401,
+            message="You must be logged in as a registered user to use this function",
+        )
     else:
         return True
 
@@ -243,7 +251,7 @@ class RoomUserMessages(Resource):
             if room_id in rooms and user_id in users:
                 room_messages = get_messages_in_room(room_id)
                 this_rooms_users_msgs = filter(
-                lambda message: message["sender"] == user_id, room_messages
+                    lambda message: message["sender"] == user_id, room_messages
                 )
                 return list(this_rooms_users_msgs)
 
@@ -271,8 +279,7 @@ api.add_resource(Rooms, "/api/rooms")
 api.add_resource(Room, "/api/room/<int:room_id>")
 api.add_resource(RoomUsers, "/api/room/<int:room_id>/users")
 api.add_resource(Messages, "/api/room/<int:room_id>/messages")
-api.add_resource(RoomUserMessages,
-                 "/api/room/<int:room_id>/<int:user_id>/messages")
+api.add_resource(RoomUserMessages, "/api/room/<int:room_id>/<int:user_id>/messages")
 
 if __name__ == "__main__":
     app.run(debug=True)
