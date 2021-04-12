@@ -110,12 +110,22 @@ def get_room_users(room_orig):
 def user_exist(index):
     return index < len(users)
 
+def check_user_valid_get():
+    if request.args.get("id") is None or not user_exist(int(request.args.get("id"))):
+        abort(403, message="You must be logged in as a registered user to use this function")
+    else:
+        return True
+
+def check_user_valid_form():
+    if request.form["id"] is None or not user_exist(int(request.form["id"])):
+        abort(403, message="You must be logged in as a registered user to use this function")
+    else:
+        return True
+
 
 class Users(Resource):
     def get(self):  # return users
-        if request.args.get("id") is None or not user_exist(int(request.args.get("id"))):
-            abort(403, message="You must be logged in as a registered user to use this function")
-        else:
+        if check_user_valid_get():
             if len(users) == 0:
                 return []
             return list(users.values())
@@ -130,9 +140,7 @@ class Users(Resource):
 
 class User(Resource):
     def get(self, user_id):  # return user by user ID
-        if request.args.get("id") is None or not user_exist(int(request.args.get("id"))):
-            abort(403, message="You must be logged in as a registered user to use this function")
-        else:
+        if check_user_valid_get():
             if user_id in users:
                 return users[user_id]
             else:
@@ -141,9 +149,7 @@ class User(Resource):
     # had to hack this method and use post instead of delete as delete would not accept a JSON element
     def post(self, user_id):
         # args = user_delete_args.parse_args()
-        if request.form["id"] is None or not user_exist(int(request.form["id"])):
-            abort(403, message="You must be logged in as a registered user to use this function")
-        else:
+        if check_user_valid_form():
             if user_id not in users:
                 abort(404, message="No user found with that ID")
             elif int(user_id) != int(request.form["id"]):
@@ -155,9 +161,7 @@ class User(Resource):
     
 class Rooms(Resource):
     def get(self):  # get all rooms
-        if request.args.get("id") is None or not user_exist(int(request.args.get("id"))):
-            abort(403, message="You must be logged in as a registered user to use this function")
-        else:
+        if check_user_valid_get():
             if len(rooms) == 0:
                 return []
             else:
@@ -170,9 +174,7 @@ class Rooms(Resource):
                 return room_list
 
     def put(self):  # add new room
-        if request.form["id"] is None or not user_exist(int(request.form["id"])):
-            abort(403, message="You must be logged in as a registered user to use this function")
-        else:
+        if check_user_valid_form():
             id = len(rooms)
             name = request.form["name"]
             rooms[id] = {
@@ -186,9 +188,7 @@ class Rooms(Resource):
 
 class Room(Resource):
     def get(self, room_id):  # get room by room ID
-        if request.args.get("id") is None or not user_exist(int(request.args.get("id"))):
-            abort(403, message="You must be logged in as a registered user to use this function")
-        else:
+        if check_user_valid_get():
             if room_id in rooms:
                 room = rooms[room_id].copy()
     
@@ -203,9 +203,7 @@ class Room(Resource):
 
 class RoomUsers(Resource):
     def get(self, room_id):  # get all user in a room by room ID
-        if request.args.get("id") is None or not user_exist(int(request.args.get("id"))):
-            abort(403, message="You must be logged in as a registered user to use this function")
-        else:
+        if check_user_valid_get():
             if room_id in rooms:
                 if len(rooms[room_id]["listOfUsers"]) > 0:
                     return get_room_users(rooms[room_id])
@@ -215,9 +213,7 @@ class RoomUsers(Resource):
                 abort(404, message="Room not found")
 
     def put(self, room_id):  # add user to room by room ID
-        if request.form["id"] is None or not user_exist(int(request.form["id"])):
-            abort(403, message="You must be logged in as a registered user to use this function")
-        else:
+        if check_user_valid_form():
             if room_id in rooms:
                 user_id = int(request.form["id"])
                 if user_id in users:
@@ -231,9 +227,7 @@ class RoomUsers(Resource):
 
 class Messages(Resource):
     def get(self, room_id):  # get all messages in room by room ID
-        if request.args.get("id") is None or not user_exist(int(request.args.get("id"))):
-            abort(403, message="You must be logged in as a registered user to use this function")
-        else:
+        if check_user_valid_get():
             if room_id in rooms:
                 return get_messages_in_room(room_id)
     
@@ -243,9 +237,7 @@ class Messages(Resource):
 
 class RoomUserMessages(Resource):
     def get(self, room_id, user_id):  # get all messages sent in room by user by room ID and user ID
-        if request.args.get("id") is None or not user_exist(int(request.args.get("id"))):
-            abort(403, message="You must be logged in as a registered user to use this function")
-        else:
+        if check_user_valid_get():
             if room_id in rooms and user_id in users:
                 room_messages = get_messages_in_room(room_id)
                 this_rooms_users_msgs = filter(
@@ -257,9 +249,7 @@ class RoomUserMessages(Resource):
                 abort(404, message="Couldn't find room or user")
 
     def post(self, room_id, user_id):  # add message from user in room by room ID and user ID
-        if request.form["id"] is None or not user_exist(int(request.form["id"])):
-            abort(403, message="You must be logged in as a registered user to use this function")
-        else:
+        if check_user_valid_form():
             if room_id in rooms:
                 if user_id in rooms[room_id]["listOfUsers"]:
                     message = request.form["message"]
