@@ -117,7 +117,13 @@ def get_room_users(room_id):
 
 # TODO: this
 def add_room_user(room_id):
-    pass
+    #"/api/room/<int:room_id>/users"
+    if type(int(room_id)) == int:
+        print("You made it, congratulations friend.")
+        response = requests.put(BASE + "room/" + str(room_id) + "/users", {"id": ID})
+        print(response.json())
+    else:
+        print("Please usa a number")
 
 # MESSAGES ####################################################################
 
