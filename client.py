@@ -41,7 +41,7 @@ def get_users():  # return users
 
 
 def add_user(user_name):  # add user to db
-    if re.fullmatch('[A-Za-z]{2,25}( [A-Za-z]{2,25})?', user_name):
+    if re.fullmatch('[A-Za-z]{2,25}( [A-Za-z]{2,25})?', user_name):  # Thank you StackOverflow <3
         response = requests.put(BASE + "users", {"name": user_name}).json()
         print(response)
     else:
@@ -162,12 +162,9 @@ def post_message(room_id, message):
 # TODO: this
 def receive_thread():
     # TODO: Receiving messages and prompts from server.
-    while True:
-        # get_messages("1")
-        # time.sleep(5)
-        # When getting push notification, request the message id that
-        # was sent with the push notification, and print the message.
-        pass
+    # push notification with message id
+    # get message from server
+    # show message
     pass
 
 # STARTUP #####################################################################
