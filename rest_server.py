@@ -112,13 +112,13 @@ def user_exist(index):
 
 def check_user_valid_get():
     if request.args.get("id") is None or not user_exist(int(request.args.get("id"))):
-        abort(403, message="You must be logged in as a registered user to use this function")
+        abort(401, message="You must be logged in as a registered user to use this function")
     else:
         return True
 
 def check_user_valid_form():
     if request.form["id"] is None or not user_exist(int(request.form["id"])):
-        abort(403, message="You must be logged in as a registered user to use this function")
+        abort(401, message="You must be logged in as a registered user to use this function")
     else:
         return True
 
