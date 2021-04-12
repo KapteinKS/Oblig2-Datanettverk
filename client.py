@@ -1,9 +1,9 @@
 import requests
 import threading
 import time
-import re  # reeeeeeeeeeeeee
+import re 
 import socket
-# TODO just a little bit less now
+# TODO Not so much now
 BASE = "http://127.0.0.1:5000/api/"
 ID = -1
 ADDRESS = ("127.0.0.1", 5000)
@@ -11,7 +11,7 @@ ADDRESS = ("127.0.0.1", 5000)
 HELP_CONNECTED = """
 | /users                                 gives a list of users.
 | /user <id>                             gives the user.
-| /delete <id>                           delets the user. You can only delete your own account.
+| /delete <id>                           deletes the user. You can only delete your own account.
 | /get_rooms                             gives a list of chatrooms.
 | /add_room <name>                       creates a new room.
 | /get_room <room_id>                    gives a room(???).
@@ -29,9 +29,12 @@ ALL_COMMANDS = ["/help", "/connect USER_ID", "/register NAME", "/users", "/user 
 
 
 def connect(user_id):
-    global ID
-    ID = user_id
-    print("Connection established.")
+    if requests.get(BASE + "login", {"id": user_id}):
+        global ID
+        ID = user_id
+        print("Connection established, welcome", get_name(user_id) + "!")
+    else:
+        print("No user found with that ID")
 
 
 def get_users():  # return users
@@ -121,7 +124,13 @@ def get_room_users(room_id):
 
 # TODO: this
 def add_room_user(room_id):
-    pass
+    #"/api/room/<int:room_id>/users"
+    if type(int(room_id)) == int:
+        print("You made it, congratulations friend.")
+        response = requests.put(BASE + "room/" + str(room_id) + "/users", {"id": ID})
+        print(response.json())
+    else:
+        print("Please usa a number")
 
 # MESSAGES ####################################################################
 
@@ -147,7 +156,6 @@ def get_user_messages(room_id, user_id):
         response = requests.get(
             BASE + "room/" + room_id + "/" + user_id + "/messages", {"id": ID})
         format_messages(response.json())
-    pass
 
 
 def post_message(room_id, message):

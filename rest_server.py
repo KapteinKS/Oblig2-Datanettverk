@@ -134,6 +134,14 @@ def check_user_valid_form():
         return True
 
 
+class Login(Resource):
+    def get(self):
+        if check_user_valid_get():
+            return True
+        else:
+            return False
+
+
 class Users(Resource):
     def get(self):  # return users
         if check_user_valid_get():
@@ -142,7 +150,6 @@ class Users(Resource):
             return list(users.values())
 
     def put(self):  # add user
-        print("adding user")
         id = len(users)
         name = request.form["name"]
         users[id] = {"id": id, "name": name}
@@ -277,6 +284,7 @@ class RoomUserMessages(Resource):
                 abort(404, message="No room found with that ID")
 
 
+api.add_resource(Login, "/api/login")
 api.add_resource(Users, "/api/users")
 api.add_resource(User, "/api/user/<int:user_id>")
 api.add_resource(Rooms, "/api/rooms")
