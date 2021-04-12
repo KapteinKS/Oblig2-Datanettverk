@@ -90,9 +90,9 @@ def delete_user(user_id):
 def get_rooms():
     response = requests.get(BASE + "rooms", {"id": ID})
     for room in response.json():
-        print("ID:", str(room["id"]), "\tName:", str(room["name"]), 
+        print("ID:", str(room["id"]), "\tName:", str(room["name"]),
               "\tNumber of users:", str(room["numberOfUsers"]))
-        
+
 
 def add_room(room_name):
     response = requests.put(BASE + "rooms", {"id": ID, "name": room_name})
@@ -109,13 +109,14 @@ def get_room(room_id):
 
 # ROOM USERS ##################################################################
 
-
 def get_room_users(room_id):
     if type(int(room_id)) == int:
         # "/api/room/<int:room_id>/users"
         response = requests.get(
             BASE + "room/" + str(room_id) + "/users", {"id": ID})
-        print(response.json())
+        print(f"Users in Room {room_id}:")
+        for usr in response.json():
+            print("UserID:", str(usr["id"]), "\tName:",str(usr["name"]))
         # TODO: Formatting output
     else:
         print("Please use a number")
