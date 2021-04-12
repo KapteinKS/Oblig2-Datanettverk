@@ -9,6 +9,7 @@ HELP_CONNECTED = """/users gives a list of users
 HELP_NOT_CONNECTED = """When not connected you can only use the /help, /register or /connect
 commands. Please register as a new user then connect with your given ID.
 Use /register <name> and then /connect <ID>."""
+ALL_COMMANDS = ["/help","/connect USER_ID","/register NAME","/users","/user USER_ID","/get_rooms","/add_room ROOM_NAME","/get_room ROOM_ID","/get_rooms_users ROOM_ID","/join_room ROOM_ID","/get_messages ROOM_ID","/get_user_messages ROOM_ID USER_ID","/post_message ROOM_ID MESSAGE"]
 # USERS #######################################################################
 
 
@@ -122,7 +123,7 @@ def post_message(room_id, message):
         if response.json() == "OK":
             get_messages(room_id)
         else:
-            print("Message was not sent")  # Should be rare, as many other things need to fail to reach this 
+            print("Message was not sent")  # Should be rare, as many other things need to fail to reach this
 
 
 # TODO: this
@@ -215,6 +216,9 @@ def send_thread():
             elif raw == "/help":
                 # Print out a help page for all the commands
                 print(HELP_NOT_CONNECTED)
+                print("Here's a list of all the commands: ")
+                for command in ALL_COMMANDS:
+                    print(command)
                 pass
             else:
                 print(
