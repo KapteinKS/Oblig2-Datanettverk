@@ -10,7 +10,7 @@ ID = -1
 HELP_CONNECTED = """
 | /users                                 gives a list of users.
 | /user <id>                             gives the user.
-| /delete <id>                           delets the user. You can only delete your own account.
+| /delete <id>                           deletes the user. You can only delete your own account.
 | /get_rooms                             gives a list of chatrooms.
 | /add_room <name>                       creates a new room.
 | /get_room <room_id>                    gives a room(???).
