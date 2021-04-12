@@ -138,9 +138,11 @@ def format_messages(response):
     for x in range(101):
         print()  # Clear screen
 
+    users = {}
     for message in response:
-        user = get_name(int(message["sender"]))
-        print(user, ":", message["content"])
+        if message["sender"] not in users:
+            users[int(message["sender"])] = get_name(int(message["sender"]))
+        print(users[int(message["sender"])], ":", message["content"])
 
 
 def get_messages(room_id):
