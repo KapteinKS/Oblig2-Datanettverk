@@ -26,9 +26,12 @@ ALL_COMMANDS = ["/help", "/connect USER_ID", "/register NAME", "/users", "/user 
 
 
 def connect(user_id):
-    global ID
-    ID = user_id
-    print("Connection established.")
+    if requests.get(BASE + "login", {"id": user_id}):
+        global ID
+        ID = user_id
+        print("Connection established, welcome", get_name(user_id) + "!")
+    else:
+        print("No user found with that ID")
 
 
 def get_users():  # return users
