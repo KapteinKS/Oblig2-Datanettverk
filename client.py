@@ -88,25 +88,34 @@ def get_room_users(room_id):
 def add_room_user(room_id):
     pass
 
+
 # MESSAGES ####################################################################
+def format_response(response):
+    pass
 
 
 # TODO: Format response
 def get_messages(room_id):
     if type(int(room_id)) == int:
-        response = requests.get(
-            BASE + "room/" + room_id + "/messages", {"id": ID})
-        for message in response:
-            print(message)
+        response = requests.get(BASE + "room/" + room_id + "/messages", {"id": ID})
+        format_response(response)
 
 
-# TODO: this
+# TODO: Format response
 def get_user_messages(room_id, user_id):
+    if type(int(room_id)) == int:
+        response = requests.get(BASE + "room/" + room_id + "/" + user_id + "/messages", {"id": ID})
+        format_response(response)
     pass
 
 
 # TODO: this
-def post_message(room_id, user_id, message):
+def post_message(room_id, message):
+    if type(int(room_id)) == int:
+        user_id = ID
+        url = BASE + "room/" + str(room_id) + "/" + str(user_id) + "/messages"
+        response = requests.post(url, {"id": ID, "message": message})
+        format_response(response)
     pass
 
 
@@ -177,9 +186,9 @@ def send_thread():
                         print(
                             "Please provide a room number and user ID whn typing this command")
                 elif text[0] == "/post_message":
-                    try:
+                    try:    
                         message = " ".join(text[2:])
-                        post_message(text[1], ID, message)
+                        post_message(text[1], message)
                     except:
                         print(
                             "Please provide a room number and a message when typing this command")
