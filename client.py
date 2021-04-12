@@ -88,7 +88,6 @@ def get_messages(room_id):
         response = requests.get(BASE + "room/" + room_id + "/messages", {"id": ID})
         for message in response:
             print(message)
-    pass
 
 
 # TODO: this
