@@ -39,10 +39,9 @@ def connect(user_id):
 
 def get_users():  # return users
     response = requests.get(BASE + "users", {"id": 1}).json()
+    print("Users:")
     for user in response:
-        print(user["name"])
-
-    # TODO format output
+        print("\n" + user["name"])
 
 
 def add_user(user_name):  # add user to db
