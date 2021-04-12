@@ -157,8 +157,8 @@ class User(Resource):
 
         del users[user_id]
         return "User deleted", 201
-    
-    
+
+
 class Rooms(Resource):
     def get(self):  # get all rooms
         if check_user_valid_get():
@@ -191,7 +191,7 @@ class Room(Resource):
         if check_user_valid_get():
             if room_id in rooms:
                 room = rooms[room_id].copy()
-    
+
                 # Get full user dicitonaries, or empty list if empty
                 room["listOfUsers"] = get_room_users(room) if len(room["listOfUsers"]) > 0 else []
                 # Get messages as list, or empty list if emtpy
@@ -232,7 +232,7 @@ class Messages(Resource):
         if check_user_valid_get():
             if room_id in rooms:
                 return get_messages_in_room(room_id)
-    
+
             else:
                 abort(404, message="No room found with that ID")
 
@@ -246,7 +246,7 @@ class RoomUserMessages(Resource):
                 lambda message: message["sender"] == user_id, room_messages
                 )
                 return list(this_rooms_users_msgs)
-    
+
             else:
                 abort(404, message="Couldn't find room or user")
 

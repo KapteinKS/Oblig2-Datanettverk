@@ -46,8 +46,8 @@ def return_user(user_id):
     if type(int(user_id)) == int:
         response = requests.get(BASE + "user/" + str(user_id), {"id": ID})
         return response.json()["name"]
-    
-             
+
+
 def delete_user(user_id):
     if type(int(user_id)) == int:
         response = requests.post(BASE + "user/" + str(user_id), {"id": ID})
@@ -105,11 +105,11 @@ def add_room_user(room_id):
 # MESSAGES ####################################################################
 # TODO make response formatting
 def format_messages(response):
-    for x in range(101): 
+    for x in range(101):
         print()  # Clear screen
-    
+
     for message in response:
-        user = return_user(int(message["sender"]))       
+        user = return_user(int(message["sender"]))
         print(user, ":", message["content"])
 
 
