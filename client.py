@@ -58,10 +58,10 @@ def get_rooms():
         print(room)
         # TODO: Formatting output
 
-# TODO: this
 def add_room(room_name):
-    response = requests.put(BASE + "rooms", {"name": room_name} )
+    response = requests.put(BASE + "rooms", {"id" : ID, "name": room_name})
     print(response.json())
+    # TODO: Format output
 
 
 def get_room(room_id):
