@@ -256,6 +256,17 @@ class Messages(Resource):
                 abort(404, message="No room found with that ID")
 
 
+
+class Message(Resource):
+    def get(self, message_id):  # get all messages in room by room ID
+        if check_user_valid_get():
+            if message_id in messages:
+                return messages[message_id]
+
+            else:
+                abort(404, message="No message found with that ID")
+
+
 class RoomUserMessages(Resource):
     def get(self, room_id, user_id):  # get all messages sent in room by user by room ID and user ID
         if check_user_valid_get():
@@ -291,6 +302,7 @@ api.add_resource(Rooms, "/api/rooms")
 api.add_resource(Room, "/api/room/<int:room_id>")
 api.add_resource(RoomUsers, "/api/room/<int:room_id>/users")
 api.add_resource(Messages, "/api/room/<int:room_id>/messages")
+api.add_resource(Message, "/api/message/<int:message_id>")
 api.add_resource(RoomUserMessages,
                  "/api/room/<int:room_id>/<int:user_id>/messages")
 
