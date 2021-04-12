@@ -6,6 +6,7 @@ import socket
 # TODO just a little bit less now
 BASE = "http://127.0.0.1:5000/api/"
 ID = -1
+ADDRESS = ("127.0.0.1", 5000)
 
 HELP_CONNECTED = """
 | /users                                 gives a list of users.
@@ -167,7 +168,8 @@ def receive_thread():
     # push notification with message id
     # get message from server
     # show message
-    sock = socket.so
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.connect(ADDRESS)
 
     pass
 
