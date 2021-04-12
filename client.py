@@ -1,9 +1,9 @@
 import requests
 import threading
 import time
-import re  # reeeeeeeeeeeeee
+import re 
 import socket
-# TODO just a little bit less now
+# TODO Not so much now
 BASE = "http://127.0.0.1:5000/api/"
 ID = -1
 
