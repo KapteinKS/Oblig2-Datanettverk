@@ -40,7 +40,7 @@ def get_users():  # return users
 
 
 def add_user(user_name):  # add user to db
-    if re.fullmatch('[A-Za-z]{2,25}( [A-Za-z]{2,25})?', user_name):
+    if re.fullmatch('[A-Za-z]{2,25}( [A-Za-z]{2,25})?', user_name):  # Thank you StackOverflow <3
         response = requests.put(BASE + "users", {"name": user_name}).json()
         print(response)
     else:
