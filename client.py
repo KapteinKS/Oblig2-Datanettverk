@@ -89,15 +89,14 @@ def delete_user(user_id):
 
 def get_rooms():
     response = requests.get(BASE + "rooms", {"id": ID})
-    for room in response:
-        print(room)
-        # TODO: Formatting output
-
+    for room in response.json():
+        print("ID:", str(room["id"]), "\tName:", str(room["name"]), 
+              "\tNumber of users:", str(room["numberOfUsers"]))
+        
 
 def add_room(room_name):
     response = requests.put(BASE + "rooms", {"id": ID, "name": room_name})
     print(response.json())
-    # TODO: Format output
 
 
 def get_room(room_id):

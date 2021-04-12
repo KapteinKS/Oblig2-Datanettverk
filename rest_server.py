@@ -201,7 +201,7 @@ class Rooms(Resource):
                 "size": 32,
                 "listOfUsers": [],
             }
-            return "OK", 201
+            return f"Room added, ID: {id}, Name: {name}", 201
 
 
 class Room(Resource):
