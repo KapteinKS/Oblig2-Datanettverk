@@ -4,16 +4,22 @@ import threading
 BASE = "http://127.0.0.1:5000/api/"
 ID = -1
 
-HELP_CONNECTED = """| /users gives a list of users.
-| /user <id> gives the user.
-| /delete <id> delets the user. You can only delete your own account.
-| /get_rooms gives a list of chatrooms.
-| /add_room <id> creates a new room.
-| /get_room <id> gives a room(???)"""
+HELP_CONNECTED = """| /users                                 gives a list of users.
+| /user <id>                             gives the user.
+| /delete <id>                           delets the user. You can only delete your own account.
+| /get_rooms                             gives a list of chatrooms.
+| /add_room <room_id>                    creates a new room.
+| /get_room <room_id>                    gives a room(???).
+| /get_room_users <room_id>              gives all the users in a room.
+| /join_room <room_id>                   joins a new room.
+| /get_messages <room_id>                gives all the messages of a room.
+| /get_user_messages <room_id> <user_id> gives the messages of a user from a specific room.
+| /post_message <room_id> <message>      posts a message in a specific room."""
 HELP_NOT_CONNECTED = """When not connected you can only use the /help, /register or /connect
 commands. Please register as a new user then connect with your given ID.
-Use /register <name> and then /connect <ID>."""
-ALL_COMMANDS = ["/help","/connect USER_ID","/register NAME","/users","/user USER_ID","/get_rooms","/add_room ROOM_NAME","/get_room ROOM_ID","/get_rooms_users ROOM_ID","/join_room ROOM_ID","/get_messages ROOM_ID","/get_user_messages ROOM_ID USER_ID","/post_message ROOM_ID MESSAGE"]
+Use /register <name> and then /connect <id>."""
+ALL_COMMANDS = ["/help", "/connect USER_ID", "/register NAME", "/users", "/user USER_ID", "/get_rooms", "/add_room ROOM_NAME", "/get_room ROOM_ID",
+                "/get_rooms_users ROOM_ID", "/join_room ROOM_ID", "/get_messages ROOM_ID", "/get_user_messages ROOM_ID USER_ID", "/post_message ROOM_ID MESSAGE"]
 # USERS #######################################################################
 
 
@@ -50,8 +56,8 @@ def get_name(user_id):
     if type(int(user_id)) == int:
         response = requests.get(BASE + "user/" + str(user_id), {"id": ID})
         return response.json()["name"]
-    
-             
+
+
 def delete_user(user_id):
     if type(int(user_id)) == int:
         response = requests.post(BASE + "user/" + str(user_id), {"id": ID})
@@ -106,26 +112,28 @@ def add_room_user(room_id):
     pass
 
 # MESSAGES ####################################################################
+
+
 def format_messages(response):
-    for x in range(101): 
+    for x in range(101):
         print()  # Clear screen
-    
-    users = {}
+
     for message in response:
-        if message["sender"] not in users:
-            users[int(message["sender"])] = str(get_name(int(message["sender"])))  
-        print(users.get(int(message["sender"])), ":", message["content"])
+        user = get_name(int(message["sender"]))
+        print(user, ":", message["content"])
 
 
 def get_messages(room_id):
     if type(int(room_id)) == int:
-        response = requests.get(BASE + "room/" + room_id + "/messages", {"id": ID})
+        response = requests.get(
+            BASE + "room/" + room_id + "/messages", {"id": ID})
         format_messages(response.json())
 
 
 def get_user_messages(room_id, user_id):
     if type(int(room_id)) == int:
-        response = requests.get(BASE + "room/" + room_id + "/" + user_id + "/messages", {"id": ID})
+        response = requests.get(
+            BASE + "room/" + room_id + "/" + user_id + "/messages", {"id": ID})
         format_messages(response.json())
     pass
 
@@ -138,7 +146,8 @@ def post_message(room_id, message):
         if response.json() == "OK":
             get_messages(room_id)
         else:
-            print("Message was not sent")  # Should be rare, as many other things need to fail to reach this
+            # Should be rare, as many other things need to fail to reach this
+            print("Message was not sent")
 
 
 # TODO: this
