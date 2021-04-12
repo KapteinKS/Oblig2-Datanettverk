@@ -3,7 +3,7 @@ import threading
 import time
 import re
 import socket
-# TODO Not so much now
+# TODO Thread
 BASE = "http://127.0.0.1:5000/api/"
 ID = -1
 ADDRESS = ("127.0.0.1", 5000)
@@ -128,12 +128,10 @@ def get_room_users(room_id):
         print(f"Users in Room {room_id}:")
         for usr in response.json():
             print("UserID:", str(usr["id"]), "\tName:",str(usr["name"]))
-        # TODO: Formatting output
     else:
         print("Please use a number")
 
 
-# TODO: this
 def add_room_user(room_id):
     # "/api/room/<int:room_id>/users"
     if type(int(room_id)) == int:
