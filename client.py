@@ -15,6 +15,7 @@ Use /register <name> and then /connect <ID>."""
 def connect(user_id):
     global ID
     ID = user_id
+    print("Connection established.")
 
 
 def get_users():  # return users
@@ -28,14 +29,14 @@ def get_users():  # return users
 def add_user(user_name):  # add user to db
     # TODO type validate string
     # text = input("Please create a username: ")
-    response = requests.put(BASE + "users", {"name": user_name})
-    print(response.json())
+    response = requests.put(BASE + "users", {"name": user_name}).json()
+    print(response)
 
 
 def get_user(user_id):
     if type(int(user_id)) == int:
-        response = requests.get(BASE + "user/" + user_id, {"id": ID})
-        print(response.json())
+        response = requests.get(BASE + "user/" + user_id, {"id": ID}).json()
+        print(response["name"])
     else:
         print("Please use a number")
 
@@ -95,18 +96,17 @@ def add_room_user(room_id):
 
 
 # MESSAGES ####################################################################
+# TODO make response formatting
 def format_response(response):
     pass
 
 
-# TODO: Format response
 def get_messages(room_id):
     if type(int(room_id)) == int:
         response = requests.get(BASE + "room/" + room_id + "/messages", {"id": ID})
         format_response(response)
 
 
-# TODO: Format response
 def get_user_messages(room_id, user_id):
     if type(int(room_id)) == int:
         response = requests.get(BASE + "room/" + room_id + "/" + user_id + "/messages", {"id": ID})
@@ -114,14 +114,15 @@ def get_user_messages(room_id, user_id):
     pass
 
 
-# TODO: this
 def post_message(room_id, message):
     if type(int(room_id)) == int:
         user_id = ID
         url = BASE + "room/" + str(room_id) + "/" + str(user_id) + "/messages"
         response = requests.post(url, {"id": ID, "message": message})
-        format_response(response)
-    pass
+        if response.json() == "OK":
+            get_messages(room_id)
+        else:
+            print("Message was not sent")  # Should be rare, as many other things need to fail to reach this 
 
 
 # TODO: this
