@@ -82,7 +82,7 @@ def add_room_user(room_id):
 # MESSAGES ####################################################################
 
 
-# TODO: this
+# TODO: Format response
 def get_messages(room_id):
     if type(int(room_id)) == int:
         response = requests.get(BASE + "room/" + room_id + "/messages", {"id": ID})
