@@ -1,5 +1,6 @@
 import requests
 import threading
+import time
 import re  # reeeeeeeeeeeeee
 # TODO just a little bit less now
 BASE = "http://127.0.0.1:5000/api/"
@@ -161,6 +162,12 @@ def post_message(room_id, message):
 # TODO: this
 def receive_thread():
     # TODO: Receiving messages and prompts from server.
+    while True:
+        # get_messages("1")
+        # time.sleep(5)
+        # When getting push notification, request the message id that
+        # was sent with the push notification, and print the message.
+        pass
     pass
 
 # STARTUP #####################################################################
