@@ -173,7 +173,7 @@ def get_user_messages(room_id, user_id):
 
 
 def get_message(message_id):
-    if type(int(room_id)) == int:
+    if type(int(message_id)) == int:
         response = requests.get(
             BASE + "message/" + message_id, {"id": ID})
         print(response.json)
