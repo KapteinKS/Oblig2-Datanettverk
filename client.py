@@ -9,12 +9,14 @@ HELP_CONNECTED = """/users gives a list of users
 HELP_NOT_CONNECTED = """When not connected you can only use the /help, /register or /connect
 commands. Please register as a new user then connect with your given ID.
 Use /register <name> and then /connect <ID>."""
+ALL_COMMANDS = ["/help","/connect USER_ID","/register NAME","/users","/user USER_ID","/get_rooms","/add_room ROOM_NAME","/get_room ROOM_ID","/get_rooms_users ROOM_ID","/join_room ROOM_ID","/get_messages ROOM_ID","/get_user_messages ROOM_ID USER_ID","/post_message ROOM_ID MESSAGE"]
 # USERS #######################################################################
 
 
 def connect(user_id):
     global ID
     ID = user_id
+    print("Connection established.")
 
 
 def get_users():  # return users
@@ -28,14 +30,14 @@ def get_users():  # return users
 def add_user(user_name):  # add user to db
     # TODO type validate string
     # text = input("Please create a username: ")
-    response = requests.put(BASE + "users", {"name": user_name})
-    print(response.json())
+    response = requests.put(BASE + "users", {"name": user_name}).json()
+    print(response)
 
 
 def get_user(user_id):
     if type(int(user_id)) == int:
-        response = requests.get(BASE + "user/" + user_id, {"id": ID})
-        print(response.json())
+        response = requests.get(BASE + "user/" + user_id, {"id": ID}).json()
+        print(response["name"])
     else:
         print("Please use a number")
 
@@ -90,9 +92,14 @@ def get_room_users(room_id):
         print("Please use a number")
 
 
-# TODO: this
 def add_room_user(room_id):
-    pass
+    if type(int(room_id)) == int:
+        response = requests.put(BASE + "room/" + str(room_id) + "/users", {"id": ID})
+        print(response.json())
+        # TODO: Formatting output
+    else:
+        print("Please use a number")
+
 
 
 # MESSAGES ####################################################################
@@ -127,7 +134,7 @@ def post_message(room_id, message):
         if response.json() == "OK":
             get_messages(room_id)
         else:
-            print("Message was not sent")  # Should be rare, as many other things need to fail to reach this 
+            print("Message was not sent")  # Should be rare, as many other things need to fail to reach this
 
 
 # TODO: this
@@ -197,7 +204,7 @@ def send_thread():
                         print(
                             "Please provide a room number and user ID whn typing this command")
                 elif text[0] == "/post_message":
-                    try:    
+                    try:
                         message = " ".join(text[2:])
                         post_message(text[1], message)
                     except:
@@ -220,6 +227,9 @@ def send_thread():
             elif raw == "/help":
                 # Print out a help page for all the commands
                 print(HELP_NOT_CONNECTED)
+                print("Here's a list of all the commands: ")
+                for command in ALL_COMMANDS:
+                    print(command)
                 pass
             else:
                 print(
