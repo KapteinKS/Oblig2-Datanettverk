@@ -84,9 +84,14 @@ def get_room_users(room_id):
         print("Please use a number")
 
 
-# TODO: this
 def add_room_user(room_id):
-    pass
+    if type(int(room_id)) == int:
+        response = requests.put(BASE + "room/" + str(room_id) + "/users", {"id": ID})
+        print(response.json())
+        # TODO: Formatting output
+    else:
+        print("Please use a number")
+
 
 
 # MESSAGES ####################################################################
@@ -186,7 +191,7 @@ def send_thread():
                         print(
                             "Please provide a room number and user ID whn typing this command")
                 elif text[0] == "/post_message":
-                    try:    
+                    try:
                         message = " ".join(text[2:])
                         post_message(text[1], message)
                     except:
