@@ -42,7 +42,7 @@ def get_user(user_id):
         print("Please use a number")
 
 
-def return_user(user_id):
+def get_name(user_id):
     if type(int(user_id)) == int:
         response = requests.get(BASE + "user/" + str(user_id), {"id": ID})
         return response.json()["name"]
@@ -101,15 +101,13 @@ def add_room_user(room_id):
         print("Please use a number")
 
 
-
 # MESSAGES ####################################################################
-# TODO make response formatting
 def format_messages(response):
     for x in range(101): 
         print()  # Clear screen
     
     for message in response:
-        user = return_user(int(message["sender"]))       
+        user = get_name(int(message["sender"]))       
         print(user, ":", message["content"])
 
 
