@@ -1,5 +1,6 @@
 import requests
 import threading
+import re  # reeeeeeeeeeeeee
 # TODO just a little bit less now
 BASE = "http://127.0.0.1:5000/api/"
 ID = -1
@@ -38,10 +39,16 @@ def get_users():  # return users
 
 
 def add_user(user_name):  # add user to db
-    # TODO type validate string
-    # text = input("Please create a username: ")
-    response = requests.put(BASE + "users", {"name": user_name}).json()
-    print(response)
+    if re.fullmatch('[A-Za-z]{2,25}( [A-Za-z]{2,25})?', user_name):
+        response = requests.put(BASE + "users", {"name": user_name}).json()
+        print(response)
+    else:
+        print("\nIllegal user name."
+              "\nUser name rules: "
+              "\n\t1. \tOne or two names"
+              "\n\t2. \tUpper case and lower case letters"
+              "\n\t3. \tNo special characters"
+              "\n\t4. \tName(s) can be 2-25 characters (each)")
 
 
 def get_user(user_id):
