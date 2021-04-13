@@ -226,8 +226,8 @@ def receive_thread():
 # STARTUP #####################################################################
 
 
-def execute():
-    raw = input()
+def execute(commando):
+    raw = commando
     text = raw.split(" ")
     # Raw is command only, text[] is command + args
     if raw.startswith("/"):
@@ -323,7 +323,7 @@ def execute():
 
 def send_thread():
     while True:
-        execute()
+        execute(input(":""))
     # bertramTheBot()
 #    pass
 
