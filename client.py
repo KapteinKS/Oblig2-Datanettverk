@@ -103,7 +103,7 @@ def get_rooms():
     for room in response.json():
         print("ID:", str(room["id"]), "\tName:", str(room["name"]),
               "\tNumber of users:", str(room["numberOfUsers"]))
-
+    return response.json()
 
 def add_room(room_name):
     response = requests.put(BASE + "rooms", {"id": ID, "name": room_name})
@@ -355,21 +355,20 @@ def bertram_the_bot():
     botID = execute("/register Bertram")
     time.sleep(1)
     print("ATTEMTING: /connect "+str(botID))
+    execute("/connect " + str(botID))
     time.sleep(0.5)
     print("You are here")
     rooms = execute("/get_rooms")
-    #print(f"There are {len(rooms)} rooms")
+    print(f"There are {len(rooms)} rooms")
+    room_to_join = random.randint(0, (len(rooms)-1))
+    print(f"You're joining room {room_to_join}")
     time.sleep(0.5)
-    execute("/connect "+str(botID))
-    time.sleep(0.5)
-
-    execute("/join_room ")
+    execute("/join_room "+str(room_to_join))
     time.sleep(0.5)
     #execute("/join_room 0")
-    # time.sleep(0.5)
-    execute("/post_message 0 Hello I am Bertram.")
+    time.sleep(0.5)
+    execute("/post_message " + str(room_to_join) + " Hello I am Bertram.")
     time.sleep(1)
-    execute("/room_")
     execute(input("BREAK:"))
     # pass
 
