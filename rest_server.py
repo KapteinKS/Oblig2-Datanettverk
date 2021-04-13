@@ -338,7 +338,7 @@ def push_notification():
                 if user != message["sender"] and user in user_sockets:
                     print(
                         f"Sending push for message {message['id']} to user {user}")
-                    user_sockets[user].send(message["id"].encode())
+                    user_sockets[user].send(str(message["id"]).encode())
                 else:
                     print("Noe er feil med push notification")
                 break
