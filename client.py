@@ -142,6 +142,7 @@ def get_room(room_id):
 
                 names = {}
                 for message in messages:
+                    print()
                     if message["sender"] not in names:
                         names[int(message["sender"])] = get_name(
                             int(message["sender"]))
@@ -454,15 +455,41 @@ def carlton_the_bot():
 
 
 def bobby_the_bot():
-    messages = []
-    botID = execute("/register Bob Marley")
+    # What's copyright again?
+    messages = ["How many roads must a man walk down \nBefore you call him a man? "
+                "\nHow many seas must a white dove sail \nBefore she sleeps in the sand? "
+                "\nYes, and how many times must the cannonballs fly \nBefore they're forever banned?"
+                "\n\nThe answer, my friend, is blowin' in the wind\nThe answer is blowin' in the wind", 
+                "Once upon a time you dressed so fine \nThrew the bums a dime in your prime, didn't you?"
+                "\nPeople call, say 'Beware doll, you're bound to fall' \nYou thought they were all a-kiddin' you"
+                "\nYou used to laugh about \nEverybody that was hangin' out"
+                "\nNow you don't talk so loud \nNow you don't seem so proud "
+                "\nAbout having to be scrounging your next meal    "
+                "\n\nHow does it feel? \nHow does it feel? \nTo be without a home? "
+                "\nLike a complete unknown? \nLike a rolling stone?",
+                "My throat is getting tired, now", "I don't think I can sing anymore", 
+                "I'm gonna go see if Joe Rogan has said something interesting",
+                "Has anyone seen Joe today?", "I wanted to see if he'd said something interesting"]
+    botID = execute("/register Robert Zimmerman")
     time.sleep(1)
     print("Connecting")
     execute("/connect " + str(botID))
     time.sleep(1)
-    room_id = execute("/add_room Exodus")
+    room_id = execute("/add_room The Rolling Thunder Revue")
+    time.sleep(1)
     execute("/join_room " + room_id)
     time.sleep(1)
+    execute("/get_room " + room_id)
+    for x in range(4):
+        time.sleep(10)
+        execute(messages[x])
+    room_to_join = join_random()
+    time.sleep(2)
+    execute("/get_room " + str(room_to_join))
+    time.sleep(10)
+    execute(messages[4])
+    time.sleep(50)
+    execute(messages[5])    
 
 
 def elvira_the_bot():
@@ -529,9 +556,14 @@ def start():
             carlton_the_bot()
         elif BOTNAME.lower() == "joe":
             joe_the_bot()
+<<<<<<< HEAD
         elif BOTNAME.lower() == "elvira":
             elvira_the_bot()
 
+=======
+        elif BOTNAME.lower() == "bobby":
+            bobby_the_bot()
+>>>>>>> a3d7b072c2f495b4d7f46ece82de07e6b92cb37b
 
 
 start()
