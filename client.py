@@ -480,16 +480,16 @@ def bobby_the_bot():
     execute("/join_room " + room_id)
     time.sleep(1)
     execute("/get_room " + room_id)
-    for x in range(4):
+    for x in range(5):
         time.sleep(10)
         execute(messages[x])
     room_to_join = join_random()
     time.sleep(2)
     execute("/get_room " + str(room_to_join))
     time.sleep(10)
-    execute(messages[4])
-    time.sleep(50)
     execute(messages[5])
+    time.sleep(50)
+    execute(messages[6])
 
 
 def elvira_the_bot():
