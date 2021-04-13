@@ -150,7 +150,11 @@ class Users(Resource):
             return list(users.values())
 
     def put(self):  # add user
-        id = len(users)
+        max = 0
+        for user in users:
+            if user > int(max):
+                max = int(user)
+        id = max + 1
         name = request.form["name"]
         users[id] = {"id": id, "name": name}
         return f"Successfully added. ID: {id}", 201
