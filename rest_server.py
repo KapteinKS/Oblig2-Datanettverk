@@ -328,24 +328,22 @@ def accept_connection(sock):
 
 
 def push_notification():
-    while True:
-        try:
-            message = message_push_queue.popleft()
-            users = rooms[message["room"]]["listOfUsers"]
-            for user_id in users:
-                if user_id != message["sender"]:
-                    if user_id in user_sockets:
-                        print(
-                            f"Sending push for message {message['id']} to user {user_id}")
-                        user_sockets[user_id].send(str(message["id"]).encode())
-                    else:
-                        print(f"Brukeren med ID {user_id} har ikke noen socket")
+    try:
+        message = message_push_queue.popleft()
+        users = rooms[message["room"]]["listOfUsers"]
+        for user_id in users:
+            if user_id != message["sender"]:
+                if user_id in user_sockets:
+                    print(
+                        f"Sending push for message {message['id']} to user {user_id}")
+                    user_sockets[user_id].send(str(message["id"]).encode())
                 else:
-                    print(f"Hopper over avsenderen, bruker {user_id}")
-                break
-        except IndexError:
-            # No messages to send
-            pass
+                    print(f"Brukeren med ID {user_id} har ikke noen socket")
+            else:
+                print(f"Hopper over avsenderen, bruker {user_id}")
+    except IndexError:
+        # No messages to send
+        pass
 
 
 def push_socket_creation():
