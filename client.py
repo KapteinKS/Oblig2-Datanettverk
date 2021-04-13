@@ -441,12 +441,13 @@ def start():
     send = threading.Thread(target=send_thread)
     receive.start()
     send.start()
-    if BOTNAME.lower() == "bertram":
-        bertram_the_bot()
-    elif BOTNAME.lower() == "carlton":
-        carlton_the_bot()
-    elif BOTNAME.lower() == "joe":
-        joe_the_bot()
+    if BOTNAME != None:
+        if BOTNAME.lower() == "bertram":
+            bertram_the_bot()
+        elif BOTNAME.lower() == "carlton":
+            carlton_the_bot()
+        elif BOTNAME.lower() == "joe":
+            joe_the_bot()
 
 
 
