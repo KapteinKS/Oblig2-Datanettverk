@@ -6,7 +6,7 @@ import socket
 # TODO Thread
 BASE = "http://127.0.0.1:5000/api/"
 ID = -1
-ADDRESS = ("127.0.0.1", 5000)
+ADDRESS = ("127.0.0.1", 5001)
 
 HELP_CONNECTED = """
 | /users                                 gives a list of users.
@@ -113,12 +113,15 @@ def get_room(room_id):
         names = {}
         for message in messages:
             if message["sender"] not in names:
-                names[int(message["sender"])] = get_name(int(message["sender"]))
-            print("\t" + names[int(message["sender"])], ":", "\t" + message["content"])
+                names[int(message["sender"])] = get_name(
+                    int(message["sender"]))
+            print("\t" + names[int(message["sender"])],
+                  ":", "\t" + message["content"])
     else:
         print("Please use a number")
 
 # ROOM USERS ##################################################################
+
 
 def get_room_users(room_id):
     if type(int(room_id)) == int:
@@ -127,7 +130,7 @@ def get_room_users(room_id):
             BASE + "room/" + str(room_id) + "/users", {"id": ID})
         print(f"Users in Room {room_id}:")
         for usr in response.json():
-            print("UserID:", str(usr["id"]), "\tName:",str(usr["name"]))
+            print("UserID:", str(usr["id"]), "\tName:", str(usr["name"]))
     else:
         print("Please use a number")
 
@@ -197,10 +200,8 @@ def receive_thread():
     # show message
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect(ADDRESS)
-    #msg = "AYAYA Clap"
-    # sock.send(msg.encode())
-
-    pass
+    msg = "AYAYA Clap"
+    sock.send(msg.encode())
 
 # STARTUP #####################################################################
 
