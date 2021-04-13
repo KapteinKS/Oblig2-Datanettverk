@@ -298,6 +298,8 @@ class RoomUserMessages(Resource):
                 if user_id in rooms[room_id]["listOfUsers"]:
                     message = request.form["message"]
                     add_message(message, room_id, user_id)
+                    push_thread = threading.Thread(target=push_notification)
+                    push_thread.start()
                     return "OK", 201
                 else:
                     abort(403, message="User is not in this room")
@@ -357,7 +359,7 @@ def push_socket_creation():
 
 
 if __name__ == "__main__":
-    push_thread = threading.Thread(target=push_notification)
-    push_thread.start()
+    #push_thread = threading.Thread(target=push_notification)
+    # push_thread.start()
     push_socket_creation()
     app.run(debug=True)
