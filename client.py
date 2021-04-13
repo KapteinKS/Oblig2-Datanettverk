@@ -385,6 +385,15 @@ def bertram_the_bot():
     time.sleep(0.5)
     execute("/post_message " + str(room_to_join) + " Hello I am Bertram.")
     time.sleep(1)
+
+    # Put this in a loop, to get responses ####
+
+    msgs = execute("/get_messages " +str(room_to_join))
+    time.sleep(0.5)
+    if (msgs)
+
+    ###########################################
+
     execute(input("BREAK:"))
     # pass
 
@@ -449,12 +458,13 @@ def start():
     send = threading.Thread(target=send_thread)
     receive.start()
     send.start()
-    if BOTNAME.lower() == "bertram":
-        bertram_the_bot()
-    elif BOTNAME.lower() == "carlton":
-        carlton_the_bot()
-    elif BOTNAME.lower() == "joe":
-        joe_the_bot()
+    if BOTNAME != None:
+        if BOTNAME.lower() == "bertram":
+            bertram_the_bot()
+        elif BOTNAME.lower() == "carlton":
+            carlton_the_bot()
+        elif BOTNAME.lower() == "joe":
+            joe_the_bot()
 
 
 
