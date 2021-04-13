@@ -198,18 +198,28 @@ def post_message(room_id, message):
         user_id = ID
         url = BASE + "room/" + str(room_id) + "/" + str(user_id) + "/messages"
         response = requests.post(url, {"id": ID, "message": message})
-        if response.json() == "OK":
-            get_messages(room_id)
-        else:
-            # Should be rare, as many other things need to fail to reach this
-            print("Message was not sent")
+        try:
+            if response.status_code == 403 or response.status_code == 404:
+                raise HTTPError
+            else:
+                get_messages(room_id)
+        except HTTPError:
+            print(response.json()["message"])
+    else:
+        # Should be rare, as many other things need to fail to reach this
+        print("Message was not sent")
 
 
 def post_message_in_room(message):
     url = BASE + "room/" + str(ROOM) + "/" + str(ID) + "/messages"
     response = requests.post(url, {"id": ID, "message": message})
-    if response.json() == "OK":
-        get_room(ROOM)
+    try:
+        if response.status_code == 403 or response.status_code == 404:
+            raise HTTPError
+        else:
+            get_room(ROOM)
+    except HTTPError:
+        print(response.json()["message"])
 
 
 # TODO: this

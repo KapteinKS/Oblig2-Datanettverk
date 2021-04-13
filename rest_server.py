@@ -294,7 +294,7 @@ class RoomUserMessages(Resource):
                     add_message(message, room_id, user_id)
                     return "OK", 201
                 else:
-                    abort(404, message="User is not in this room")
+                    abort(403, message="User is not in this room")
             else:
                 abort(404, message="No room found with that ID")
 
