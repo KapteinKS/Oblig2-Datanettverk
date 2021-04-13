@@ -326,15 +326,6 @@ def accept_connection(sock):
 
 
 def push_notification():
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    sock.bind(ADDRESS)
-    sock.listen(1)
-
-    push_accept_thread = threading.Thread(
-        target=accept_connection, args=[sock])
-    push_accept_thread.start()
-    # TODO Separate socket creation from push handling, prevent eternal loop
     while True:
         try:
             message = message_push_queue.popleft()
@@ -348,12 +339,25 @@ def push_notification():
                     user_sockets[user].send(message["id"].encode())
                 else:
                     print("Noe er feil med push notification")
+                break
         except IndexError:
             # No messages to send
             pass
 
 
+def push_socket_creation():
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    sock.bind(ADDRESS)
+    sock.listen(1)
+
+    push_accept_thread = threading.Thread(
+        target=accept_connection, args=[sock])
+    push_accept_thread.start()
+
+
 if __name__ == "__main__":
     push_thread = threading.Thread(target=push_notification)
     push_thread.start()
+    push_socket_creation()
     app.run(debug=True)
