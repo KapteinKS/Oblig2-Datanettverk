@@ -362,7 +362,8 @@ def send_thread():
     # bertramTheBot()
 #    pass
 
-        ## BOT STUFF ###################################################################
+
+# BOT STUFF ###################################################################
 def join_random():
     rooms = execute("/get_rooms")
     print(f"There are {len(rooms)} rooms")
@@ -372,6 +373,7 @@ def join_random():
     execute("/join_room "+str(room_to_join))
     time.sleep(0.5)
     return room_to_join
+
 
 def bertram_the_bot():
     botID = execute("/register Bertram")
@@ -415,10 +417,16 @@ def carlton_the_bot():
     time.sleep(1)
     execute("/get_room " + room_id)
     for x in range(3):
-        execute(random.choice(messages))
         time.sleep(60)
-    join_random()
-    execute(random.choice(messages))
+        execute(random.choice(messages))
+    time.sleep(1)
+    execute("I'm gonna join another room now")
+    room_to_join = join_random()
+    time.sleep(2)
+    execute("/get_room " + str(room_to_join))
+    for x in range(3):
+        time.sleep(90)
+        execute(random.choice(messages))
 
 
 def bobby_the_bot():
@@ -445,8 +453,14 @@ def joe_the_bot():
         time.sleep(0.1)
     execute("/get_room " + str(room_id))
     for x in range(6):
-        execute(random.choice(messages))
         time.sleep(30)
+        execute(random.choice(messages))
+    execute("I'm gonna switch to the general chat now now")
+    time.sleep(1)
+    execute("/get_room 0")
+    for x in range(4):
+        time.sleep(60)
+        execute(random.choice(messages))
 
 
 ################################################################################
