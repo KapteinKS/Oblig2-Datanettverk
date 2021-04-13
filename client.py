@@ -220,7 +220,7 @@ def receive_thread():
     # show message
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect(ADDRESS)
-    msg = "AYAYA Clap"
+    msg = "1"
     sock.send(msg.encode())
 
 # STARTUP #####################################################################
