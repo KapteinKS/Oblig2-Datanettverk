@@ -53,7 +53,7 @@ def get_users():  # return users
     print("Users:")
     for user in response:
         print("\n" + user["name"])
-    return response
+    return response.json()
 
 
 def add_user(user_name):  # add user to db
@@ -363,15 +363,7 @@ def send_thread():
 #    pass
 
         ## BOT STUFF ###################################################################
-def join_random():
-    rooms = execute("/get_rooms")
-    print(f"There are {len(rooms)} rooms")
-    room_to_join = random.randint(0, (len(rooms)-1))
-    print(f"You're joining room {room_to_join}")
-    time.sleep(0.5)
-    execute("/join_room "+str(room_to_join))
-    time.sleep(0.5)
-    return room_to_join
+
 
 def bertram_the_bot():
     botID = execute("/register Bertram")
@@ -380,7 +372,13 @@ def bertram_the_bot():
     execute("/connect " + str(botID))
     time.sleep(0.5)
     print("You are here")
-    room_to_join = join_random()
+    rooms = execute("/get_rooms")
+    print(f"There are {len(rooms)} rooms")
+    room_to_join = random.randint(0, (len(rooms)-1))
+    print(f"You're joining room {room_to_join}")
+    time.sleep(0.5)
+    execute("/join_room "+str(room_to_join))
+    time.sleep(0.5)
     #execute("/join_room 0")
     time.sleep(0.5)
     execute("/post_message " + str(room_to_join) + " Hello I am Bertram.")
@@ -391,14 +389,15 @@ def bertram_the_bot():
     msgs = execute("/get_messages " +str(room_to_join))
     joecheck = False;
     rndmsg = random.choice(msgs)
+    print("RANDOM MSG CHOSEN: " + str(rndmsg["sender"]))
+    time.sleep(0.5)
     for msg in msgs:
         if get_user(str(msg["sender"]))["name"].lower() == "joe":
             joecheck = True
     if joecheck:
         execute("/post_message " +str(room_to_join) + " Joe, why don't you just shut the f*** up?")
     else:
-
-        msg = "Dang " + str(get_user(rndmsg["sender"])["name"]) + ", good point!"
+        msg = "Dang " + str(get_user(str(rndmsg["sender"]))["name"]) + ", good point!"
         execute("/post_message " + str(room_to_join) + " " + msg)
 
     time.sleep(0.5)
@@ -419,17 +418,13 @@ def carlton_the_bot():
     print("Connecting")
     execute("/connect " + str(botID))
     time.sleep(1)
-    room_id = execute("/add_room Dancing")
+    execute("/add_room Dancing")
     time.sleep(1)
     execute("/join_room 0")
     time.sleep(1)
-    execute("/join_room " + room_id)
+    execute("/join_room 3")
     time.sleep(1)
-    execute("/get_room " + room_id)
-    for x in range(3):
-        execute(random.choice(messages))
-        time.sleep(60)
-    join_random()
+    execute("/get_room 3")
     execute(random.choice(messages))
 
 
@@ -452,13 +447,11 @@ def joe_the_bot():
     room_id = execute("/add_room Inspirational Quotes")
     execute("/join_room " + room_id)
     time.sleep(1)
-    for x in range(5):
+    for x in range(10):
         execute("/join_room " + str(x))
         time.sleep(0.1)
     execute("/get_room " + str(room_id))
-    for x in range(6):
-        execute(random.choice(messages))
-        time.sleep(30)
+    execute(random.choice(messages))
 
 
 ################################################################################
@@ -477,6 +470,7 @@ def start():
             carlton_the_bot()
         elif BOTNAME.lower() == "joe":
             joe_the_bot()
+
 
 
 start()
