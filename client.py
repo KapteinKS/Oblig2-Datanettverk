@@ -8,14 +8,14 @@ import argparse
 from requests.exceptions import HTTPError
 # TODO Thread
 parser = argparse.ArgumentParser()
-parser.add_argument("-botname", type=str)
+parser.add_argument("-b", type=str)
 args = parser.parse_args()
 
 BASE = "http://127.0.0.1:5000/api/"
 ID = -1
 ROOM = -1
 ADDRESS = ("127.0.0.1", 5001)
-BOTNAME = args.botname
+BOTNAME = args.b
 print(BOTNAME)
 
 HELP_CONNECTED = """
@@ -133,7 +133,7 @@ def get_room(room_id):
                         names[int(message["sender"])] = get_name(
                             int(message["sender"]))
                     print("\t" + names[int(message["sender"])],
-                          ":", "\t" + message["content"])
+                          ":", "\n\t\t" + message["content"])
             else:
                 raise HTTPError
         except HTTPError:
@@ -177,7 +177,8 @@ def format_messages(response):
     for message in response:
         if message["sender"] not in users:
             users[int(message["sender"])] = get_name(int(message["sender"]))
-        print(users[int(message["sender"])], ":", message["content"])
+        print("\t" + users[int(message["sender"])], ":",
+              "\n\t\t" + message["content"])
 
 
 def get_messages(room_id):
@@ -206,18 +207,28 @@ def post_message(room_id, message):
         user_id = ID
         url = BASE + "room/" + str(room_id) + "/" + str(user_id) + "/messages"
         response = requests.post(url, {"id": ID, "message": message})
-        if response.json() == "OK":
-            get_messages(room_id)
-        else:
-            # Should be rare, as many other things need to fail to reach this
-            print("Message was not sent")
+        try:
+            if response.status_code == 403 or response.status_code == 404:
+                raise HTTPError
+            else:
+                get_messages(room_id)
+        except HTTPError:
+            print(response.json()["message"])
+    else:
+        # Should be rare, as many other things need to fail to reach this
+        print("Message was not sent")
 
 
 def post_message_in_room(message):
     url = BASE + "room/" + str(ROOM) + "/" + str(ID) + "/messages"
     response = requests.post(url, {"id": ID, "message": message})
-    if response.json() == "OK":
-        get_room(ROOM)
+    try:
+        if response.status_code == 403 or response.status_code == 404:
+            raise HTTPError
+        else:
+            get_room(ROOM)
+    except HTTPError:
+        print(response.json()["message"])
 
 
 # TODO: this
@@ -341,7 +352,7 @@ def send_thread():
 
 def bertramTheBot():
     botID = execute("/register Bertram")
-    time.sleep(0.5)
+    time.sleep(1)
     print("ATTEMTING: /connect "+str(botID))
     time.sleep(0.5)
     execute("/connect "+str(botID))
@@ -351,10 +362,25 @@ def bertramTheBot():
     #execute("/join_room 0")
     # time.sleep(0.5)
     execute("/post_message 0 Hello I am Bertram.")
-    time.sleep(1.5)
+    time.sleep(1)
     execute(input("BREAK:"))
     # pass
 
+
+def carlton_the_bot():
+    botID = execute("/register Carlton Banks")
+    time.sleep(1)
+    print("Connecting")
+    execute("/connect " + str(botID))
+    time.sleep(1)
+    execute("/add_room Dancing")
+    time.sleep(1)
+    execute("/join_room 0")
+    time.sleep(1)
+    execute("/join_room 3")
+    time.sleep(1)
+    execute("/get_room 3")
+    execute("Let's dance, everyone!!!!")
 
 ################################################################################
 
@@ -365,6 +391,10 @@ def start():
     send = threading.Thread(target=send_thread)
     receive.start()
     send.start()
+    if BOTNAME.lower() == "bertram":
+        bertramTheBot()
+    elif BOTNAME.lower() == "carlton":
+        carlton_the_bot()
 
 
 start()
