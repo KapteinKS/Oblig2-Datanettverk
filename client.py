@@ -118,12 +118,14 @@ def get_room(room_id):
                 for user in users:
                     print("\t" + user["name"])
                 print("\nMessages:")
-        
+
                 names = {}
                 for message in messages:
                     if message["sender"] not in names:
-                        names[int(message["sender"])] = get_name(int(message["sender"]))
-                    print("\t" + names[int(message["sender"])], ":", "\t" + message["content"])
+                        names[int(message["sender"])] = get_name(
+                            int(message["sender"]))
+                    print("\t" + names[int(message["sender"])],
+                          ":", "\t" + message["content"])
             else:
                 raise HTTPError
         except HTTPError:
@@ -295,7 +297,7 @@ def execute():
             for command in ALL_COMMANDS:
                 print(command)
             pass
-        
+
         elif text[0] == "/connect":
             try:
                 user_id = int(text[1])
@@ -313,7 +315,6 @@ def execute():
     elif ID >= 0 and ROOM >= 0:
         if len(raw) > 0:
             post_message_in_room(raw)
-            print("Input was not recognised as a command, type /help for a list of commands")
     else:
         print("Input was not recognised as a command, or message was not sent as you may not be"
               " logged in, or connected to a room."
@@ -321,13 +322,13 @@ def execute():
 
 
 def send_thread():
-    execute()
-    # while True:
-        # bertramTheBot()
-    #    pass
+    while True:
+        execute()
+    # bertramTheBot()
+#    pass
 
+        ## BOT STUFF ###################################################################
 
-## BOT STUFF ###################################################################
 
 def bertramTheBot():
     botID = execute("/register Bertram")
@@ -339,11 +340,11 @@ def bertramTheBot():
     execute("/join_room 0")
     time.sleep(0.5)
     #execute("/join_room 0")
-    #time.sleep(0.5)
+    # time.sleep(0.5)
     execute("/post_message 0 Hello I am Bertram.")
     time.sleep(1.5)
     execute(input("BREAK:"))
-    #pass
+    # pass
 
 
 ################################################################################
