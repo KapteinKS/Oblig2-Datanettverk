@@ -58,7 +58,7 @@ def get_users():  # return users
     print("Users:")
     for user in response:
         print("\n" + user["name"])
-    return response.json()
+    return response
 
 
 def add_user(user_name):  # add user to db
