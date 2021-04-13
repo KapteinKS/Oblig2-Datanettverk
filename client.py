@@ -7,7 +7,7 @@ import socket
 BASE = "http://127.0.0.1:5000/api/"
 ID = -1
 ROOM = -1
-ADDRESS = ("127.0.0.1", 5000)
+ADDRESS = ("127.0.0.1", 5001)
 
 HELP_CONNECTED = """
 | /users                                 gives a list of users.
@@ -119,12 +119,15 @@ def get_room(room_id):
         names = {}
         for message in messages:
             if message["sender"] not in names:
-                names[int(message["sender"])] = get_name(int(message["sender"]))
-            print("\t" + names[int(message["sender"])], ":", "\t" + message["content"])
+                names[int(message["sender"])] = get_name(
+                    int(message["sender"]))
+            print("\t" + names[int(message["sender"])],
+                  ":", "\t" + message["content"])
     else:
         print("Please use a number")
 
 # ROOM USERS ##################################################################
+
 
 def get_room_users(room_id):
     if type(int(room_id)) == int:
@@ -133,7 +136,7 @@ def get_room_users(room_id):
             BASE + "room/" + str(room_id) + "/users", {"id": ID})
         print(f"Users in Room {room_id}:")
         for usr in response.json():
-            print("UserID:", str(usr["id"]), "\tName:",str(usr["name"]))
+            print("UserID:", str(usr["id"]), "\tName:", str(usr["name"]))
     else:
         print("Please use a number")
 
@@ -210,109 +213,111 @@ def receive_thread():
     # show message
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect(ADDRESS)
-    #msg = "AYAYA Clap"
-    # sock.send(msg.encode())
-
-    pass
+    msg = "AYAYA Clap"
+    sock.send(msg.encode())
 
 # STARTUP #####################################################################
-def execute(input):
-        raw = input
-        text = raw.split(" ")
-        # Raw is command only, text[] is command + args
-        if raw.startswith("/"):
-            if ID >= 0:
-                if raw == "/help":
-                    # Print out a help page for all the commands
-                    print(HELP_CONNECTED)
-                    pass
-                elif raw == "/users":
-                    get_users()
 
-                elif text[0] == "/user":
-                    try:
-                        get_user(text[1])
-                    except:
-                        print("Please enter a user to get when typing the command")
-                elif text[0] == "/delete":
-                    try:
-                        delete_user(text[1])
-                    except:
-                        "Please enter a user to delete when typing the command"
-                elif raw == "/get_rooms":
-                    get_rooms()
-                elif text[0] == "/add_room":
-                    try:
-                        add_room(text[1])
-                    except:
-                        print("Please add a room-name!")
-                elif text[0] == "/get_room":
-                    try:
-                        get_room(text[1])
-                    except:
-                        print("Please provide a room number when typing this command")
-                elif text[0] == "/get_room_users":
-                    try:
-                        get_room_users(text[1])
-                    except:
-                        print("Please provide a room number when typing this command")
-                elif text[0] == "/join_room":
-                    try:
-                        add_room_user(text[1])
-                    except:
-                        print("Please provide a room number when typing this command")
-                elif text[0] == "/get_messages":
-                    try:
-                        get_messages(text[1])
-                    except:
-                        print(
-                            "Please provide a room number to get messages from when typing this command")
-                elif text[0] == "/get_user_messages":
-                    try:
-                        get_user_messages(text[1], text[2])
-                    except:
-                        print(
-                            "Please provide a room number and user ID when typing this command")
-                elif text[0] == "/post_message":
-                    try:
-                        message = " ".join(text[2:])
-                        post_message(text[1], message)
-                    except:
-                        print(
-                            "Please provide a room number and a message when typing this command")
-                else:
-                    print(
-                        "Input was not recognised as a command, type /help for a list of commands")
-            elif text[0] == "/connect":
-                try:
-                    user_id = int(text[1])
-                    connect(user_id)
-                except:
-                    print("Please connect with a user ID")
-            elif text[0] == "/register":
-                try:
-                    return add_user(" ".join(text[1:]))
-                except:
-                    print("Please enter a name to register when typing the command")
-            elif raw == "/help":
-                # Print out a help page for help on how to get started
-                print(HELP_NOT_CONNECTED)
-                print("Here's a list of all the commands: ")
-                for command in ALL_COMMANDS:
-                    print(command)
+
+def execute(input):
+    raw = input
+    text = raw.split(" ")
+    # Raw is command only, text[] is command + args
+    if raw.startswith("/"):
+        if ID >= 0:
+            if raw == "/help":
+                # Print out a help page for all the commands
+                print(HELP_CONNECTED)
                 pass
+            elif raw == "/users":
+                get_users()
+
+            elif text[0] == "/user":
+                try:
+                    get_user(text[1])
+                except:
+                    print("Please enter a user to get when typing the command")
+            elif text[0] == "/delete":
+                try:
+                    delete_user(text[1])
+                except:
+                    "Please enter a user to delete when typing the command"
+            elif raw == "/get_rooms":
+                get_rooms()
+            elif text[0] == "/add_room":
+                try:
+                    add_room(text[1])
+                except:
+                    print("Please add a room-name!")
+            elif text[0] == "/get_room":
+                try:
+                    get_room(text[1])
+                except:
+                    print("Please provide a room number when typing this command")
+            elif text[0] == "/get_room_users":
+                try:
+                    get_room_users(text[1])
+                except:
+                    print("Please provide a room number when typing this command")
+            elif text[0] == "/join_room":
+                try:
+                    add_room_user(text[1])
+                except:
+                    print("Please provide a room number when typing this command")
+            elif text[0] == "/get_messages":
+                try:
+                    get_messages(text[1])
+                except:
+                    print(
+                        "Please provide a room number to get messages from when typing this command")
+            elif text[0] == "/get_user_messages":
+                try:
+                    get_user_messages(text[1], text[2])
+                except:
+                    print(
+                        "Please provide a room number and user ID when typing this command")
+            elif text[0] == "/post_message":
+                try:
+<<<<<<< HEAD
+                    return add_user(" ".join(text[1:]))
+=======
+                    message = " ".join(text[2:])
+                    post_message(text[1], message)
+>>>>>>> 1101fcc990cf2ccde04d173942b425ca3cdd315e
+                except:
+                    print(
+                        "Please provide a room number and a message when typing this command")
             else:
                 print(
-                    "When not connected you can only use the /help, /register or /connect commands")
-        elif ID >= 0 and ROOM >= 0:
-            if len(raw) > 0:
-                post_message_in_room(raw)
+                    "Input was not recognised as a command, type /help for a list of commands")
+        elif text[0] == "/connect":
+            try:
+                user_id = int(text[1])
+                connect(user_id)
+            except:
+                print("Please connect with a user ID")
+        elif text[0] == "/register":
+            try:
+                add_user(" ".join(text[1:]))
+            except:
+                print("Please enter a name to register when typing the command")
+        elif raw == "/help":
+            # Print out a help page for help on how to get started
+            print(HELP_NOT_CONNECTED)
+            print("Here's a list of all the commands: ")
+            for command in ALL_COMMANDS:
+                print(command)
+            pass
         else:
-            print("Input was not recognised as a command, or message was not sent as you may not be"
-                  " logged in, or connected to a room."
-                  "\nType /help for a list of commands")
-
-
+            print(
+                "When not connected you can only use the /help, /register or /connect commands")
+    elif ID >= 0 and ROOM >= 0:
+        if len(raw) > 0:
+            post_message_in_room(raw)
+    else:
+        print("Input was not recognised as a command, or message was not sent as you may not be"
+              " logged in, or connected to a room."
+              "\nType /help for a list of commands")
 
 
 def send_thread():
@@ -338,7 +343,6 @@ def bertramTheBot():
     time.sleep(1.5)
     execute(input("BREAK:"))
     #pass
-
 
 
 ################################################################################
