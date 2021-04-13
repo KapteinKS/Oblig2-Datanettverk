@@ -53,7 +53,7 @@ def populate():
     }
     users[2] = {
         "id": 2,
-        "name": "Elvira",
+        "name": "ElvOLDira",
     }
 
     messages[0] = {
@@ -78,7 +78,7 @@ def populate():
         "id": 3,
         "room": 1,
         "sender": 2,
-        "content": "Je suis Elvira..",
+        "content": "Je suis ElvOLDira..",
     }
     messages[4] = {
         "id": 4,
@@ -298,6 +298,8 @@ class RoomUserMessages(Resource):
                 if user_id in rooms[room_id]["listOfUsers"]:
                     message = request.form["message"]
                     add_message(message, room_id, user_id)
+                    push_thread = threading.Thread(target=push_notification)
+                    push_thread.start()
                     return "OK", 201
                 else:
                     abort(403, message="User is not in this room")
@@ -326,15 +328,6 @@ def accept_connection(sock):
 
 
 def push_notification():
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    sock.bind(ADDRESS)
-    sock.listen(1)
-
-    push_accept_thread = threading.Thread(
-        target=accept_connection, args=[sock])
-    push_accept_thread.start()
-    # TODO Separate socket creation from push handling, prevent eternal loop
     while True:
         try:
             message = message_push_queue.popleft()
@@ -348,12 +341,25 @@ def push_notification():
                     user_sockets[user].send(message["id"].encode())
                 else:
                     print("Noe er feil med push notification")
+                break
         except IndexError:
             # No messages to send
             pass
 
 
+def push_socket_creation():
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    sock.bind(ADDRESS)
+    sock.listen(1)
+
+    push_accept_thread = threading.Thread(
+        target=accept_connection, args=[sock])
+    push_accept_thread.start()
+
+
 if __name__ == "__main__":
-    push_thread = threading.Thread(target=push_notification)
-    push_thread.start()
+    #push_thread = threading.Thread(target=push_notification)
+    # push_thread.start()
+    push_socket_creation()
     app.run(debug=True)

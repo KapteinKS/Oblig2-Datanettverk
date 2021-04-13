@@ -265,7 +265,7 @@ def receive_thread():
     sock.send(msg.encode())
     while True:
         push = sock.recv(1024)
-        print(push.decode() + "push notification test here")
+        #print(push.decode() + "push notification test here")
 
 
 # STARTUP #####################################################################
@@ -394,7 +394,6 @@ def bertram_the_bot():
     print("ATTEMTING: /connect " + str(botID))
     execute("/connect " + str(botID))
     time.sleep(0.5)
-    print("You are here")
     room_to_join = join_random()
     # execute("/join_room 0")
     time.sleep(0.5)
@@ -406,7 +405,7 @@ def bertram_the_bot():
     msgs = execute("/get_messages " + str(room_to_join))
     joecheck = False;
     rndmsg = random.choice(msgs)
-    print("RANDOM MSG CHOSEN: " + str(rndmsg["sender"]))
+    # TODO: Check that the randomly selected message is not from self
     time.sleep(0.5)
     for msg in msgs:
         if get_user(str(msg["sender"]))["name"].lower() == "joe":
@@ -418,7 +417,6 @@ def bertram_the_bot():
         execute("/post_message " + str(room_to_join) + " " + msg)
 
     time.sleep(0.5)
-    # if (msgs)
 
     ###########################################
 
@@ -495,7 +493,17 @@ def bobby_the_bot():
 
 
 def elvira_the_bot():
-    pass
+    trivia = []
+    botID = execute("/register Elvira")
+    time.sleep(0.5)
+    print("Connecting")
+    execute("/connect " + str(botID))
+    time.sleep(0.1)
+    room_id = execute("/add_room Elvira's Den")
+    execute("/join_room " + room_id)
+    while True:
+
+    time.sleep(1)
 
 
 def joe_the_bot():
@@ -512,7 +520,7 @@ def joe_the_bot():
     for x in range(10):
         execute("/join_room " + str(x))
         time.sleep(0.1)
-        
+
     execute("/get_room " + str(room_id))
     for x in range(6):
         time.sleep(30)
