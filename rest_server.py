@@ -38,6 +38,7 @@ def add_message(self, room_id, user_id):
     }
     messages[message_id] = message
     message_push_queue.append(message)
+    print(f"Pushed to queue message {message['id']}")
 
 
 def populate():
@@ -330,16 +331,19 @@ def push_notification():
     sock.listen(1)
 
     push_accept_thread = threading.Thread(target=accept_connection, args=[sock])
-    push_accept_thread.start()
-
+    
     while True:
-        if(len(message_push_queue) > 0):
+        try:
             message = message_push_queue.popleft()
+            print("Sending")
             users = rooms[message["room"]]["listOfUsers"]
             for user in users:
                 if user != message["sender"] and user in user_sockets:
                     print(f"Sending push for message {message['id']} to user {user}")
-                    user_sockets[user].send(message["id"].encode())            
+                    user_sockets[user].send(message["id"].encode())   
+        except IndexError:
+            # No messages to send 
+            pass    
 
 
 
