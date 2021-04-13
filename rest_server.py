@@ -157,7 +157,7 @@ class Users(Resource):
         id = max + 1
         name = request.form["name"]
         users[id] = {"id": id, "name": name}
-        return f"Successfully added. ID: {id}", 201
+        return f"{id}", 201
 
 
 class User(Resource):
