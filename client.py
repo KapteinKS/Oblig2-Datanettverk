@@ -387,8 +387,20 @@ def bertram_the_bot():
     # Put this in a loop, to get responses ####
 
     msgs = execute("/get_messages " +str(room_to_join))
+    joecheck = False;
+    rndmsg = random.choice(msgs)
+    for msg in msgs:
+        if get_user(str(msg["sender"]))["name"].lower() == "joe":
+            joecheck = True
+    if joecheck:
+        execute("/post_message " +str(room_to_join) + " Joe, why don't you just shut the f*** up?")
+    else:
+
+        msg = "Dang " + str(get_user(rndmsg["sender"])["name"]) + ", good point!"
+        execute("/post_message " + str(room_to_join) + " " + msg)
+
     time.sleep(0.5)
-    if (msgs)
+    #if (msgs)
 
     ###########################################
 
