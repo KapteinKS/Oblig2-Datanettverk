@@ -254,8 +254,9 @@ def receive_thread():
     sock.connect(ADDRESS)
     msg = "1"
     sock.send(msg.encode())
-    push = sock.recv(1024)
-    print(push.decode() + "push notification test here")
+    while True:
+        push = sock.recv(1024)
+        print(push.decode() + "push notification test here")
 
 # STARTUP #####################################################################
 
@@ -363,6 +364,8 @@ def send_thread():
 #    pass
 
         ## BOT STUFF ###################################################################
+
+
 def join_random():
     rooms = execute("/get_rooms")
     print(f"There are {len(rooms)} rooms")
@@ -372,6 +375,7 @@ def join_random():
     execute("/join_room "+str(room_to_join))
     time.sleep(0.5)
     return room_to_join
+
 
 def bertram_the_bot():
     botID = execute("/register Bertram")
@@ -388,7 +392,7 @@ def bertram_the_bot():
 
     # Put this in a loop, to get responses ####
 
-    msgs = execute("/get_messages " +str(room_to_join))
+    msgs = execute("/get_messages " + str(room_to_join))
     time.sleep(0.5)
     if (msgs)
 

@@ -334,7 +334,7 @@ def push_notification():
     push_accept_thread = threading.Thread(
         target=accept_connection, args=[sock])
     push_accept_thread.start()
-
+    # TODO Separate socket creation from push handling, prevent eternal loop
     while True:
         try:
             message = message_push_queue.popleft()
