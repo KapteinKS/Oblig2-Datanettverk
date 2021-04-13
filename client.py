@@ -5,6 +5,7 @@ import re
 import socket
 import sys
 import argparse
+import random
 from requests.exceptions import HTTPError
 # TODO Thread
 parser = argparse.ArgumentParser()
@@ -355,20 +356,26 @@ def bertramTheBot():
     time.sleep(1)
     print("ATTEMTING: /connect "+str(botID))
     time.sleep(0.5)
+    print("You are here")
+    rooms = execute("/get_rooms")
+    #print(f"There are {len(rooms)} rooms")
+    time.sleep(0.5)
     execute("/connect "+str(botID))
     time.sleep(0.5)
-    execute("/join_room 0")
+
+    execute("/join_room ")
     time.sleep(0.5)
     #execute("/join_room 0")
     # time.sleep(0.5)
     execute("/post_message 0 Hello I am Bertram.")
     time.sleep(1)
+    execute("/room_")
     execute(input("BREAK:"))
     # pass
 
 
 def carlton_the_bot():
-    
+    pass
 
 ################################################################################
 
