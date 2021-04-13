@@ -3,6 +3,7 @@ import threading
 import time
 import re
 import socket
+from requests.exceptions import HTTPError
 # TODO Thread
 BASE = "http://127.0.0.1:5000/api/"
 ID = -1
@@ -102,27 +103,31 @@ def add_room(room_name):
 
 def get_room(room_id):
     if type(int(room_id)) == int:
-        for x in range(50):
-            print()  # Clear screen
-        list_of_globals = globals()
-        list_of_globals['ROOM'] = int(room_id)
-        response = requests.get(BASE + "room/" + str(room_id), {"id": ID})
-        full = response.json()
-        users = full["listOfUsers"]
-        messages = full["listOfMessages"]
-        print("\nName:", full["name"])
-        print("\nUsers:")
-        for user in users:
-            print("\t" + user["name"])
-        print("\nMessages:")
-
-        names = {}
-        for message in messages:
-            if message["sender"] not in names:
-                names[int(message["sender"])] = get_name(
-                    int(message["sender"]))
-            print("\t" + names[int(message["sender"])],
-                  ":", "\t" + message["content"])
+        try:
+            list_of_globals = globals()
+            list_of_globals['ROOM'] = int(room_id)
+            response = requests.get(BASE + "room/" + str(room_id), {"id": ID})
+            if response.status_code != 404:
+                full = response.json()
+                for x in range(50):
+                    print()  # Clear screen
+                users = full["listOfUsers"]
+                messages = full["listOfMessages"]
+                print("\nName:", full["name"])
+                print("\nUsers:")
+                for user in users:
+                    print("\t" + user["name"])
+                print("\nMessages:")
+        
+                names = {}
+                for message in messages:
+                    if message["sender"] not in names:
+                        names[int(message["sender"])] = get_name(int(message["sender"]))
+                    print("\t" + names[int(message["sender"])], ":", "\t" + message["content"])
+            else:
+                raise HTTPError
+        except HTTPError:
+            print("No room found with that ID", room_id)
     else:
         print("Please use a number")
 
@@ -274,18 +279,21 @@ def execute(input):
                 try:
                     return get_user_messages(text[1], text[2])
                 except:
-                    print(
-                        "Please provide a room number and user ID when typing this command")
-            elif text[0] == "/post_message":
-                try:
-                    message = " ".join(text[2:])
-                    return post_message(text[1], message)
-                except:
-                    print(
-                        "Please provide a room number and a message when typing this command")
-            else:
-                print(
-                    "Input was not recognised as a command, type /help for a list of commands")
+                    print("Please connect with a user ID")
+        elif text[0] == "/register":
+            try:
+                message = " ".join(text[2:])
+                return post_message(text[1], message)
+            except:
+                print("Please enter a name to register when typing the command")
+        elif raw == "/help":
+            # Print out a help page for help on how to get started
+            print(HELP_NOT_CONNECTED)
+            print("Here's a list of all the commands: ")
+            for command in ALL_COMMANDS:
+                print(command)
+            pass
+        
         elif text[0] == "/connect":
             try:
                 user_id = int(text[1])
@@ -310,6 +318,7 @@ def execute(input):
     elif ID >= 0 and ROOM >= 0:
         if len(raw) > 0:
             post_message_in_room(raw)
+            print("Input was not recognised as a command, type /help for a list of commands")
     else:
         print("Input was not recognised as a command, or message was not sent as you may not be"
               " logged in, or connected to a room."
