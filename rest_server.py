@@ -331,16 +331,17 @@ def push_notification():
     while True:
         try:
             message = message_push_queue.popleft()
-            print("Sending")
-            print()
             users = rooms[message["room"]]["listOfUsers"]
             for user_id in users:
-                if user_id != message["sender"] and user_id in user_sockets:
-                    print(
-                        f"Sending push for message {message['id']} to user {user_id}")
-                    user_sockets[user_id].send(str(message["id"]).encode())
+                if user_id != message["sender"]:
+                    if user_id in user_sockets:
+                        print(
+                            f"Sending push for message {message['id']} to user {user_id}")
+                        user_sockets[user_id].send(str(message["id"]).encode())
+                    else:
+                        print(f"Brukeren med ID {user_id} har ikke noen socket")
                 else:
-                    print("Noe er feil med push notification")
+                    print(f"Hopper over avsenderen, bruker {user_id}")
                 break
         except IndexError:
             # No messages to send
