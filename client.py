@@ -3,6 +3,7 @@ import threading
 import time
 import re
 import socket
+from requests.exceptions import HTTPError
 # TODO Thread
 BASE = "http://127.0.0.1:5000/api/"
 ID = -1
@@ -101,25 +102,31 @@ def add_room(room_name):
 
 def get_room(room_id):
     if type(int(room_id)) == int:
-        for x in range(50):
-            print()  # Clear screen
-        list_of_globals = globals()
-        list_of_globals['ROOM'] = int(room_id)
-        response = requests.get(BASE + "room/" + str(room_id), {"id": ID})
-        full = response.json()
-        users = full["listOfUsers"]
-        messages = full["listOfMessages"]
-        print("\nName:", full["name"])
-        print("\nUsers:")
-        for user in users:
-            print("\t" + user["name"])
-        print("\nMessages:")
-
-        names = {}
-        for message in messages:
-            if message["sender"] not in names:
-                names[int(message["sender"])] = get_name(int(message["sender"]))
-            print("\t" + names[int(message["sender"])], ":", "\t" + message["content"])
+        try:
+            list_of_globals = globals()
+            list_of_globals['ROOM'] = int(room_id)
+            response = requests.get(BASE + "room/" + str(room_id), {"id": ID})
+            if response.status_code != 404:
+                full = response.json()
+                for x in range(50):
+                    print()  # Clear screen
+                users = full["listOfUsers"]
+                messages = full["listOfMessages"]
+                print("\nName:", full["name"])
+                print("\nUsers:")
+                for user in users:
+                    print("\t" + user["name"])
+                print("\nMessages:")
+        
+                names = {}
+                for message in messages:
+                    if message["sender"] not in names:
+                        names[int(message["sender"])] = get_name(int(message["sender"]))
+                    print("\t" + names[int(message["sender"])], ":", "\t" + message["content"])
+            else:
+                raise HTTPError
+        except HTTPError:
+            print("No room found with that ID", room_id)
     else:
         print("Please use a number")
 
@@ -246,10 +253,7 @@ def execute(input):
                     except:
                         print("Please add a room-name!")
                 elif text[0] == "/get_room":
-                    try:
-                        get_room(text[1])
-                    except:
-                        print("Please provide a room number when typing this command")
+                    get_room(text[1])
                 elif text[0] == "/get_room_users":
                     try:
                         get_room_users(text[1])
