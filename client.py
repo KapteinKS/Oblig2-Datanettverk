@@ -432,12 +432,13 @@ def carlton_the_bot():
     print("Connecting")
     execute("/connect " + str(botID))
     time.sleep(1)
-    execute("/add_room Dancing")
+    room_id = execute("/add_room Dancing")
     time.sleep(1)
     execute("/join_room 0")
     time.sleep(1)
     execute("/join_room 3")
     time.sleep(1)
+
     execute("/get_room " + room_id)
     for x in range(3):
         time.sleep(60)
@@ -453,7 +454,15 @@ def carlton_the_bot():
 
 
 def bobby_the_bot():
-    pass
+    messages = []
+    botID = execute("/register Bob Marley")
+    time.sleep(1)
+    print("Connecting")
+    execute("/connect " + str(botID))
+    time.sleep(1)
+    room_id = execute("/add_room Exodus")
+    execute("/join_room " + room_id)
+    time.sleep(1)
 
 
 def elvira_the_bot():
@@ -474,6 +483,7 @@ def joe_the_bot():
     for x in range(10):
         execute("/join_room " + str(x))
         time.sleep(0.1)
+        
     execute("/get_room " + str(room_id))
     for x in range(6):
         time.sleep(30)
