@@ -193,7 +193,7 @@ def post_message(room_id, message):
         else:
             # Should be rare, as many other things need to fail to reach this
             print("Message was not sent")
-            
+
 
 def post_message_in_room(message):
     url = BASE + "room/" + str(ROOM) + "/" + str(ID) + "/messages"
@@ -291,7 +291,7 @@ def execute(input):
                     print("Please connect with a user ID")
             elif text[0] == "/register":
                 try:
-                    add_user(" ".join(text[1:]))
+                    return add_user(" ".join(text[1:]))
                 except:
                     print("Please enter a name to register when typing the command")
             elif raw == "/help":
@@ -317,15 +317,27 @@ def execute(input):
 
 def send_thread():
     while True:
-        execute(input(":"))
+        bertramTheBot()
+        #execute(input(":"))
 
 
 ## BOT STUFF ###################################################################
 
 def bertramTheBot():
-    execute("/register Bertram")
-    execute()
-    pass
+    botID = execute("/register Bertram")
+    time.sleep(0.5)
+    print("ATTEMTING: /connect "+str(botID))
+    time.sleep(0.5)
+    execute("/connect "+str(botID))
+    time.sleep(0.5)
+    execute("/join_room 0")
+    time.sleep(0.5)
+    #execute("/join_room 0")
+    #time.sleep(0.5)
+    execute("/post_message 0 Hello I am Bertram.")
+    time.sleep(1.5)
+    execute(input("BREAK:"))
+    #pass
 
 
 
