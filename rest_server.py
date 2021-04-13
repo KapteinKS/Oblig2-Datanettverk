@@ -362,4 +362,4 @@ if __name__ == "__main__":
     #push_thread = threading.Thread(target=push_notification)
     # push_thread.start()
     push_socket_creation()
-    app.run(debug=True)
+    app.run()
