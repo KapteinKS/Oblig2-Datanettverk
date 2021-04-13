@@ -363,7 +363,15 @@ def send_thread():
 #    pass
 
         ## BOT STUFF ###################################################################
-
+def join_random():
+    rooms = execute("/get_rooms")
+    print(f"There are {len(rooms)} rooms")
+    room_to_join = random.randint(0, (len(rooms)-1))
+    print(f"You're joining room {room_to_join}")
+    time.sleep(0.5)
+    execute("/join_room "+str(room_to_join))
+    time.sleep(0.5)
+    return room_to_join
 
 def bertram_the_bot():
     botID = execute("/register Bertram")
@@ -372,13 +380,7 @@ def bertram_the_bot():
     execute("/connect " + str(botID))
     time.sleep(0.5)
     print("You are here")
-    rooms = execute("/get_rooms")
-    print(f"There are {len(rooms)} rooms")
-    room_to_join = random.randint(0, (len(rooms)-1))
-    print(f"You're joining room {room_to_join}")
-    time.sleep(0.5)
-    execute("/join_room "+str(room_to_join))
-    time.sleep(0.5)
+    room_to_join = join_random()
     #execute("/join_room 0")
     time.sleep(0.5)
     execute("/post_message " + str(room_to_join) + " Hello I am Bertram.")
@@ -396,13 +398,17 @@ def carlton_the_bot():
     print("Connecting")
     execute("/connect " + str(botID))
     time.sleep(1)
-    execute("/add_room Dancing")
+    room_id = execute("/add_room Dancing")
     time.sleep(1)
     execute("/join_room 0")
     time.sleep(1)
-    execute("/join_room 3")
+    execute("/join_room " + room_id)
     time.sleep(1)
-    execute("/get_room 3")
+    execute("/get_room " + room_id)
+    for x in range(3):
+        execute(random.choice(messages))
+        time.sleep(60)
+    join_random()
     execute(random.choice(messages))
 
 
@@ -425,11 +431,13 @@ def joe_the_bot():
     room_id = execute("/add_room Inspirational Quotes")
     execute("/join_room " + room_id)
     time.sleep(1)
-    for x in range(10):
+    for x in range(5):
         execute("/join_room " + str(x))
         time.sleep(0.1)
     execute("/get_room " + str(room_id))
-    execute(random.choice(messages))
+    for x in range(6):
+        execute(random.choice(messages))
+        time.sleep(30)
 
 
 ################################################################################
