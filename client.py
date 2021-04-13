@@ -280,22 +280,19 @@ def execute(input):
                     return get_user_messages(text[1], text[2])
                 except:
                     print("Please connect with a user ID")
-            elif text[0] == "/register":
-                try:
-                    message = " ".join(text[2:])
-                    return post_message(text[1], message)
-                except:
-                    print("Please enter a name to register when typing the command")
-            elif raw == "/help":
-                # Print out a help page for help on how to get started
-                print(HELP_NOT_CONNECTED)
-                print("Here's a list of all the commands: ")
-                for command in ALL_COMMANDS:
-                    print(command)
-                pass
-            else:
-                print(
-                    "When not connected you can only use the /help, /register or /connect commands")
+        elif text[0] == "/register":
+            try:
+                message = " ".join(text[2:])
+                return post_message(text[1], message)
+            except:
+                print("Please enter a name to register when typing the command")
+        elif raw == "/help":
+            # Print out a help page for help on how to get started
+            print(HELP_NOT_CONNECTED)
+            print("Here's a list of all the commands: ")
+            for command in ALL_COMMANDS:
+                print(command)
+            pass
         
         elif text[0] == "/connect":
             try:
@@ -315,6 +312,9 @@ def execute(input):
             for command in ALL_COMMANDS:
                 print(command)
             pass
+        else:
+            print(
+                "When not connected you can only use the /help, /register or /connect commands")
     elif ID >= 0 and ROOM >= 0:
         if len(raw) > 0:
             post_message_in_room(raw)
