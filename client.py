@@ -203,11 +203,8 @@ def receive_thread():
     pass
 
 # STARTUP #####################################################################
-
-
-def send_thread():
-    while True:
-        raw = input(":")
+def execute(input):
+        raw = input
         text = raw.split(" ")
         # Raw is command only, text[] is command + args
         if raw.startswith("/"):
@@ -294,6 +291,23 @@ def send_thread():
             else:
                 print(
                     "When not connected you can only use the /help, /register or /connect commands")
+
+
+
+
+def send_thread():
+    while True:
+        execute(input(":"))
+
+
+## BOT STUFF ###################################################################
+
+def bertramTheBot():
+    pass
+
+
+
+################################################################################
 
 
 def start():
