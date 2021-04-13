@@ -3,7 +3,7 @@ from flask_restful import Api, Resource, reqparse, abort
 import json
 import threading
 import socket
-ADDRESS = ("127.0.0.1", 5000)
+ADDRESS = ("127.0.0.1", 5001)
 
 app = Flask(__name__)
 api = Api(app)
@@ -157,7 +157,7 @@ class Users(Resource):
         id = max + 1
         name = request.form["name"]
         users[id] = {"id": id, "name": name}
-        return f"Successfully added. ID: {id}", 201
+        return f"{id}", 201
 
 
 class User(Resource):
@@ -260,7 +260,6 @@ class Messages(Resource):
                 abort(404, message="No room found with that ID")
 
 
-
 class Message(Resource):
     def get(self, message_id):  # get all messages in room by room ID
         if check_user_valid_get():
@@ -313,15 +312,15 @@ api.add_resource(RoomUserMessages,
 
 def push_notification():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.bind(ADDRESS)
-    sock.listen(4)
-    sock.accept()
-    #msg = sock.recv(1024)
-    # print(msg.decode())
-    pass
+    sock.listen(1)
+    client, address = sock.accept()
+    msg = client.recv(1024)
+    print(msg.decode())
 
 
 if __name__ == "__main__":
+    push_thread = threading.Thread(target=push_notification)
+    push_thread.start()
     app.run(debug=True)
-push_thread = threading.Thread(target=push_notification)
-push_thread.start()

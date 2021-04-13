@@ -8,7 +8,7 @@ from requests.exceptions import HTTPError
 BASE = "http://127.0.0.1:5000/api/"
 ID = -1
 ROOM = -1
-ADDRESS = ("127.0.0.1", 5000)
+ADDRESS = ("127.0.0.1", 5001)
 
 HELP_CONNECTED = """
 | /users                                 gives a list of users.
@@ -50,7 +50,8 @@ def add_user(user_name):  # add user to db
     # Thank you StackOverflow <3
     if re.fullmatch('[A-Za-z]{2,25}( [A-Za-z]{2,25})?', user_name):
         response = requests.put(BASE + "users", {"name": user_name}).json()
-        print(response)
+        print(f"Successfully added new user, with ID: {response}")
+        return(response)
     else:
         print("\nIllegal user name."
               "\nUser name rules: "
@@ -132,6 +133,7 @@ def get_room(room_id):
 
 # ROOM USERS ##################################################################
 
+
 def get_room_users(room_id):
     if type(int(room_id)) == int:
         # "/api/room/<int:room_id>/users"
@@ -139,7 +141,7 @@ def get_room_users(room_id):
             BASE + "room/" + str(room_id) + "/users", {"id": ID})
         print(f"Users in Room {room_id}:")
         for usr in response.json():
-            print("UserID:", str(usr["id"]), "\tName:",str(usr["name"]))
+            print("UserID:", str(usr["id"]), "\tName:", str(usr["name"]))
     else:
         print("Please use a number")
 
@@ -199,7 +201,7 @@ def post_message(room_id, message):
         else:
             # Should be rare, as many other things need to fail to reach this
             print("Message was not sent")
-            
+
 
 def post_message_in_room(message):
     url = BASE + "room/" + str(ROOM) + "/" + str(ID) + "/messages"
@@ -216,12 +218,12 @@ def receive_thread():
     # show message
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect(ADDRESS)
-    #msg = "AYAYA Clap"
-    # sock.send(msg.encode())
-
-    pass
+    msg = "AYAYA Clap"
+    sock.send(msg.encode())
 
 # STARTUP #####################################################################
+
+
 def execute(input):
         raw = input
         text = raw.split(" ")
@@ -283,9 +285,6 @@ def execute(input):
                     except:
                         print(
                             "Please provide a room number and a message when typing this command")
-                else:
-                    print(
-                        "Input was not recognised as a command, type /help for a list of commands")
             elif text[0] == "/connect":
                 try:
                     user_id = int(text[1])
@@ -316,18 +315,29 @@ def execute(input):
                   "\nType /help for a list of commands")
 
 
-
-
 def send_thread():
     while True:
-        execute(input(":"))
+        bertramTheBot()
+        #execute(input(":"))
 
 
 ## BOT STUFF ###################################################################
 
 def bertramTheBot():
-    pass
-
+    botID = execute("/register Bertram")
+    time.sleep(0.5)
+    print("ATTEMTING: /connect "+str(botID))
+    time.sleep(0.5)
+    execute("/connect "+str(botID))
+    time.sleep(0.5)
+    execute("/join_room 0")
+    time.sleep(0.5)
+    #execute("/join_room 0")
+    #time.sleep(0.5)
+    execute("/post_message 0 Hello I am Bertram.")
+    time.sleep(1.5)
+    execute(input("BREAK:"))
+    #pass
 
 
 ################################################################################
