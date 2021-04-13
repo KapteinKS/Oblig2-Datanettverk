@@ -310,9 +310,10 @@ api.add_resource(RoomUserMessages,
                  "/api/room/<int:room_id>/<int:user_id>/messages")
 
 def accept_connection(sock):
-    client, address = sock.accept()
-    user_id = client.recv(1024).decode()
-    print(f"User {user_id} connected to push server")
+    while True:
+        client, address = sock.accept()
+        user_id = client.recv(1024).decode()
+        print(f"User {user_id} connected to push server")
 
 
 def push_notification():
