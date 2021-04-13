@@ -350,7 +350,7 @@ def send_thread():
         ## BOT STUFF ###################################################################
 
 
-def bertramTheBot():
+def bertram_the_bot():
     botID = execute("/register Bertram")
     time.sleep(1)
     print("ATTEMTING: /connect "+str(botID))
@@ -382,6 +382,19 @@ def carlton_the_bot():
     execute("/get_room 3")
     execute("Let's dance, everyone!!!!")
 
+
+def bobby_the_bot():
+    pass
+
+
+def elvira_the_bot():
+    pass
+
+
+def joe_the_bot():
+    pass
+
+
 ################################################################################
 
 
@@ -392,7 +405,7 @@ def start():
     receive.start()
     send.start()
     if BOTNAME.lower() == "bertram":
-        bertramTheBot()
+        bertram_the_bot()
     elif BOTNAME.lower() == "carlton":
         carlton_the_bot()
 
