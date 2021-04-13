@@ -321,10 +321,10 @@ def execute():
 
 
 def send_thread():
-    execute()
-    # while True:
-        # bertramTheBot()
-    #    pass
+    while True:
+        execute()
+    # bertramTheBot()
+#    pass
 
 
 ## BOT STUFF ###################################################################
