@@ -323,7 +323,7 @@ def execute(commando):
 
 def send_thread():
     while True:
-        execute(input(":""))
+        execute(input(":"))
     # bertramTheBot()
 #    pass
 
