@@ -375,6 +375,9 @@ def bertram_the_bot():
 
 
 def carlton_the_bot():
+    messages = ["Let's dance!", "Do the Carlton!", "What's a nine-letter word for terrific? Will Smith!",
+                "Forget the harlem shake, forget Gangam style, it's time to bring back the CARLTON",
+                "Why so glum, chum?"]
     botID = execute("/register Carlton Banks")
     time.sleep(1)
     print("Connecting")
@@ -387,7 +390,7 @@ def carlton_the_bot():
     execute("/join_room 3")
     time.sleep(1)
     execute("/get_room 3")
-    execute("Let's dance, everyone!!!!")
+    execute(random.choice(messages))
 
 
 def bobby_the_bot():
@@ -399,6 +402,20 @@ def elvira_the_bot():
 
 
 def joe_the_bot():
+    messages = ["Be the hero of your own story.", "If you are the greatest, why would you go around talking about it?",
+                "People love to see people fall.", "Fuel yourself with the f*** ups.", "Choose To Be Inspired."]
+    botID = execute("/register Joe Rogan")
+    time.sleep(1)
+    print("Connecting")
+    execute("/connect " + str(botID))
+    time.sleep(1)
+    execute("/add_room Inspirational Quotes")
+    time.sleep(1)
+    for x in range(10):
+        execute("/join_room " + str(x))
+        time.sleep(0.1)
+    execute("/get_room 3")
+    execute(random.choice(messages))
     pass
 
 
