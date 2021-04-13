@@ -177,7 +177,7 @@ def format_messages(response):
     for message in response:
         if message["sender"] not in users:
             users[int(message["sender"])] = get_name(int(message["sender"]))
-        print("\t" + users[int(message["sender"])], ":", 
+        print("\t" + users[int(message["sender"])], ":",
               "\n\t\t" + message["content"])
 
 
@@ -376,7 +376,7 @@ def start():
     send = threading.Thread(target=send_thread)
     receive.start()
     send.start()
-    if BOTNAME == "bertram":
+    if BOTNAME.lower() == "bertram":
         bertramTheBot()
 
 
