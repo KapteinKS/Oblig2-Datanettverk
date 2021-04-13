@@ -375,7 +375,19 @@ def bertramTheBot():
 
 
 def carlton_the_bot():
-    pass
+    botID = execute("/register Carlton Banks")
+    time.sleep(1)
+    print("Connecting")
+    execute("/connect " + str(botID))
+    time.sleep(1)
+    execute("/add_room Dancing")
+    time.sleep(1)
+    execute("/join_room 0")
+    time.sleep(1)
+    execute("/join_room 3")
+    time.sleep(1)
+    execute("/get_room 3")
+    execute("Let's dance, everyone!!!!")
 
 ################################################################################
 
@@ -388,6 +400,8 @@ def start():
     send.start()
     if BOTNAME.lower() == "bertram":
         bertramTheBot()
+    elif BOTNAME.lower() == "carlton":
+        carlton_the_bot()
 
 
 start()
