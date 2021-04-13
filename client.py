@@ -105,9 +105,13 @@ def get_rooms():
               "\tNumber of users:", str(room["numberOfUsers"]))
     return response.json()
 
+
 def add_room(room_name):
     response = requests.put(BASE + "rooms", {"id": ID, "name": room_name})
-    print(response.json())
+    text = response.json()
+    print(text)
+    arr = text.split()
+    return arr[3].split(',')[0]
 
 
 def get_room(room_id):
@@ -273,7 +277,7 @@ def execute(commando):
                 return get_rooms()
             elif text[0] == "/add_room":
                 try:
-                    return add_room(text[1])
+                    return add_room(" ".join(text[1:]))
                 except:
                     print("Please add a room-name!")
             elif text[0] == "/get_room":
@@ -408,14 +412,14 @@ def joe_the_bot():
     print("Connecting")
     execute("/connect " + str(botID))
     time.sleep(1)
-    execute("/add_room Inspirational Quotes")
+    room_id = execute("/add_room Inspirational Quotes")
+    execute("/join_room " + room_id)
     time.sleep(1)
     for x in range(10):
         execute("/join_room " + str(x))
         time.sleep(0.1)
-    execute("/get_room 3")
+    execute("/get_room " + str(room_id))
     execute(random.choice(messages))
-    pass
 
 
 ################################################################################
@@ -431,6 +435,8 @@ def start():
         bertram_the_bot()
     elif BOTNAME.lower() == "carlton":
         carlton_the_bot()
+    elif BOTNAME.lower() == "joe":
+        joe_the_bot()
 
 
 start()
