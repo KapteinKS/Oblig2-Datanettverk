@@ -309,15 +309,20 @@ api.add_resource(Message, "/api/message/<int:message_id>")
 api.add_resource(RoomUserMessages,
                  "/api/room/<int:room_id>/<int:user_id>/messages")
 
+def accept_connection(sock):
+    client, address = sock.accept()
+    user_id = client.recv(1024).decode()
+    print(f"User {user_id} connected to push server")
+
 
 def push_notification():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.bind(ADDRESS)
     sock.listen(1)
-    client, address = sock.accept()
-    msg = client.recv(1024)
-    print(msg.decode())
+
+    push_accept_thread = threading.Thread(target=accept_connection, args=[sock])
+    push_accept_thread.start()
 
 
 if __name__ == "__main__":
