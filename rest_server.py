@@ -312,6 +312,7 @@ api.add_resource(RoomUserMessages,
 
 def push_notification():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.bind(ADDRESS)
     sock.listen(1)
     client, address = sock.accept()
@@ -319,8 +320,7 @@ def push_notification():
     print(msg.decode())
 
 
-push_thread = threading.Thread(target=push_notification)
-push_thread.start()
-
 if __name__ == "__main__":
+    push_thread = threading.Thread(target=push_notification)
+    push_thread.start()
     app.run(debug=True)
