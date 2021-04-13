@@ -58,7 +58,7 @@ def get_users():  # return users
     print("Users:")
     for user in response:
         print("\n" + user["name"])
-    return response.json()
+    return response
 
 
 def add_user(user_name):  # add user to db
@@ -466,7 +466,9 @@ def bobby_the_bot():
 
 
 def elvira_the_bot():
-    trivia = []
+    trivia_start = ["Did you know, ", "Get this, ", "Fun fact, ","Was you aware that ", "Were you aware, "]
+    trivia_content = ["Suspiria was originally written to be about 12 year old girls! ", "Tobe Hooper intenden the Texas Chain-Saw Massacre as a dark comedy! ","Sam Raimi had lost the rights to the Evil Dead when making the sequel, so they had to remake it at the beginning of Evil Dead II! ","Sam Loomis' character in Halloween is named after a character in Psycho! ","Tony Todd had real bees in his mouth for Candyman! ","Stephen King's son appears in the film Creepshow! ","The Crypt Keeper makes an appearance in the family-horror film Casper! ","The Conjuring films are all based on supposedly real events! ", "The Final Destination franchise is based on a scrapped idea for the X-Files! ","The filmmakers behind The Excorcist actually believed in excorcisms, and satanic posessions!"]
+    trivia_ending = ["Fascinating, right?","Amazing, I know!","Who'd've thunk it!","I'd've never guessed!","Wow! Incredible!"]
     botID = execute("/register Elvira")
     time.sleep(0.5)
     print("Connecting")
@@ -474,8 +476,15 @@ def elvira_the_bot():
     time.sleep(0.1)
     room_id = execute("/add_room Elvira's Den")
     execute("/join_room " + room_id)
-    while True:
-
+    i = 0
+    while i < len(trivia_content):
+        execute(str(random.choice(trivia_start)))
+        time.sleep(0.5)
+        execute(str(trivia_content.pop(random.int(0,len(trivia_start)))))
+        time.sleep(0.5)
+        execute(str(random.choice(trivia_ending)))
+        i = i+1
+        time.sleep(0.5)
     time.sleep(1)
 
 
@@ -505,9 +514,7 @@ def joe_the_bot():
         time.sleep(60)
         execute(random.choice(messages))
 
-
 ################################################################################
-
 
 def start():
     print("###### Client start #######")
@@ -522,6 +529,8 @@ def start():
             carlton_the_bot()
         elif BOTNAME.lower() == "joe":
             joe_the_bot()
+        elif BOTNAME.lower() == "elvira":
+            elvira_the_bot()
 
 
 
