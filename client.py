@@ -393,7 +393,6 @@ def bertram_the_bot():
     print("ATTEMTING: /connect " + str(botID))
     execute("/connect " + str(botID))
     time.sleep(0.5)
-    print("You are here")
     room_to_join = join_random()
     # execute("/join_room 0")
     time.sleep(0.5)
@@ -405,7 +404,7 @@ def bertram_the_bot():
     msgs = execute("/get_messages " + str(room_to_join))
     joecheck = False;
     rndmsg = random.choice(msgs)
-    print("RANDOM MSG CHOSEN: " + str(rndmsg["sender"]))
+    # TODO: Check that the randomly selected message is not from self
     time.sleep(0.5)
     for msg in msgs:
         if get_user(str(msg["sender"]))["name"].lower() == "joe":
@@ -417,7 +416,6 @@ def bertram_the_bot():
         execute("/post_message " + str(room_to_join) + " " + msg)
 
     time.sleep(0.5)
-    # if (msgs)
 
     ###########################################
 
