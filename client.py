@@ -278,12 +278,8 @@ def execute(input):
                         "Please provide a room number and user ID when typing this command")
             elif text[0] == "/post_message":
                 try:
-<<<<<<< HEAD
-                    return add_user(" ".join(text[1:]))
-=======
                     message = " ".join(text[2:])
                     post_message(text[1], message)
->>>>>>> 1101fcc990cf2ccde04d173942b425ca3cdd315e
                 except:
                     print(
                         "Please provide a room number and a message when typing this command")
@@ -298,7 +294,7 @@ def execute(input):
                 print("Please connect with a user ID")
         elif text[0] == "/register":
             try:
-                add_user(" ".join(text[1:]))
+                return add_user(" ".join(text[1:]))
             except:
                 print("Please enter a name to register when typing the command")
         elif raw == "/help":
