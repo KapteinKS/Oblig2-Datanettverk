@@ -53,6 +53,7 @@ def get_users():  # return users
     print("Users:")
     for user in response:
         print("\n" + user["name"])
+    return response.json()
 
 
 def add_user(user_name):  # add user to db
@@ -74,6 +75,7 @@ def get_user(user_id):
     if type(int(user_id)) == int:
         response = requests.get(BASE + "user/" + user_id, {"id": ID}).json()
         print(response["name"])
+        return response.json()
     else:
         print("Please use a number")
 
@@ -108,6 +110,7 @@ def get_rooms():
 def add_room(room_name):
     response = requests.put(BASE + "rooms", {"id": ID, "name": room_name})
     print(response.json())
+    return response.json()
 
 
 def get_room(room_id):
@@ -135,6 +138,7 @@ def get_room(room_id):
                             int(message["sender"]))
                     print("\t" + names[int(message["sender"])],
                           ":", "\n\t\t" + message["content"])
+                return response.json()
             else:
                 raise HTTPError
         except HTTPError:
@@ -153,6 +157,7 @@ def get_room_users(room_id):
         print(f"Users in Room {room_id}:")
         for usr in response.json():
             print("UserID:", str(usr["id"]), "\tName:", str(usr["name"]))
+        return response.json()
     else:
         print("Please use a number")
 
@@ -164,6 +169,7 @@ def add_room_user(room_id):
         response = requests.put(
             BASE + "room/" + str(room_id) + "/users", {"id": ID})
         print(response.json())
+        return response.json()
     else:
         print("Please usa a number")
 
@@ -187,6 +193,7 @@ def get_messages(room_id):
         response = requests.get(
             BASE + "room/" + room_id + "/messages", {"id": ID})
         format_messages(response.json())
+        return response.json()
 
 
 def get_user_messages(room_id, user_id):
@@ -194,13 +201,15 @@ def get_user_messages(room_id, user_id):
         response = requests.get(
             BASE + "room/" + room_id + "/" + user_id + "/messages", {"id": ID})
         format_messages(response.json())
+        return response.json()
 
 
 def get_message(message_id):
     if type(int(message_id)) == int:
         response = requests.get(
             BASE + "message/" + message_id, {"id": ID})
-        print(response.json)
+        print(response.json())
+        return response.json()
 
 
 def post_message(room_id, message):
@@ -244,7 +253,6 @@ def receive_thread():
     sock.send(msg.encode())
 
 # STARTUP #####################################################################
-
 
 def execute(commando):
     raw = commando
