@@ -48,7 +48,8 @@ def add_user(user_name):  # add user to db
     # Thank you StackOverflow <3
     if re.fullmatch('[A-Za-z]{2,25}( [A-Za-z]{2,25})?', user_name):
         response = requests.put(BASE + "users", {"name": user_name}).json()
-        print(response)
+        print(f"Successfully added new user, with ID: {response}")
+        return(response)
     else:
         print("\nIllegal user name."
               "\nUser name rules: "
@@ -303,6 +304,8 @@ def send_thread():
 ## BOT STUFF ###################################################################
 
 def bertramTheBot():
+    execute("/register Bertram")
+    execute()
     pass
 
 
