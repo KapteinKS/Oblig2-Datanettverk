@@ -3,12 +3,20 @@ import threading
 import time
 import re
 import socket
+import sys
+import argparse
 from requests.exceptions import HTTPError
 # TODO Thread
+parser = argparse.ArgumentParser()
+parser.add_argument("-botname", type=str)
+args = parser.parse_args()
+
 BASE = "http://127.0.0.1:5000/api/"
 ID = -1
 ROOM = -1
 ADDRESS = ("127.0.0.1", 5001)
+BOTNAME = args.botname
+print(BOTNAME)
 
 HELP_CONNECTED = """
 | /users                                 gives a list of users.
@@ -226,8 +234,8 @@ def receive_thread():
 # STARTUP #####################################################################
 
 
-def execute():
-    raw = input()
+def execute(commando):
+    raw = commando
     text = raw.split(" ")
     # Raw is command only, text[] is command + args
     if raw.startswith("/"):
@@ -282,14 +290,15 @@ def execute():
                     return get_user_messages(text[1], text[2])
                 except:
                     print("Please connect with a user ID")
+            elif text[0] == "/post_message":
+                try:
+                    message = " ".join(text[2:])
+                    return post_message(text[1], message)
+                except:
+                    print(
+                        "Please provide a room number and a message when using this command")
             else:
                 print("Input was not recognised as a command")
-        # elif text[0] == "/register":
-        #    try:
-        #        message = " ".join(text[2:])
-        #        return post_message(text[1], message)
-        #    except:
-        #        print("Please enter a name to register when typing the command")
         elif raw == "/help":
             # Print out a help page for help on how to get started
             print(HELP_NOT_CONNECTED)
@@ -323,7 +332,7 @@ def execute():
 
 def send_thread():
     while True:
-        execute()
+        execute(input(":"))
     # bertramTheBot()
 #    pass
 
