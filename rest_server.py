@@ -14,6 +14,7 @@ api = Api(app)
 users = {}
 rooms = {}
 messages = {}
+user_sockets = {}
 
 
 def get_messages_in_room(room_id):
@@ -312,8 +313,9 @@ api.add_resource(RoomUserMessages,
 def accept_connection(sock):
     while True:
         client, address = sock.accept()
-        user_id = client.recv(1024).decode()
+        user_id = int(client.recv(1024).decode())
         print(f"User {user_id} connected to push server")
+        user_sockets[user_id] = client
 
 
 def push_notification():
