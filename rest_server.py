@@ -3,6 +3,7 @@ from flask_restful import Api, Resource, reqparse, abort
 import json
 import threading
 import socket
+from collections import deque
 ADDRESS = ("127.0.0.1", 5001)
 
 app = Flask(__name__)
@@ -15,6 +16,7 @@ users = {}
 rooms = {}
 messages = {}
 user_sockets = {}
+message_push_queue = deque()
 
 
 def get_messages_in_room(room_id):
@@ -27,12 +29,15 @@ def get_messages_in_room(room_id):
 
 
 def add_message(self, room_id, user_id):
-    messages[len(messages)] = {
-        "id": len(messages),
+    message_id = len(messages)
+    message = {
+        "id": message_id,
         "room": room_id,
         "sender": user_id,
         "content": str(self),
     }
+    messages[message_id] = message
+    message_push_queue.append(message)
 
 
 def populate():
@@ -326,6 +331,16 @@ def push_notification():
 
     push_accept_thread = threading.Thread(target=accept_connection, args=[sock])
     push_accept_thread.start()
+
+    while True:
+        if(len(message_push_queue) > 0):
+            message = message_push_queue.popleft()
+            users = rooms[message["room"]]["listOfUsers"]
+            for user in users:
+                if user != message["sender"] and user in user_sockets:
+                    print(f"Sending push for message {message['id']} to user {user}")
+                    user_sockets[user].send(message["id"].encode())            
+
 
 
 if __name__ == "__main__":
