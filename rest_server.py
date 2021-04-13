@@ -334,11 +334,11 @@ def push_notification():
             print("Sending")
             print()
             users = rooms[message["room"]]["listOfUsers"]
-            for user in users:
-                if user != message["sender"] and user in user_sockets:
+            for user_id in users:
+                if user_id != message["sender"] and user_id in user_sockets:
                     print(
-                        f"Sending push for message {message['id']} to user {user}")
-                    user_sockets[user].send(str(message["id"]).encode())
+                        f"Sending push for message {message['id']} to user {user_id}")
+                    user_sockets[user_id].send(str(message["id"]).encode())
                 else:
                     print("Noe er feil med push notification")
                 break
