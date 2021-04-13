@@ -282,14 +282,14 @@ def execute():
                     return get_user_messages(text[1], text[2])
                 except:
                     print("Please connect with a user ID")
+            elif text[0] == "/post_message":
+                try:
+                    message = " ".join(text[2:])
+                    return post_message(text[1], message)
+                except:
+                    print("Please provide a room number and a message when using this command")
             else:
                 print("Input was not recognised as a command")
-        # elif text[0] == "/register":
-        #    try:
-        #        message = " ".join(text[2:])
-        #        return post_message(text[1], message)
-        #    except:
-        #        print("Please enter a name to register when typing the command")
         elif raw == "/help":
             # Print out a help page for help on how to get started
             print(HELP_NOT_CONNECTED)
