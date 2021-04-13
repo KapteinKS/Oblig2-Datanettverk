@@ -374,10 +374,6 @@ def send_thread():
 
 #    pass
 
-<<<<<<< HEAD
-        ## BOT STUFF ###################################################################
-
-=======
 
 # BOT STUFF ###################################################################
 def join_random():
@@ -389,7 +385,6 @@ def join_random():
     execute("/join_room " + str(room_to_join))
     time.sleep(0.5)
     return room_to_join
->>>>>>> bede50bcbea2534ab8e70ee9a6f381c0a04bc48a
 
 
 def bertram_the_bot():
@@ -399,19 +394,8 @@ def bertram_the_bot():
     execute("/connect " + str(botID))
     time.sleep(0.5)
     print("You are here")
-<<<<<<< HEAD
-    rooms = execute("/get_rooms")
-    print(f"There are {len(rooms)} rooms")
-    room_to_join = random.randint(0, (len(rooms)-1))
-    print(f"You're joining room {room_to_join}")
-    time.sleep(0.5)
-    execute("/join_room "+str(room_to_join))
-    time.sleep(0.5)
-    #execute("/join_room 0")
-=======
     room_to_join = join_random()
     # execute("/join_room 0")
->>>>>>> bede50bcbea2534ab8e70ee9a6f381c0a04bc48a
     time.sleep(0.5)
     execute("/post_message " + str(room_to_join) + " Hello I am Bertram.")
     time.sleep(1)
@@ -456,10 +440,6 @@ def carlton_the_bot():
     time.sleep(1)
     execute("/join_room 3")
     time.sleep(1)
-<<<<<<< HEAD
-    execute("/get_room 3")
-    execute(random.choice(messages))
-=======
     execute("/get_room " + room_id)
     for x in range(3):
         time.sleep(60)
@@ -472,7 +452,6 @@ def carlton_the_bot():
     for x in range(3):
         time.sleep(90)
         execute(random.choice(messages))
->>>>>>> bede50bcbea2534ab8e70ee9a6f381c0a04bc48a
 
 
 def bobby_the_bot():
@@ -498,9 +477,6 @@ def joe_the_bot():
         execute("/join_room " + str(x))
         time.sleep(0.1)
     execute("/get_room " + str(room_id))
-<<<<<<< HEAD
-    execute(random.choice(messages))
-=======
     for x in range(6):
         time.sleep(30)
         execute(random.choice(messages))
@@ -510,7 +486,6 @@ def joe_the_bot():
     for x in range(4):
         time.sleep(60)
         execute(random.choice(messages))
->>>>>>> bede50bcbea2534ab8e70ee9a6f381c0a04bc48a
 
 
 ################################################################################
