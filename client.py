@@ -53,7 +53,7 @@ def get_users():  # return users
     print("Users:")
     for user in response:
         print("\n" + user["name"])
-    return response.json()
+    return response
 
 
 def add_user(user_name):  # add user to db
@@ -75,7 +75,7 @@ def get_user(user_id):
     if type(int(user_id)) == int:
         response = requests.get(BASE + "user/" + user_id, {"id": ID}).json()
         print(response["name"])
-        return response.json()
+        return response
     else:
         print("Please use a number")
 
@@ -391,8 +391,20 @@ def bertram_the_bot():
     # Put this in a loop, to get responses ####
 
     msgs = execute("/get_messages " +str(room_to_join))
+    joecheck = False;
+    rndmsg = random.choice(msgs)
+    for msg in msgs:
+        if get_user(str(msg["sender"]))["name"].lower() == "joe":
+            joecheck = True
+    if joecheck:
+        execute("/post_message " +str(room_to_join) + " Joe, why don't you just shut the f*** up?")
+    else:
+
+        msg = "Dang " + str(get_user(rndmsg["sender"])["name"]) + ", good point!"
+        execute("/post_message " + str(room_to_join) + " " + msg)
+
     time.sleep(0.5)
-    if (msgs)
+    #if (msgs)
 
     ###########################################
 
@@ -479,7 +491,6 @@ def start():
             carlton_the_bot()
         elif BOTNAME.lower() == "joe":
             joe_the_bot()
-
 
 
 start()

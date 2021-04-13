@@ -339,12 +339,15 @@ def push_notification():
         try:
             message = message_push_queue.popleft()
             print("Sending")
+            print()
             users = rooms[message["room"]]["listOfUsers"]
             for user in users:
                 if user != message["sender"] and user in user_sockets:
                     print(
                         f"Sending push for message {message['id']} to user {user}")
                     user_sockets[user].send(message["id"].encode())
+                else:
+                    print("Noe er feil med push notification")
         except IndexError:
             # No messages to send
             pass
