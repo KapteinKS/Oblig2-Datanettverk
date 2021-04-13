@@ -316,6 +316,7 @@ api.add_resource(Message, "/api/message/<int:message_id>")
 api.add_resource(RoomUserMessages,
                  "/api/room/<int:room_id>/<int:user_id>/messages")
 
+
 def accept_connection(sock):
     while True:
         client, address = sock.accept()
@@ -330,8 +331,10 @@ def push_notification():
     sock.bind(ADDRESS)
     sock.listen(1)
 
-    push_accept_thread = threading.Thread(target=accept_connection, args=[sock])
-    
+    push_accept_thread = threading.Thread(
+        target=accept_connection, args=[sock])
+    push_accept_thread.start()
+
     while True:
         try:
             message = message_push_queue.popleft()
@@ -339,12 +342,12 @@ def push_notification():
             users = rooms[message["room"]]["listOfUsers"]
             for user in users:
                 if user != message["sender"] and user in user_sockets:
-                    print(f"Sending push for message {message['id']} to user {user}")
-                    user_sockets[user].send(message["id"].encode())   
+                    print(
+                        f"Sending push for message {message['id']} to user {user}")
+                    user_sockets[user].send(message["id"].encode())
         except IndexError:
-            # No messages to send 
-            pass    
-
+            # No messages to send
+            pass
 
 
 if __name__ == "__main__":

@@ -107,6 +107,7 @@ def get_rooms():
               "\tNumber of users:", str(room["numberOfUsers"]))
     return response.json()
 
+
 def add_room(room_name):
     response = requests.put(BASE + "rooms", {"id": ID, "name": room_name})
     print(response.json())
@@ -251,8 +252,11 @@ def receive_thread():
     sock.connect(ADDRESS)
     msg = "1"
     sock.send(msg.encode())
+    push = sock.recv(1024)
+    print(push.decode() + "push notification test here")
 
 # STARTUP #####################################################################
+
 
 def execute(commando):
     raw = commando
@@ -418,10 +422,11 @@ def start():
     send = threading.Thread(target=send_thread)
     receive.start()
     send.start()
-    if BOTNAME.lower() == "bertram":
-        bertram_the_bot()
-    elif BOTNAME.lower() == "carlton":
-        carlton_the_bot()
+    if BOTNAME != None:
+        if BOTNAME.lower() == "bertram":
+            bertram_the_bot()
+        elif BOTNAME.lower() == "carlton":
+            carlton_the_bot()
 
 
 start()
