@@ -133,7 +133,7 @@ def get_room(room_id):
                         names[int(message["sender"])] = get_name(
                             int(message["sender"]))
                     print("\t" + names[int(message["sender"])],
-                          ":", "\t" + message["content"])
+                          ":", "\n\t\t" + message["content"])
             else:
                 raise HTTPError
         except HTTPError:
@@ -177,7 +177,8 @@ def format_messages(response):
     for message in response:
         if message["sender"] not in users:
             users[int(message["sender"])] = get_name(int(message["sender"]))
-        print(users[int(message["sender"])], ":", message["content"])
+        print("\t" + users[int(message["sender"])], ":", 
+              "\n\t\t" + message["content"])
 
 
 def get_messages(room_id):
@@ -351,7 +352,7 @@ def send_thread():
 
 def bertramTheBot():
     botID = execute("/register Bertram")
-    time.sleep(0.5)
+    time.sleep(1)
     print("ATTEMTING: /connect "+str(botID))
     time.sleep(0.5)
     execute("/connect "+str(botID))
