@@ -53,7 +53,7 @@ def populate():
     }
     users[2] = {
         "id": 2,
-        "name": "Elvira",
+        "name": "ElvOLDira",
     }
 
     messages[0] = {
@@ -78,7 +78,7 @@ def populate():
         "id": 3,
         "room": 1,
         "sender": 2,
-        "content": "Je suis Elvira..",
+        "content": "Je suis ElvOLDira..",
     }
     messages[4] = {
         "id": 4,

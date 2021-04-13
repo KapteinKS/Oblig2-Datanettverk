@@ -466,7 +466,17 @@ def bobby_the_bot():
 
 
 def elvira_the_bot():
-    pass
+    trivia = []
+    botID = execute("/register Elvira")
+    time.sleep(0.5)
+    print("Connecting")
+    execute("/connect " + str(botID))
+    time.sleep(0.1)
+    room_id = execute("/add_room Elvira's Den")
+    execute("/join_room " + room_id)
+    while True:
+
+    time.sleep(1)
 
 
 def joe_the_bot():
@@ -483,7 +493,7 @@ def joe_the_bot():
     for x in range(10):
         execute("/join_room " + str(x))
         time.sleep(0.1)
-        
+
     execute("/get_room " + str(room_id))
     for x in range(6):
         time.sleep(30)
