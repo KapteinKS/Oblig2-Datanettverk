@@ -8,14 +8,14 @@ import argparse
 from requests.exceptions import HTTPError
 # TODO Thread
 parser = argparse.ArgumentParser()
-parser.add_argument("-botname", type=str)
+parser.add_argument("-b", type=str)
 args = parser.parse_args()
 
 BASE = "http://127.0.0.1:5000/api/"
 ID = -1
 ROOM = -1
 ADDRESS = ("127.0.0.1", 5001)
-BOTNAME = args.botname
+BOTNAME = args.b
 print(BOTNAME)
 
 HELP_CONNECTED = """
@@ -375,6 +375,8 @@ def start():
     send = threading.Thread(target=send_thread)
     receive.start()
     send.start()
+    if BOTNAME == "bertram":
+        bertramTheBot()
 
 
 start()
