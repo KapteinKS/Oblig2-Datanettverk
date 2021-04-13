@@ -220,14 +220,14 @@ def receive_thread():
     # show message
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect(ADDRESS)
-    msg = "AYAYA Clap"
+    msg = "1"
     sock.send(msg.encode())
 
 # STARTUP #####################################################################
 
 
-def execute():
-    raw = input()
+def execute(commando):
+    raw = commando
     text = raw.split(" ")
     # Raw is command only, text[] is command + args
     if raw.startswith("/"):
@@ -323,7 +323,7 @@ def execute():
 
 def send_thread():
     while True:
-        execute()
+        execute(input(":"))
     # bertramTheBot()
 #    pass
 
