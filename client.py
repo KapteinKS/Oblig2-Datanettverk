@@ -7,6 +7,7 @@ import sys
 import argparse
 import random
 from requests.exceptions import HTTPError
+
 # TODO Thread
 parser = argparse.ArgumentParser()
 parser.add_argument("-b", type=str)
@@ -34,8 +35,12 @@ HELP_CONNECTED = """
 HELP_NOT_CONNECTED = """When not connected you can only use the /help, /register or /connect
 commands. Please register as a new user then connect with your given ID.
 Use /register <name> and then /connect <id>."""
-ALL_COMMANDS = ["/help", "/connect USER_ID", "/register NAME", "/users", "/user USER_ID", "/get_rooms", "/add_room ROOM_NAME", "/get_room ROOM_ID",
-                "/get_rooms_users ROOM_ID", "/join_room ROOM_ID", "/get_messages ROOM_ID", "/get_user_messages ROOM_ID USER_ID", "/post_message ROOM_ID MESSAGE"]
+ALL_COMMANDS = ["/help", "/connect USER_ID", "/register NAME", "/users", "/user USER_ID", "/get_rooms",
+                "/add_room ROOM_NAME", "/get_room ROOM_ID",
+                "/get_rooms_users ROOM_ID", "/join_room ROOM_ID", "/get_messages ROOM_ID",
+                "/get_user_messages ROOM_ID USER_ID", "/post_message ROOM_ID MESSAGE"]
+
+
 # USERS #######################################################################
 
 
@@ -61,7 +66,7 @@ def add_user(user_name):  # add user to db
     if re.fullmatch('[A-Za-z]{2,25}( [A-Za-z]{2,25})?', user_name):
         response = requests.put(BASE + "users", {"name": user_name}).json()
         print(f"Successfully added new user, with ID: {response}")
-        return(response)
+        return (response)
     else:
         print("\nIllegal user name."
               "\nUser name rules: "
@@ -96,6 +101,7 @@ def delete_user(user_id):
             print("You have now been logged out after deleting your user")
     else:
         print("Please enter an ID.")
+
 
 # ROOMS #######################################################################
 
@@ -149,6 +155,7 @@ def get_room(room_id):
     else:
         print("Please use a number")
 
+
 # ROOM USERS ##################################################################
 
 
@@ -175,6 +182,7 @@ def add_room_user(room_id):
         return response.json()
     else:
         print("Please usa a number")
+
 
 # MESSAGES ####################################################################
 
@@ -257,6 +265,7 @@ def receive_thread():
     while True:
         push = sock.recv(1024)
         print(push.decode() + "push notification test here")
+
 
 # STARTUP #####################################################################
 
@@ -361,18 +370,19 @@ def send_thread():
     while True:
         execute(input(":"))
     # bertramTheBot()
+
+
 #    pass
 
-        ## BOT STUFF ###################################################################
 
-
+# BOT STUFF ###################################################################
 def join_random():
     rooms = execute("/get_rooms")
     print(f"There are {len(rooms)} rooms")
-    room_to_join = random.randint(0, (len(rooms)-1))
+    room_to_join = random.randint(0, (len(rooms) - 1))
     print(f"You're joining room {room_to_join}")
     time.sleep(0.5)
-    execute("/join_room "+str(room_to_join))
+    execute("/join_room " + str(room_to_join))
     time.sleep(0.5)
     return room_to_join
 
@@ -380,12 +390,12 @@ def join_random():
 def bertram_the_bot():
     botID = execute("/register Bertram")
     time.sleep(1)
-    print("ATTEMTING: /connect "+str(botID))
+    print("ATTEMTING: /connect " + str(botID))
     execute("/connect " + str(botID))
     time.sleep(0.5)
     print("You are here")
     room_to_join = join_random()
-    #execute("/join_room 0")
+    # execute("/join_room 0")
     time.sleep(0.5)
     execute("/post_message " + str(room_to_join) + " Hello I am Bertram.")
     time.sleep(1)
@@ -393,8 +403,20 @@ def bertram_the_bot():
     # Put this in a loop, to get responses ####
 
     msgs = execute("/get_messages " + str(room_to_join))
+    joecheck = False;
+    rndmsg = random.choice(msgs)
+    for msg in msgs:
+        if get_user(str(msg["sender"]))["name"].lower() == "joe":
+            joecheck = True
+    if joecheck:
+        execute("/post_message " + str(room_to_join) + " Joe, why don't you just shut the f*** up?")
+    else:
+
+        msg = "Dang " + str(get_user(rndmsg["sender"])["name"]) + ", good point!"
+        execute("/post_message " + str(room_to_join) + " " + msg)
+
     time.sleep(0.5)
-    if (msgs)
+    # if (msgs)
 
     ###########################################
 
@@ -419,10 +441,16 @@ def carlton_the_bot():
     time.sleep(1)
     execute("/get_room " + room_id)
     for x in range(3):
-        execute(random.choice(messages))
         time.sleep(60)
-    join_random()
-    execute(random.choice(messages))
+        execute(random.choice(messages))
+    time.sleep(1)
+    execute("I'm gonna join another room now")
+    room_to_join = join_random()
+    time.sleep(2)
+    execute("/get_room " + str(room_to_join))
+    for x in range(3):
+        time.sleep(90)
+        execute(random.choice(messages))
 
 
 def bobby_the_bot():
@@ -449,8 +477,14 @@ def joe_the_bot():
         time.sleep(0.1)
     execute("/get_room " + str(room_id))
     for x in range(6):
-        execute(random.choice(messages))
         time.sleep(30)
+        execute(random.choice(messages))
+    execute("I'm gonna switch to the general chat now now")
+    time.sleep(1)
+    execute("/get_room 0")
+    for x in range(4):
+        time.sleep(60)
+        execute(random.choice(messages))
 
 
 ################################################################################
@@ -462,7 +496,7 @@ def start():
     send = threading.Thread(target=send_thread)
     receive.start()
     send.start()
-    if BOTNAME != None:
+    if BOTNAME is not None:
         if BOTNAME.lower() == "bertram":
             bertram_the_bot()
         elif BOTNAME.lower() == "carlton":
