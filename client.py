@@ -315,8 +315,6 @@ def execute():
     elif ID >= 0 and ROOM >= 0:
         if len(raw) > 0:
             post_message_in_room(raw)
-            print(
-                "Input was not recognised as a command, type /help for a list of commands")
     else:
         print("Input was not recognised as a command, or message was not sent as you may not be"
               " logged in, or connected to a room."
