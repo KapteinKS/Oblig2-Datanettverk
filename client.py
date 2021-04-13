@@ -264,7 +264,7 @@ def receive_thread():
     sock.send(msg.encode())
     while True:
         push = sock.recv(1024)
-        print(push.decode() + "push notification test here")
+        #print(push.decode() + "push notification test here")
 
 
 # STARTUP #####################################################################
