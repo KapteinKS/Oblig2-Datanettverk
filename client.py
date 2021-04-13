@@ -215,11 +215,8 @@ def receive_thread():
     pass
 
 # STARTUP #####################################################################
-
-
-def send_thread():
-    while True:
-        raw = input(":")
+def execute(input):
+        raw = input
         text = raw.split(" ")
         # Raw is command only, text[] is command + args
         if raw.startswith("/"):
@@ -313,6 +310,23 @@ def send_thread():
             print("Input was not recognised as a command, or message was not sent as you may not be"
                   " logged in, or connected to a room."
                   "\nType /help for a list of commands")
+
+
+
+
+def send_thread():
+    while True:
+        execute(input(":"))
+
+
+## BOT STUFF ###################################################################
+
+def bertramTheBot():
+    pass
+
+
+
+################################################################################
 
 
 def start():
