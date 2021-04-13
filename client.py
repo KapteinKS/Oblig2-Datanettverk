@@ -362,7 +362,7 @@ def bertramTheBot():
     #execute("/join_room 0")
     # time.sleep(0.5)
     execute("/post_message 0 Hello I am Bertram.")
-    time.sleep(1.5)
+    time.sleep(1)
     execute(input("BREAK:"))
     # pass
 
