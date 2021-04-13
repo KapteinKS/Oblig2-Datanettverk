@@ -383,6 +383,15 @@ def bertram_the_bot():
     time.sleep(0.5)
     execute("/post_message " + str(room_to_join) + " Hello I am Bertram.")
     time.sleep(1)
+
+    # Put this in a loop, to get responses ####
+
+    msgs = execute("/get_messages " +str(room_to_join))
+    time.sleep(0.5)
+    if (msgs)
+
+    ###########################################
+
     execute(input("BREAK:"))
     # pass
 
