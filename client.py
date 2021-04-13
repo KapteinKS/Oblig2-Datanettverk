@@ -6,6 +6,7 @@ import socket
 # TODO Thread
 BASE = "http://127.0.0.1:5000/api/"
 ID = -1
+ROOM = -1
 ADDRESS = ("127.0.0.1", 5000)
 
 HELP_CONNECTED = """
@@ -101,7 +102,11 @@ def add_room(room_name):
 
 def get_room(room_id):
     if type(int(room_id)) == int:
-        response = requests.get(BASE + "room/" + room_id, {"id": ID})
+        for x in range(50):
+            print()  # Clear screen
+        list_of_globals = globals()
+        list_of_globals['ROOM'] = int(room_id)
+        response = requests.get(BASE + "room/" + str(room_id), {"id": ID})
         full = response.json()
         users = full["listOfUsers"]
         messages = full["listOfMessages"]
@@ -188,6 +193,13 @@ def post_message(room_id, message):
         else:
             # Should be rare, as many other things need to fail to reach this
             print("Message was not sent")
+            
+
+def post_message_in_room(message):
+    url = BASE + "room/" + str(ROOM) + "/" + str(ID) + "/messages"
+    response = requests.post(url, {"id": ID, "message": message})
+    if response.json() == "OK":
+        get_room(ROOM)
 
 
 # TODO: this
@@ -292,6 +304,13 @@ def execute(input):
             else:
                 print(
                     "When not connected you can only use the /help, /register or /connect commands")
+        elif ID >= 0 and ROOM >= 0:
+            if len(raw) > 0:
+                post_message_in_room(raw)
+        else:
+            print("Input was not recognised as a command, or message was not sent as you may not be"
+                  " logged in, or connected to a room."
+                  "\nType /help for a list of commands")
 
 
 
