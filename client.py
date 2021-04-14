@@ -49,6 +49,8 @@ def connect(user_id):
         global ID
         ID = user_id
         print("Connection established, welcome", get_name(user_id) + "!")
+        receive = threading.Thread(target=receive_thread, args=[user_id])
+        receive.start()
     else:
         print("No user found with that ID")
 
@@ -254,15 +256,14 @@ def post_message_in_room(message):
 
 
 # TODO: this
-def receive_thread():
+def receive_thread(user_id):
     # TODO: Receiving messages and prompts from server.
     # push notification with message id
     # get message from server
     # show message
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect(ADDRESS)
-    msg = "1"
-    sock.send(msg.encode())
+    sock.send(str(user_id).encode())
     while True:
         push = sock.recv(1024)
         #print(push.decode() + "push notification test here")
@@ -547,9 +548,7 @@ def joe_the_bot():
 
 def start():
     print("###### Client start #######")
-    receive = threading.Thread(target=receive_thread)
     send = threading.Thread(target=send_thread)
-    receive.start()
     send.start()
     if BOTNAME is not None:
         if BOTNAME.lower() == "bertram":
