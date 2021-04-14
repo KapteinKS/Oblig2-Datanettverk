@@ -95,8 +95,7 @@ def get_room_users(room_orig):
 
 
 def user_exist(index):
-    return index < len(users)
-
+    return index in users        
 # Function to check if the user is logged in
 
 

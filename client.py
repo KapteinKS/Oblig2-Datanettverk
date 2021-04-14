@@ -60,7 +60,7 @@ def connect(user_id):
 
 # This method displays all registered users
 def get_users():  # return users
-    response = requests.get(BASE + "users", {"id": 1}).json()
+    response = requests.get(BASE + "users", {"id": ID}).json()
     print("Users:")
     for user in response:
         print("\n" + user["name"])
