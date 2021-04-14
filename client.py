@@ -8,7 +8,6 @@ import argparse
 import random
 from requests.exceptions import HTTPError
 
-# TODO Thread
 parser = argparse.ArgumentParser()
 parser.add_argument("-b", type=str)
 args = parser.parse_args()
@@ -42,8 +41,8 @@ ALL_COMMANDS = ["/help", "/connect USER_ID", "/register NAME", "/users", "/user 
 
 
 # USERS #######################################################################
-
-
+# This in the "login" method. Users can type /connect [USER ID] to connect with the specified ID, and the server will
+# check to see if the user ID belongs to a registered user
 def connect(user_id):
     if requests.get(BASE + "login", {"id": user_id}):
         global ID
@@ -55,6 +54,7 @@ def connect(user_id):
         print("No user found with that ID")
 
 
+# This method displays all registered users 
 def get_users():  # return users
     response = requests.get(BASE + "users", {"id": 1}).json()
     print("Users:")
@@ -63,12 +63,14 @@ def get_users():  # return users
     return response
 
 
+# This method adds a new user to the system. It takes a user name and if it is legal 
+# according to the regex it will add a new user 
 def add_user(user_name):  # add user to db
-    # Thank you StackOverflow <3
+    # Thank you StackOverflow for naming regex <3
     if re.fullmatch('[A-Za-z]{2,25}( [A-Za-z]{2,25})?', user_name):
         response = requests.put(BASE + "users", {"name": user_name}).json()
         print(f"Successfully added new user, with ID: {response}")
-        return (response)
+        return response
     else:
         print("\nIllegal user name."
               "\nUser name rules: "
@@ -78,6 +80,7 @@ def add_user(user_name):  # add user to db
               "\n\t4. \tName(s) can be 2-25 characters (each)")
 
 
+# This method returns the entire user as a JSON element
 def get_user(user_id):
     if type(int(user_id)) == int:
         response = requests.get(BASE + "user/" + user_id, {"id": ID}).json()
@@ -87,12 +90,17 @@ def get_user(user_id):
         print("Please use a number")
 
 
+# This method simply returns the name of a specified user
 def get_name(user_id):
     if type(int(user_id)) == int:
         response = requests.get(BASE + "user/" + str(user_id), {"id": ID})
         return response.json()["name"]
 
 
+# A user can only delete themselves, and if they do the global variable ID 
+# will be set to -1, to handle "logging the user out". We also had to use an HTTP post request because 
+# the delete request would only take the URL argument, and would give errors when we 
+# tried to pass the user ID as a JSON element
 def delete_user(user_id):
     if type(int(user_id)) == int:
         response = requests.post(BASE + "user/" + str(user_id), {"id": ID})
@@ -106,8 +114,7 @@ def delete_user(user_id):
 
 
 # ROOMS #######################################################################
-
-
+# This method displays a list of registered rooms, with room name and ID
 def get_rooms():
     response = requests.get(BASE + "rooms", {"id": ID})
     for room in response.json():
@@ -116,6 +123,7 @@ def get_rooms():
     return response.json()
 
 
+# This method lets users add new rooms, with a room name, by sending an HTTP put request, and passing the name in a JSON
 def add_room(room_name):
     response = requests.put(BASE + "rooms", {"id": ID, "name": room_name})
     text = response.json()
@@ -124,6 +132,7 @@ def add_room(room_name):
     return arr[3].split(',')[0]
 
 
+# This method displays which users are registered in a specified room, and the messages that have been sent in that room
 def get_room(room_id):
     if type(int(room_id)) == int:
         try:
@@ -160,8 +169,7 @@ def get_room(room_id):
 
 
 # ROOM USERS ##################################################################
-
-
+# This method displays a list of users registered in a specified room, if the user types /get_room_users [ROOM ID]
 def get_room_users(room_id):
     if type(int(room_id)) == int:
         # "/api/room/<int:room_id>/users"
@@ -175,6 +183,8 @@ def get_room_users(room_id):
         print("Please use a number")
 
 
+# By typing /join_room [ROOM NUMBER] the user can become part of a room, and will get 
+# access to seeing and adding messages in the specified room
 def add_room_user(room_id):
     # "/api/room/<int:room_id>/users"
     if type(int(room_id)) == int:
@@ -188,8 +198,8 @@ def add_room_user(room_id):
 
 
 # MESSAGES ####################################################################
-
-
+# This method ensures a nicely formatted output of messages. 
+# It also adds 100 blank lines to always only display the newly gotten messages
 def format_messages(response):
     for x in range(101):
         print()  # Clear screen
@@ -202,6 +212,8 @@ def format_messages(response):
               "\n\t\t" + message["content"])
 
 
+# This method send an HTTP get request to the server trying to get all 
+# messages in a specified room by adding the room_id to the url
 def get_messages(room_id):
     if type(int(room_id)) == int:
         response = requests.get(
@@ -210,6 +222,8 @@ def get_messages(room_id):
         return response.json()
 
 
+# This method send an HTTP get request to the server trying to get all 
+# messages from a specified user in a specified room
 def get_user_messages(room_id, user_id):
     if type(int(room_id)) == int:
         response = requests.get(
@@ -218,6 +232,7 @@ def get_user_messages(room_id, user_id):
         return response.json()
 
 
+# The user can get a message by message ID, this method will send an HTTP get request
 def get_message(message_id):
     if type(int(message_id)) == int:
         response = requests.get(
@@ -226,6 +241,9 @@ def get_message(message_id):
         return response.json()
 
 
+# The user can post a message in a room they have joined, regardless of currently being attached to it or not
+# by typing /post_message [ROOM NUMBER] [MESSAGE]. This method will sent an HTTP post request to the server which will
+# then try to add the message
 def post_message(room_id, message):
     if type(int(room_id)) == int:
         user_id = ID
@@ -243,6 +261,8 @@ def post_message(room_id, message):
         print("Message was not sent")
 
 
+# When a user is connected (to a room) it will be viewed as a message and posted in 
+# the room they are currently attached to
 def post_message_in_room(message):
     url = BASE + "room/" + str(ROOM) + "/" + str(ID) + "/messages"
     response = requests.post(url, {"id": ID, "message": message})
@@ -271,8 +291,12 @@ def receive_thread(user_id):
 
 
 # STARTUP #####################################################################
-
-
+# This method handles input from the user and executes the commands. If the input start with "/" it is recognised
+# as the user trying to use a command. If there is no "/" at the start of a line, it is viewed as a message, and
+# will be sent if the user is connected with a valid user ID, and connected to a room. There is also a check to see
+# if the user is connected, as ID is passed with every request to the server. An unconnected user can only register
+# a new user or connect with a valid ID, or ask for help. The /help command also gives different results depending
+# on if the user is connected or not
 def execute(commando):
     raw = commando
     text = raw.split(" ")
@@ -379,6 +403,8 @@ def send_thread():
 
 
 # BOT STUFF ###################################################################
+# Bots create pre determined rooms, and join the one they created. 
+# They do not necessarily join every room, but they can in theory join any room
 def join_random():
     rooms = execute("/get_rooms")
     print(f"There are {len(rooms)} rooms")
@@ -422,6 +448,8 @@ def bertram_the_bot():
     execute(input("BREAK:"))
 
 
+# This bot is based on Carlton Banks from The Fresh Prince of Bel Air. It will add a new room called Dancing,
+# join this room and send some messages in this room, before joining another room and sending a few more messages there
 def carlton_the_bot():
     messages = ["Let's dance!", "Do the Carlton!", "What's a nine-letter word for terrific? Will Smith!",
                 "Forget the harlem shake, forget Gangam style, it's time to bring back the CARLTON",
@@ -452,6 +480,7 @@ def carlton_the_bot():
         execute(random.choice(messages))
 
 
+# This bot is a Bob Dylan reference. He will "sing" in his created room, and then go see if it can find Joe
 def bobby_the_bot():
     # What's copyright again?
     messages = ["How many roads must a man walk down \nBefore you call him a man? "
@@ -521,6 +550,8 @@ def elvira_the_bot():
     execute("/post_message " + str(room_id) + " " + "This concludes Elvira's trivia showcase! \U0001F578")
 
 
+# This is a reference to Joe Rogan, the comedian, who will randomly spew inspirational quotes before going
+# to the General chat room
 def joe_the_bot():
     messages = ["Be the hero of your own story.", "If you are the greatest, why would you go around talking about it?",
                 "People love to see people fall.", "Fuel yourself with the f*** ups.", "Choose To Be Inspired."]
