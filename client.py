@@ -7,11 +7,14 @@ import sys
 import argparse
 import random
 from requests.exceptions import HTTPError
+from collections import deque
 
 # TODO Thread
 parser = argparse.ArgumentParser()
 parser.add_argument("-b", type=str)
 args = parser.parse_args()
+
+bot_new_messages = deque()
 
 BASE = "http://127.0.0.1:5000/api/"
 ID = -1
@@ -264,10 +267,12 @@ def receive_thread(user_id):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect(ADDRESS)
     sock.send(str(user_id).encode())
+    print(f"Connected to push socket with user id {user_id}")
     while True:
-        push = sock.recv(1024)
-        print(push.decode() + "push notification test here")
-        get_message(int(push.decode()))
+        msg_id = sock.recv(1024).decode()
+        print(f"Received push for message {msg_id}")
+        bot_new_messages.append(get_message(int(msg_id)))
+        time.sleep(1)
 
 
 # STARTUP #####################################################################
@@ -401,21 +406,35 @@ def bertram_the_bot():
     time.sleep(0.5)
     execute("/post_message " + str(room_to_join) + " Hello I am Bertram.")
     time.sleep(1)
-    # TODO: Put this in a loop, to get responses ####
+    
     msgs = execute("/get_messages " + str(room_to_join))
-    joecheck = False;
-    rndmsg = random.choice(msgs)
-    # TODO: Check that the randomly selected message is not from self
-    time.sleep(0.5)
-    # Checking if any of the messages is from Joe
-    for msg in msgs:
-        if get_user(str(msg["sender"]))["name"].lower() == "joe":
-            joecheck = True
-    if joecheck:
-        execute("/post_message " + str(room_to_join) + " Joe, pardon my french, but why don't you just shut the HECK up?!")
-    else:
-        msg = "Dang " + str(get_user(str(rndmsg["sender"]))["name"]) + ", good point!"
-        execute("/post_message " + str(room_to_join) + " " + msg)
+    msg = random.choice(msgs)
+    while True:
+        if msg is not None:
+            joecheck = False
+        
+            # TODO: Check that the randomly selected message is not from self
+            time.sleep(0.5)
+            # Checking if any of the messages are from Joe
+            for msg in msgs:
+                if get_user(str(msg["sender"]))["name"].lower() == "joe":
+                    joecheck = True
+            if joecheck:
+                execute("/post_message " + str(room_to_join) + " Joe, pardon my french, but why don't you just shut the HECK up?!")
+            else:
+                msg = "Dang " + str(get_user(str(msg["sender"]))["name"]) + ", good point!"
+                execute("/post_message " + str(room_to_join) + " " + msg)
+            msg = None
+
+        try:
+            print("DEBUG: Getting push message")
+            msg = bot_new_messages.popleft()
+            print("DEBUG: Push message found")
+            print(msg["content"])
+        except IndexError:
+            # No messages
+            #print("DEBUG: Push messages done")
+            time.sleep(2)
 
     time.sleep(0.5)
     ###########################################
