@@ -23,17 +23,17 @@ BOTNAME = args.b
 print(BOTNAME)
 
 HELP_CONNECTED = """
-| /users                                 gives a list of users.
-| /user <id>                             gives the user.
-| /delete <id>                           deletes the user. You can only delete your own account.
-| /get_rooms                             gives a list of chatrooms.
-| /add_room <name>                       creates a new room.
-| /get_room <room_id>                    gives a room(???).
-| /get_room_users <room_id>              gives all the users in a room.
-| /join_room <room_id>                   joins a new room.
-| /get_messages <room_id>                gives all the messages of a room.
-| /get_user_messages <room_id> <user_id> gives the messages of a user from a specific room.
-| /post_message <room_id> <message>      posts a message in a specific room."""
+| /users                             gives a list of users.
+| /user USER_ID                      gives the user.
+| /delete USER_ID                    deletes the user. You can only delete your own account.
+| /get_rooms                         gives a list of chatrooms.
+| /add_room ROOM_NAME                creates a new room.
+| /get_room ROOM_ID                  gives a room(???).
+| /get_room_users ROOM_ID            gives all the users in a room.
+| /join_room ROOM_ID                 joins a new room.
+| /get_messages ROOM_ID              gives all the messages of a room.
+| /get_user_messages ROOM_ID USER_ID gives the messages of a user from a specific room.
+| /post_message ROOM_ID MESSAGE      posts a message in a specific room."""
 HELP_NOT_CONNECTED = """| When not connected you can only use the /help, /register or /connect
 | commands. Please register as a new user then connect with your given ID.
 | Use /register <name> and then /connect <id>.
