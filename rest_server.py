@@ -183,15 +183,17 @@ class Users(Resource):
 
     def put(self):  # Adds a single user
         max = 0
-        for user in users:
-            if user > int(max):
-                max = int(user)
-        
-        if max != 0:
+        if len(users) >= 1:
+            for user in users:
+                if user > int(max):
+                    max = int(user)
             id = max + 1
+        else:
+            id = 0
         name = request.form["name"]
         users[id] = {"id": id, "name": name}
         return f"{id}", 201
+
 
 # User functions
 class User(Resource):
