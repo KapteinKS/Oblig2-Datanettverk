@@ -65,67 +65,16 @@ def add_message(self, room_id, user_id):
     push_thread.start()
 
 # Populating the rooms with some "dummies"
+
+
 def populate():
-
-    users[0] = {
-        "id": 0,
-        "name": "Joe",
-    }
-    users[1] = {
-        "id": 1,
-        "name": "Bobby",
-    }
-    users[2] = {
-        "id": 2,
-        "name": "ElvOLDira",
-    }
-
-    messages[0] = {
-        "id": 0,
-        "room": 0,
-        "sender": 1,
-        "content": "THIS IS A Bobby MESSAGE",
-    }
-    messages[1] = {
-        "id": 1,
-        "room": 0,
-        "sender": 0,
-        "content": "Cowabunga, mydudes!! Joe sent this.",
-    }
-    messages[2] = {
-        "id": 2,
-        "room": 0,
-        "sender": 1,
-        "content": "You're such a dweeb, Joey-Ol'-boy. Love, Bob.",
-    }
-    messages[3] = {
-        "id": 3,
-        "room": 1,
-        "sender": 2,
-        "content": "Je suis ElvOLDira..",
-    }
-    messages[4] = {
-        "id": 4,
-        "room": 0,
-        "sender": 1,
-        "content": "Bobby REPORTING in",
-    }
 
     rooms[0] = {
         "id": 0,
         "name": "General",
         "size": 32,
-        "listOfUsers": [0, 1, 2],
+        "listOfUsers": [],
     }
-    rooms[1] = {
-        "id": 1,
-        "name": "Memes",
-        "size": 32,
-        "listOfUsers": [1],
-    }
-
-    add_message("HELLO THIS IS A MESSAGE ADDED LATER", 1, 2)
-    add_message("HELLO THIS IS A NEW MESSAGE ADDED LATER", 0, 2)
 
 
 populate()
@@ -134,6 +83,8 @@ populate()
 # user_delete_args.add_argument("id", type=int, help="ID of current user", required=True)
 
 # Function to return users of a given room
+
+
 def get_room_users(room_orig):
     room_users = []
     for user_id in room_orig["listOfUsers"]:
@@ -141,10 +92,14 @@ def get_room_users(room_orig):
     return room_users
 
 # Function to check if a user with a given index exists
+
+
 def user_exist(index):
     return index < len(users)
 
 # Function to check if the user is logged in
+
+
 def check_user_valid_get():
     if request.args.get("id") is None or not user_exist(int(request.args.get("id"))):
         abort(
@@ -155,6 +110,8 @@ def check_user_valid_get():
         return True
 
 # Function to check if the user is logged in
+
+
 def check_user_valid_form():
     if request.form["id"] is None or not user_exist(int(request.form["id"])):
         abort(
@@ -166,6 +123,8 @@ def check_user_valid_form():
 
 ## API Resources ###############################################################
 # Login-functions
+
+
 class Login(Resource):
     def get(self):
         if check_user_valid_get():
@@ -174,6 +133,8 @@ class Login(Resource):
             return False
 
 # Users functions
+
+
 class Users(Resource):
     def get(self):  # Returns all users
         if check_user_valid_get():
@@ -196,6 +157,8 @@ class Users(Resource):
 
 
 # User functions
+
+
 class User(Resource):
     def get(self, user_id):  # Return user by user ID
         if check_user_valid_get():
@@ -216,6 +179,8 @@ class User(Resource):
         return "User deleted", 201
 
 # Room resources
+
+
 class Rooms(Resource):
     def get(self):  # Get all rooms
         if check_user_valid_get():
@@ -243,6 +208,8 @@ class Rooms(Resource):
             return f"Room added, ID: {id}, Name: {name}", 201
 
 # Room resources
+
+
 class Room(Resource):
     def get(self, room_id):  # Get single room by room ID
         if check_user_valid_get():
@@ -285,6 +252,8 @@ class RoomUsers(Resource):
                 abort(404, message="No room found with that ID")
 
 # Messages resources
+
+
 class Messages(Resource):
     def get(self, room_id):  # Gets all messages in room by room ID
         if check_user_valid_get():
@@ -295,6 +264,8 @@ class Messages(Resource):
                 abort(404, message="No room found with that ID")
 
 # Message resources
+
+
 class Message(Resource):
     def get(self, message_id):  # Gets a single message by message ID
         if check_user_valid_get():
@@ -305,6 +276,8 @@ class Message(Resource):
                 abort(404, message="No message found with that ID")
 
 # Room User Messages resources, messages for specific user in specific room
+
+
 class RoomUserMessages(Resource):
     def get(self, room_id, user_id):  # Get all messages sent in room by user by room ID and user ID
         if check_user_valid_get():
@@ -318,6 +291,7 @@ class RoomUserMessages(Resource):
             else:
                 abort(404, message="Couldn't find room or user")
     # This is what's used to post a message
+
     def post(self, room_id, user_id):  # Add message from user in room by room ID and user ID
         if check_user_valid_form():
             if room_id in rooms:
@@ -332,6 +306,7 @@ class RoomUserMessages(Resource):
             else:
                 abort(404, message="No room found with that ID")
 
+
 # Adding resources to API, with names and paths
 api.add_resource(Login, "/api/login")
 api.add_resource(Users, "/api/users")
@@ -345,6 +320,8 @@ api.add_resource(RoomUserMessages,
                  "/api/room/<int:room_id>/<int:user_id>/messages")
 
 # Setting up for push-notifications
+
+
 def accept_connection(sock):
     while True:
         client, address = sock.accept()
