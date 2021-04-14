@@ -1,8 +1,8 @@
 # Oblig2-Datanettverk
 
-###By Patrick Sletvold (s344102), Henrik Bernhard Stangeland (), Sander Tøien (s344045) and Kristian Kåsin Wang ()
+## By Patrick Sletvold (s344102), Henrik Bernhard Stangeland (s344104), Sander Tøien (s344045) and Kristian Kåsin Wang (s344088)
 
-####The rest_server.py implementation is based on a tutorial by Tech with Tim on YouTube, https://youtu.be/GMppyAPbLYk
+**The rest_server.py implementation is loosely based on a [tutorial by Tech with Tim on YouTube](https://youtu.be/GMppyAPbLYk)**
 
 To run our program:
 * Open up a terminal window and navigate to the folder created when you unzipped this
