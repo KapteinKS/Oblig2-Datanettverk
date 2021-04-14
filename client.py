@@ -292,7 +292,6 @@ def receive_thread(user_id):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect(ADDRESS)
     sock.send(str(user_id).encode())
-    print(f"Connected to push socket with user id {user_id}")
     while True:
         msg_id = sock.recv(1024).decode()
         bot_new_messages.append(get_message(int(msg_id)))
