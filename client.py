@@ -237,7 +237,9 @@ def get_message(message_id):
     if type(int(message_id)) == int:
         response = requests.get(
             BASE + "message/" + str(message_id), {"id": ID})
-        print(response.json())
+        mess = response.json()
+        print("New message in room " + str(mess["room"]))
+        print("\t" + get_name(int(mess["sender"])) + ":\t" + mess["content"] + "\n")
         return response.json()
 
 
