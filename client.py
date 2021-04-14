@@ -293,7 +293,6 @@ def receive_thread(user_id):
     print(f"Connected to push socket with user id {user_id}")
     while True:
         msg_id = sock.recv(1024).decode()
-        print(f"Received push for message {msg_id}")
         bot_new_messages.append(get_message(int(msg_id)))
         time.sleep(1)
 
