@@ -1,6 +1,6 @@
 # Oblig2-Datanettverk
 
-###By Patrick Sletvold (), Henrik Bernhard Stangeland (), Sander Tøien (s344045) and Kristian Kåsin Wang ()
+###By Patrick Sletvold (s344102), Henrik Bernhard Stangeland (), Sander Tøien (s344045) and Kristian Kåsin Wang ()
 
 ####The rest_server.py implementation is based on a tutorial by Tech with Tim on YouTube, https://youtu.be/GMppyAPbLYk
 
