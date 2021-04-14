@@ -409,22 +409,28 @@ def bertram_the_bot():
     
     msgs = execute("/get_messages " + str(room_to_join))
     msg = random.choice(msgs)
+    joecheck = False
+
+    # Checking if any of the messages are from Joe
+    for msg in msgs:
+        if get_user(str(msg["sender"]))["name"].lower() == "joe":
+            joecheck = True
+    
     while True:
         if msg is not None:
-            joecheck = False
-        
             # TODO: Check that the randomly selected message is not from self
             time.sleep(0.5)
-            # Checking if any of the messages are from Joe
-            for msg in msgs:
-                if get_user(str(msg["sender"]))["name"].lower() == "joe":
-                    joecheck = True
+            
+            # Checking if the message is from Joe
+            if not joecheck and get_user(str(msg["sender"]))["name"].lower() == "joe":
+                joecheck = True
             if joecheck:
                 execute("/post_message " + str(room_to_join) + " Joe, pardon my french, but why don't you just shut the HECK up?!")
             else:
                 msg = "Dang " + str(get_user(str(msg["sender"]))["name"]) + ", good point!"
                 execute("/post_message " + str(room_to_join) + " " + msg)
             msg = None
+            joecheck = False
 
         try:
             print("DEBUG: Getting push message")
