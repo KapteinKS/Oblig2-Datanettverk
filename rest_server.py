@@ -186,7 +186,9 @@ class Users(Resource):
         for user in users:
             if user > int(max):
                 max = int(user)
-        id = max + 1
+        
+        if max != 0:
+            id = max + 1
         name = request.form["name"]
         users[id] = {"id": id, "name": name}
         return f"{id}", 201
