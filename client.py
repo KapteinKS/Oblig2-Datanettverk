@@ -389,7 +389,7 @@ def join_random():
     time.sleep(0.5)
     return room_to_join
 
-
+# Bertram reacts positivly to everyone except Joe, who he hates
 def bertram_the_bot():
     botID = execute("/register Bertram")
     time.sleep(1)
@@ -401,29 +401,25 @@ def bertram_the_bot():
     time.sleep(0.5)
     execute("/post_message " + str(room_to_join) + " Hello I am Bertram.")
     time.sleep(1)
-
-    # Put this in a loop, to get responses ####
-
+    # TODO: Put this in a loop, to get responses ####
     msgs = execute("/get_messages " + str(room_to_join))
     joecheck = False;
     rndmsg = random.choice(msgs)
     # TODO: Check that the randomly selected message is not from self
     time.sleep(0.5)
+    # Checking if any of the messages is from Joe
     for msg in msgs:
         if get_user(str(msg["sender"]))["name"].lower() == "joe":
             joecheck = True
     if joecheck:
-        execute("/post_message " + str(room_to_join) + " Joe, why don't you just shut the f*** up?")
+        execute("/post_message " + str(room_to_join) + " Joe, pardon my french, but why don't you just shut the HECK up?!")
     else:
         msg = "Dang " + str(get_user(str(rndmsg["sender"]))["name"]) + ", good point!"
         execute("/post_message " + str(room_to_join) + " " + msg)
 
     time.sleep(0.5)
-
     ###########################################
-
     execute(input("BREAK:"))
-    # pass
 
 
 def carlton_the_bot():
@@ -493,11 +489,13 @@ def bobby_the_bot():
     time.sleep(50)
     execute(messages[6])
 
-
+# Elvira creates her own room, and posts some Horror-movie facts.
+# She waits 10 seconds before starting, in case anybody wants to join her!
 def elvira_the_bot():
     trivia_start = ["Did you know, ", "Get this, ", "Fun fact, ","Was you aware that ", "Were you aware, "]
     trivia_content = ["Suspiria was originally written to be about 12 year old girls! ", "Tobe Hooper intenden the Texas Chain-Saw Massacre as a dark comedy! ","Sam Raimi had lost the rights to the Evil Dead when making the sequel, so they had to remake it at the beginning of Evil Dead II! ","Sam Loomis' character in Halloween is named after a character in Psycho! ","Tony Todd had real bees in his mouth for Candyman! ","Stephen King's son appears in the film Creepshow! ","The Crypt Keeper makes an appearance in the family-horror film Casper! ","The Conjuring films are all based on supposedly real events! ", "The Final Destination franchise is based on a scrapped idea for the X-Files! ","The filmmakers behind The Excorcist actually believed in excorcisms, and satanic posessions!"]
     trivia_ending = ["Fascinating, right?","Amazing, I know!","Who'd've thunk it!","I'd've never guessed!","Wow! Incredible!"]
+    # Registering Elvira as a user, returning botID.
     botID = execute("/register Elvira")
     time.sleep(2)
     print("BotID: " + str(botID))
@@ -506,17 +504,21 @@ def elvira_the_bot():
     time.sleep(2)
     room_id = execute("/add_room Elvira's Den")
     execute("/join_room " + str(room_id))
+    time.sleep(1)
+    execute("/post_message " + str(room_id) + " I'll start sharing trivia soon! \U0001F5A4")
+    time.sleep(10)
+    # Posting a random trivia-fact
     i = 0
     while i < len(trivia_content):
         time.sleep(1)
-        execute("/post_message " + str(room_id) + " " + str(random.choice(trivia_start)))
-        time.sleep(1)
-        execute("/post_message " + str(room_id) + " " + str(trivia_content.pop(random.randint(0,len(trivia_start)))))
-        time.sleep(2)
+        execute("/post_message " + str(room_id) + " " + str(random.choice(trivia_start)) + " " + str(trivia_content.pop(random.randint(0,len(trivia_start)))))
+        #time.sleep(1)
+        #execute("/post_message " + str(room_id) + " " + str(trivia_content.pop(random.randint(0,len(trivia_start)))))
+        time.sleep(random.uniform(1.5,3.0))
         execute("/post_message " + str(room_id) + " " + str(random.choice(trivia_ending)))
         i = i+1
-    #time.sleep(1)
-    execute("/post_message " + str(room_id) + " " + "This concludes Elvira's trivia showcase.")
+
+    execute("/post_message " + str(room_id) + " " + "This concludes Elvira's trivia showcase! \U0001F578")
 
 
 def joe_the_bot():
