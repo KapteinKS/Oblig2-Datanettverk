@@ -34,13 +34,14 @@ HELP_CONNECTED = """
 | /get_messages <room_id>                gives all the messages of a room.
 | /get_user_messages <room_id> <user_id> gives the messages of a user from a specific room.
 | /post_message <room_id> <message>      posts a message in a specific room."""
-HELP_NOT_CONNECTED = """When not connected you can only use the /help, /register or /connect
-commands. Please register as a new user then connect with your given ID.
-Use /register <name> and then /connect <id>."""
-ALL_COMMANDS = ["/help", "/connect USER_ID", "/register NAME", "/users", "/user USER_ID", "/get_rooms",
-                "/add_room ROOM_NAME", "/get_room ROOM_ID",
-                "/get_rooms_users ROOM_ID", "/join_room ROOM_ID", "/get_messages ROOM_ID",
-                "/get_user_messages ROOM_ID USER_ID", "/post_message ROOM_ID MESSAGE"]
+HELP_NOT_CONNECTED = """| When not connected you can only use the /help, /register or /connect
+| commands. Please register as a new user then connect with your given ID.
+| Use /register <name> and then /connect <id>.
+"""
+ALL_COMMANDS = ["| /help", "| /connect USER_ID", "| /register NAME", "| /users", "| /user USER_ID", "| /get_rooms",
+                "| /add_room ROOM_NAME", "| /get_room ROOM_ID",
+                "| /get_rooms_users ROOM_ID", "| /join_room ROOM_ID", "| /get_messages ROOM_ID",
+                "| /get_user_messages ROOM_ID USER_ID", "| /post_message ROOM_ID MESSAGE"]
 
 
 # USERS #######################################################################
@@ -242,7 +243,8 @@ def get_message(message_id):
             BASE + "message/" + str(message_id), {"id": ID})
         mess = response.json()
         print("New message in room " + str(mess["room"]))
-        print("\t" + get_name(int(mess["sender"])) + ":\t" + mess["content"] + "\n")
+        print("\t" + get_name(int(mess["sender"])
+                              ) + ":\t" + mess["content"] + "\n")
         return response.json()
 
 
@@ -280,8 +282,8 @@ def post_message_in_room(message):
         print(response.json()["message"])
 
 
-# This is a method to handle push notifications. Push notifications only contain a message ID, 
-# which is then used to get the message 
+# This is a method to handle push notifications. Push notifications only contain a message ID,
+# which is then used to get the message
 def receive_thread(user_id):
     # TODO: Receiving messages and prompts from server.
     # push notification with message id
@@ -372,7 +374,7 @@ def execute(commando):
         elif raw == "/help":
             # Print out a help page for help on how to get started
             print(HELP_NOT_CONNECTED)
-            print("Here's a list of all the commands: ")
+            print("| Here's a list of all the commands: ")
             for command in ALL_COMMANDS:
                 print(command)
             pass
@@ -435,7 +437,7 @@ def bertram_the_bot():
     time.sleep(0.5)
     execute("/post_message " + str(room_to_join) + " Hello I am Bertram.")
     time.sleep(1)
-    
+
     msgs = execute("/get_messages " + str(room_to_join))
     msg = random.choice(msgs)
     joecheck = False
@@ -444,19 +446,21 @@ def bertram_the_bot():
     for msg in msgs:
         if get_user(str(msg["sender"]))["name"].lower() == "joe":
             joecheck = True
-    
+
     while True:
         if msg is not None:
             # TODO: Check that the randomly selected message is not from self
             time.sleep(0.5)
-            
+
             # Checking if the message is from Joe
             if not joecheck and get_user(str(msg["sender"]))["name"].lower() == "joe":
                 joecheck = True
             if joecheck:
-                execute("/post_message " + str(room_to_join) + " Joe, pardon my french, but why don't you just shut the HECK up?!")
+                execute("/post_message " + str(room_to_join) +
+                        " Joe, pardon my french, but why don't you just shut the HECK up?!")
             else:
-                msg = "Dang " + str(get_user(str(msg["sender"]))["name"]) + ", good point!"
+                msg = "Dang " + \
+                    str(get_user(str(msg["sender"]))["name"]) + ", good point!"
                 execute("/post_message " + str(room_to_join) + " " + msg)
             msg = None
             joecheck = False
@@ -547,9 +551,12 @@ def bobby_the_bot():
 # Elvira creates her own room, and posts some Horror-movie facts.
 # She waits 10 seconds before starting, in case anybody wants to join her!
 def elvira_the_bot():
-    trivia_start = ["Did you know, ", "Get this, ", "Fun fact, ","Was you aware that ", "Were you aware, "]
-    trivia_content = ["Suspiria was originally written to be about 12 year old girls! ", "Tobe Hooper intenden the Texas Chain-Saw Massacre as a dark comedy! ","Sam Raimi had lost the rights to the Evil Dead when making the sequel, so they had to remake it at the beginning of Evil Dead II! ","Sam Loomis' character in Halloween is named after a character in Psycho! ","Tony Todd had real bees in his mouth for Candyman! ","Stephen King's son appears in the film Creepshow! ","The Crypt Keeper makes an appearance in the family-horror film Casper! ","The Conjuring films are all based on supposedly real events! ", "The Final Destination franchise is based on a scrapped idea for the X-Files! ","The filmmakers behind The Excorcist actually believed in excorcisms, and satanic posessions!"]
-    trivia_ending = ["Fascinating, right?","Amazing, I know!","Who'd've thunk it!","I'd've never guessed!","Wow! Incredible!"]
+    trivia_start = ["Did you know, ", "Get this, ",
+                    "Fun fact, ", "Was you aware that ", "Were you aware, "]
+    trivia_content = ["Suspiria was originally written to be about 12 year old girls! ", "Tobe Hooper intenden the Texas Chain-Saw Massacre as a dark comedy! ", "Sam Raimi had lost the rights to the Evil Dead when making the sequel, so they had to remake it at the beginning of Evil Dead II! ", "Sam Loomis' character in Halloween is named after a character in Psycho! ", "Tony Todd had real bees in his mouth for Candyman! ",
+                      "Stephen King's son appears in the film Creepshow! ", "The Crypt Keeper makes an appearance in the family-horror film Casper! ", "The Conjuring films are all based on supposedly real events! ", "The Final Destination franchise is based on a scrapped idea for the X-Files! ", "The filmmakers behind The Excorcist actually believed in excorcisms, and satanic posessions!"]
+    trivia_ending = ["Fascinating, right?", "Amazing, I know!",
+                     "Who'd've thunk it!", "I'd've never guessed!", "Wow! Incredible!"]
     # Registering Elvira as a user, returning botID.
     botID = execute("/register Elvira")
     time.sleep(2)
@@ -560,18 +567,22 @@ def elvira_the_bot():
     room_id = execute("/add_room Elvira's Den")
     execute("/join_room " + str(room_id))
     time.sleep(1)
-    execute("/post_message " + str(room_id) + " I'll start sharing trivia soon! \U0001F5A4")
+    execute("/post_message " + str(room_id) +
+            " I'll start sharing trivia soon! \U0001F5A4")
     time.sleep(10)
     # Posting some randomly selected trivia-facts
     i = 0
     while i < len(trivia_content):
         time.sleep(1)
-        execute("/post_message " + str(room_id) + " " + str(random.choice(trivia_start)) + " " + str(trivia_content.pop(random.randint(0,len(trivia_start)))))
-        time.sleep(random.uniform(1.5,3.0))
-        execute("/post_message " + str(room_id) + " " + str(random.choice(trivia_ending)))
+        execute("/post_message " + str(room_id) + " " + str(random.choice(trivia_start)
+                                                            ) + " " + str(trivia_content.pop(random.randint(0, len(trivia_start)))))
+        time.sleep(random.uniform(1.5, 3.0))
+        execute("/post_message " + str(room_id) +
+                " " + str(random.choice(trivia_ending)))
         i = i+1
 
-    execute("/post_message " + str(room_id) + " " + "This concludes Elvira's trivia showcase! \U0001F578")
+    execute("/post_message " + str(room_id) + " " +
+            "This concludes Elvira's trivia showcase! \U0001F578")
 
 
 # This is a reference to Joe Rogan, the comedian, who will randomly spew inspirational quotes before going
