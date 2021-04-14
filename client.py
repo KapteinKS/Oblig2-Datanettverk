@@ -277,7 +277,8 @@ def post_message_in_room(message):
         print(response.json()["message"])
 
 
-# TODO: this
+# This is a method to handle push notifications. Push notifications only contain a message ID, 
+# which is then used to get the message 
 def receive_thread(user_id):
     # TODO: Receiving messages and prompts from server.
     # push notification with message id
@@ -288,7 +289,6 @@ def receive_thread(user_id):
     sock.send(str(user_id).encode())
     while True:
         push = sock.recv(1024)
-        print(push.decode() + "push notification test here")
         get_message(int(push.decode()))
 
 
