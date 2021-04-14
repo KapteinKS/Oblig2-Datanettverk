@@ -415,6 +415,7 @@ def join_random():
     time.sleep(0.5)
     return room_to_join
 
+
 # Bertram reacts positivly to everyone except Joe, who he hates
 def bertram_the_bot():
     botID = execute("/register Bertram")
