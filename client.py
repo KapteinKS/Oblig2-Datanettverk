@@ -463,10 +463,7 @@ def bertram_the_bot():
             joecheck = False
 
         try:
-            print("DEBUG: Getting push message")
             msg = bot_new_messages.popleft()
-            print("DEBUG: Push message found")
-            print(msg["content"])
         except IndexError:
             # No messages
             #print("DEBUG: Push messages done")
