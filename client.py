@@ -221,7 +221,7 @@ def get_user_messages(room_id, user_id):
 def get_message(message_id):
     if type(int(message_id)) == int:
         response = requests.get(
-            BASE + "message/" + message_id, {"id": ID})
+            BASE + "message/" + str(message_id), {"id": ID})
         print(response.json())
         return response.json()
 
@@ -266,7 +266,8 @@ def receive_thread(user_id):
     sock.send(str(user_id).encode())
     while True:
         push = sock.recv(1024)
-        #print(push.decode() + "push notification test here")
+        print(push.decode() + "push notification test here")
+        get_message(int(push.decode()))
 
 
 # STARTUP #####################################################################
