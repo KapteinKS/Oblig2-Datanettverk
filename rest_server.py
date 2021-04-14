@@ -31,6 +31,9 @@ def get_messages_in_room(room_id):
 def push_notification():
     try:
         message = message_push_queue.popleft()
+        if message["room"] not in rooms:
+            print("ERROR: Message in unknown room")
+            return
         users = rooms[message["room"]]["listOfUsers"]
         for user_id in users:
             if user_id != message["sender"]:

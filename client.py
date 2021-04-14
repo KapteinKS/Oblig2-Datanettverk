@@ -441,9 +441,9 @@ def bertram_the_bot():
     msg = random.choice(msgs)
     joecheck = False
 
-    # Checking if any of the messages are from Joe
+    # Checking if any of the messages are from Joe Rogan
     for msg in msgs:
-        if get_user(str(msg["sender"]))["name"].lower() == "joe":
+        if get_user(str(msg["sender"]))["name"].lower() == "joe rogan":
             joecheck = True
 
     while True:
@@ -451,7 +451,7 @@ def bertram_the_bot():
             # TODO: Check that the randomly selected message is not from self
             time.sleep(0.5)
 
-            # Checking if the message is from Joe
+            # Checking if the message is from Joe Rogan
             if not joecheck and get_user(str(msg["sender"]))["name"].lower() == "joe rogan":
                 joecheck = True
             if joecheck:
