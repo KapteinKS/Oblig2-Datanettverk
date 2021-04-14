@@ -280,8 +280,8 @@ def post_message_in_room(message):
         print(response.json()["message"])
 
 
-# This is a method to handle push notifications. Push notifications only contain a message ID, 
-# which is then used to get the message 
+# This is a method to handle push notifications. Push notifications only contain a message ID,
+# which is then used to get the message
 def receive_thread(user_id):
     # TODO: Receiving messages and prompts from server.
     # push notification with message id
@@ -424,7 +424,7 @@ def join_random():
     return room_to_join
 
 
-# Bertram reacts positivly to everyone except Joe, who he hates
+# Bertram reacts positivly to everyone except Joe Rogan, who he hates
 def bertram_the_bot():
     botID = execute("/register Bertram")
     time.sleep(1)
@@ -436,7 +436,7 @@ def bertram_the_bot():
     time.sleep(0.5)
     execute("/post_message " + str(room_to_join) + " Hello I am Bertram.")
     time.sleep(1)
-    
+
     msgs = execute("/get_messages " + str(room_to_join))
     msg = random.choice(msgs)
     joecheck = False
@@ -445,14 +445,14 @@ def bertram_the_bot():
     for msg in msgs:
         if get_user(str(msg["sender"]))["name"].lower() == "joe":
             joecheck = True
-    
+
     while True:
         if msg is not None:
             # TODO: Check that the randomly selected message is not from self
             time.sleep(0.5)
-            
+
             # Checking if the message is from Joe
-            if not joecheck and get_user(str(msg["sender"]))["name"].lower() == "joe":
+            if not joecheck and get_user(str(msg["sender"]))["name"].lower() == "joe rogan":
                 joecheck = True
             if joecheck:
                 execute("/post_message " + str(room_to_join) + " Joe, pardon my french, but why don't you just shut the HECK up?!")
