@@ -430,7 +430,7 @@ def bertram_the_bot():
     time.sleep(1)
     # TODO: Put this in a loop, to get responses ####
     msgs = execute("/get_messages " + str(room_to_join))
-    joecheck = False;
+    joecheck = False
     rndmsg = random.choice(msgs)
     # TODO: Check that the randomly selected message is not from self
     time.sleep(0.5)
