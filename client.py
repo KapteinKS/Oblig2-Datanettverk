@@ -582,6 +582,7 @@ def joe_the_bot():
 
 ################################################################################
 
+
 def start():
     print("###### Client start #######")
     send = threading.Thread(target=send_thread)
