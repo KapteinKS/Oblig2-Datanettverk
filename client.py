@@ -8,7 +8,7 @@ import argparse
 import random
 from requests.exceptions import HTTPError
 from collections import deque
-
+# This optional argument decides which bot to call
 parser = argparse.ArgumentParser()
 parser.add_argument("-b", type=str)
 args = parser.parse_args()
@@ -285,10 +285,7 @@ def post_message_in_room(message):
 # This is a method to handle push notifications. Push notifications only contain a message ID,
 # which is then used to get the message
 def receive_thread(user_id):
-    # TODO: Receiving messages and prompts from server.
     # push notification with message id
-    # get message from server
-    # show message
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect(ADDRESS)
     sock.send(str(user_id).encode())
@@ -404,15 +401,12 @@ def execute(commando):
 def send_thread():
     while True:
         execute(input(":"))
-    # bertramTheBot()
-
-
-#    pass
-
 
 # BOT STUFF ###################################################################
 # Bots create pre determined rooms, and join the one they created.
 # They do not necessarily join every room, but they can in theory join any room
+
+
 def join_random():
     rooms = execute("/get_rooms")
     print(f"There are {len(rooms)} rooms")
@@ -468,7 +462,6 @@ def bertram_the_bot():
             msg = bot_new_messages.popleft()
         except IndexError:
             # No messages
-            #print("DEBUG: Push messages done")
             time.sleep(2)
 
     time.sleep(0.5)

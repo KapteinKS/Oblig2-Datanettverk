@@ -64,8 +64,6 @@ def add_message(self, room_id, user_id):
     push_thread = threading.Thread(target=push_notification)
     push_thread.start()
 
-# Populating the rooms with some "dummies"
-
 
 def populate():
 
@@ -79,8 +77,6 @@ def populate():
 
 populate()
 
-# user_delete_args = reqparse.RequestParser()
-# user_delete_args.add_argument("id", type=int, help="ID of current user", required=True)
 
 # Function to return users of a given room
 
@@ -214,7 +210,6 @@ class Room(Resource):
         if check_user_valid_get():
             if room_id in rooms:
                 room = rooms[room_id].copy()
-
                 # Get full user dicitonaries, or empty list if empty
                 room["listOfUsers"] = get_room_users(
                     room) if len(room["listOfUsers"]) > 0 else []
@@ -341,7 +336,5 @@ def push_socket_creation():
 
 
 if __name__ == "__main__":
-    #push_thread = threading.Thread(target=push_notification)
-    # push_thread.start()
     push_socket_creation()
     app.run()
