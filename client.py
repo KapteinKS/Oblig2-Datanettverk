@@ -54,7 +54,7 @@ def connect(user_id):
         print("No user found with that ID")
 
 
-# This method displays all registered users 
+# This method displays all registered users
 def get_users():  # return users
     response = requests.get(BASE + "users", {"id": 1}).json()
     print("Users:")
@@ -63,8 +63,8 @@ def get_users():  # return users
     return response
 
 
-# This method adds a new user to the system. It takes a user name and if it is legal 
-# according to the regex it will add a new user 
+# This method adds a new user to the system. It takes a user name and if it is legal
+# according to the regex it will add a new user
 def add_user(user_name):  # add user to db
     # Thank you StackOverflow for naming regex <3
     if re.fullmatch('[A-Za-z]{2,25}( [A-Za-z]{2,25})?', user_name):
@@ -97,9 +97,9 @@ def get_name(user_id):
         return response.json()["name"]
 
 
-# A user can only delete themselves, and if they do the global variable ID 
-# will be set to -1, to handle "logging the user out". We also had to use an HTTP post request because 
-# the delete request would only take the URL argument, and would give errors when we 
+# A user can only delete themselves, and if they do the global variable ID
+# will be set to -1, to handle "logging the user out". We also had to use an HTTP post request because
+# the delete request would only take the URL argument, and would give errors when we
 # tried to pass the user ID as a JSON element
 def delete_user(user_id):
     if type(int(user_id)) == int:
@@ -183,7 +183,7 @@ def get_room_users(room_id):
         print("Please use a number")
 
 
-# By typing /join_room [ROOM NUMBER] the user can become part of a room, and will get 
+# By typing /join_room [ROOM NUMBER] the user can become part of a room, and will get
 # access to seeing and adding messages in the specified room
 def add_room_user(room_id):
     # "/api/room/<int:room_id>/users"
@@ -198,7 +198,7 @@ def add_room_user(room_id):
 
 
 # MESSAGES ####################################################################
-# This method ensures a nicely formatted output of messages. 
+# This method ensures a nicely formatted output of messages.
 # It also adds 100 blank lines to always only display the newly gotten messages
 def format_messages(response):
     for x in range(101):
@@ -212,7 +212,7 @@ def format_messages(response):
               "\n\t\t" + message["content"])
 
 
-# This method send an HTTP get request to the server trying to get all 
+# This method send an HTTP get request to the server trying to get all
 # messages in a specified room by adding the room_id to the url
 def get_messages(room_id):
     if type(int(room_id)) == int:
@@ -222,7 +222,7 @@ def get_messages(room_id):
         return response.json()
 
 
-# This method send an HTTP get request to the server trying to get all 
+# This method send an HTTP get request to the server trying to get all
 # messages from a specified user in a specified room
 def get_user_messages(room_id, user_id):
     if type(int(room_id)) == int:
@@ -263,7 +263,7 @@ def post_message(room_id, message):
         print("Message was not sent")
 
 
-# When a user is connected (to a room) it will be viewed as a message and posted in 
+# When a user is connected (to a room) it will be viewed as a message and posted in
 # the room they are currently attached to
 def post_message_in_room(message):
     url = BASE + "room/" + str(ROOM) + "/" + str(ID) + "/messages"
@@ -405,7 +405,7 @@ def send_thread():
 
 
 # BOT STUFF ###################################################################
-# Bots create pre determined rooms, and join the one they created. 
+# Bots create pre determined rooms, and join the one they created.
 # They do not necessarily join every room, but they can in theory join any room
 def join_random():
     rooms = execute("/get_rooms")
@@ -540,13 +540,11 @@ def elvira_the_bot():
     time.sleep(1)
     execute("/post_message " + str(room_id) + " I'll start sharing trivia soon! \U0001F5A4")
     time.sleep(10)
-    # Posting a random trivia-fact
+    # Posting some randomly selected trivia-facts
     i = 0
     while i < len(trivia_content):
         time.sleep(1)
         execute("/post_message " + str(room_id) + " " + str(random.choice(trivia_start)) + " " + str(trivia_content.pop(random.randint(0,len(trivia_start)))))
-        #time.sleep(1)
-        #execute("/post_message " + str(room_id) + " " + str(trivia_content.pop(random.randint(0,len(trivia_start)))))
         time.sleep(random.uniform(1.5,3.0))
         execute("/post_message " + str(room_id) + " " + str(random.choice(trivia_ending)))
         i = i+1
